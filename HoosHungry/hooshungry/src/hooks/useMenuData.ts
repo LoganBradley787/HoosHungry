@@ -2,12 +2,20 @@ import { useState, useEffect } from "react";
 import { menuAPI } from "../api/endpoints";
 import type { MenuInfoResponse, MenuInfoParams } from "../api/endpoints";
 
-export function useMenuData(params: MenuInfoParams) {
+export function useMenuData(params: MenuInfoParams & { skip?: boolean }) {
   const [data, setData] = useState<MenuInfoResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // Early return if skip is true
+    if (params.skip) {
+      setData(null);
+      setError(null);
+      setLoading(false);
+      return;
+    }
+
     const fetchMenu = async () => {
       try {
         setLoading(true);
@@ -23,7 +31,7 @@ export function useMenuData(params: MenuInfoParams) {
     };
 
     fetchMenu();
-  }, [params.period, params.hall]);
+  }, [params.period, params.hall, params.skip]);
 
   return { data, loading, error };
 }

@@ -5,7 +5,7 @@ import PillButton from "../components/menu/PillButton";
 import InfoBanner from "../components/menu/InfoBanner";
 import StationSection from "../components/menu/StationSection";
 import SearchFilter from "../components/menu/SearchFilter";
-import type { Station } from "../api/endpoints";
+import { useAvailablePeriods } from "../hooks/useAvailablePeriods";
 
 export default function Menu() {
   const [hall, setHall] = useState<"ohill" | "newcomb" | "runk">("ohill");
@@ -19,7 +19,20 @@ export default function Menu() {
   }>({ allergens: [], excludeAllergens: true });
   const [showContent, setShowContent] = useState(false);
 
-  const { data, loading, error } = useMenuData({ hall, period });
+  const { periods: availablePeriods, loading: loadingPeriods } =
+    useAvailablePeriods(hall);
+
+  // Whenever hall changes, reset the period to the first available one
+  useEffect(() => {
+    if (availablePeriods.length > 0) {
+      setPeriod(availablePeriods[0].key as any);
+    }
+  }, [availablePeriods, hall]);
+  const { data, loading, error } = useMenuData({
+    hall,
+    period,
+    skip: availablePeriods.length === 0,
+  });
 
   // Trigger animation when data changes
   useEffect(() => {
@@ -116,30 +129,23 @@ export default function Menu() {
 
           {/* Center: Period Pills */}
           <div className="flex gap-2 bg-white/60 backdrop-blur-sm rounded-full p-1 shadow-sm">
-            <PillButton
-              active={period === "breakfast"}
-              onClick={() => setPeriod("breakfast")}
-            >
-              Breakfast
-            </PillButton>
-            <PillButton
-              active={period === "lunch"}
-              onClick={() => setPeriod("lunch")}
-            >
-              Lunch
-            </PillButton>
-            <PillButton
-              active={period === "dinner"}
-              onClick={() => setPeriod("dinner")}
-            >
-              Dinner
-            </PillButton>
-            <PillButton
-              active={period === "late_night"}
-              onClick={() => setPeriod("late_night")}
-            >
-              Late Night
-            </PillButton>
+            {loadingPeriods ? (
+              <div className="px-4 py-2 text-gray-500">Loading periods...</div>
+            ) : availablePeriods.length === 0 ? (
+              <div className="px-4 py-2 text-red-600 font-medium">
+                This hall is closed today
+              </div>
+            ) : (
+              availablePeriods.map((p) => (
+                <PillButton
+                  key={p.key}
+                  active={period === p.key}
+                  onClick={() => setPeriod(p.key as any)}
+                >
+                  {p.name}
+                </PillButton>
+              ))
+            )}
           </div>
 
           {/* Right: Search and Filter */}

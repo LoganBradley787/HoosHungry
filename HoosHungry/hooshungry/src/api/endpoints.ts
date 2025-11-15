@@ -63,9 +63,29 @@ export interface MenuInfoResponse {
   period: Period;
 }
 
+export interface PeriodOption {
+  key: string;
+  name: string;
+}
+
+export interface AvailablePeriodsResponse {
+  dining_hall: string;
+  date: string;
+  periods: PeriodOption[];
+}
+
 export const menuAPI = {
   getMenuInfo: async (params: MenuInfoParams): Promise<MenuInfoResponse> => {
     const response = await apiClient.get("/menu_info/", { params });
+    return response.data;
+  },
+
+  getAvailablePeriods: async (
+    hall: "ohill" | "newcomb" | "runk"
+  ): Promise<AvailablePeriodsResponse> => {
+    const response = await apiClient.get("/available_periods/", {
+      params: { hall },
+    });
     return response.data;
   },
 };
