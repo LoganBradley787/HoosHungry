@@ -3,38 +3,14 @@ import globe from "../assets/globe.png";
 import plan from "../assets/plan.png";
 import stars from "../assets/stars.png";
 import logo from "../assets/logo.png";
+import Navigation from "../components/common/Navigation";
+import { Link } from "react-router-dom";
 
 function Home() {
   return (
     <div className="min-h-screen bg-gradient-to-r from-pink-100 via-orange-50 to-yellow-100">
       {/* Navigation */}
-      <nav className="flex items-center justify-between px-8 py-4">
-        <div className="flex items-center gap-3">
-          <img src={logo} alt="HoosHungry Logo" className="w-14 h-14" />
-          <span className="text-2xl font-bold bg-gradient-to-r from-[#141414] to-[#6A6A6A] bg-clip-text text-transparent">
-            HoosHungry
-          </span>
-        </div>
-
-        <div className="flex items-center gap-8">
-          <a href="#" className="text-orange-500 font-semibold">
-            Home
-          </a>
-          <a href="#" className="text-gray-600 hover:text-gray-800">
-            Menu
-          </a>
-          <a href="#" className="text-gray-600 hover:text-gray-800">
-            Plan
-          </a>
-          <a href="#" className="text-gray-600 hover:text-gray-800">
-            Prompt
-          </a>
-        </div>
-
-        <button className="px-6 py-2 bg-white rounded-full font-semibold text-gray-800 shadow-sm hover:shadow-md transition">
-          Log In
-        </button>
-      </nav>
+      <Navigation />
 
       {/* Hero Section */}
       <div className="max-w-7xl mx-auto px-8 py-16">
@@ -50,9 +26,12 @@ function Home() {
                 Hoo?
               </p>
               <div className="flex gap-4">
-                <button className="px-6 py-3 bg-white rounded-full font-semibold text-gray-800 shadow-sm hover:shadow-md transition">
+                <Link
+                  to="/menu"
+                  className="px-6 py-3 bg-white rounded-full font-semibold text-gray-800 shadow-sm hover:shadow-md transition text-center"
+                >
                   See Menus
-                </button>
+                </Link>
                 <button className="px-6 py-3 bg-white rounded-full font-semibold text-gray-800 shadow-sm hover:shadow-md transition">
                   View Plan
                 </button>
@@ -119,24 +98,27 @@ function Home() {
 
         {/* Bottom Feature Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
-          <div className="bg-gradient-to-b from-[#FEFFDF] to-[#FFFFFF] rounded-2xl p-6 shadow-sm hover:shadow-md transition border border-white">
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center">
-                <img
-                  src={globe}
-                  alt="Browse dining halls"
-                  className="w-7 h-7 object-contain"
-                />
-              </div>
-              <div>
-                <h3 className="font-bold text-lg mb-1">Browse Dining Halls</h3>
-                <p className="text-gray-600 text-sm">
-                  Any location, any time of day!
-                </p>
+          <Link to="/menu" className="block">
+            <div className="bg-gradient-to-b from-[#FEFFDF] to-[#FFFFFF] rounded-2xl p-6 shadow-sm hover:shadow-md transition border border-white cursor-pointer">
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center">
+                  <img
+                    src={globe}
+                    alt="Browse dining halls"
+                    className="w-7 h-7 object-contain"
+                  />
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg mb-1">
+                    Browse Dining Halls
+                  </h3>
+                  <p className="text-gray-600 text-sm">
+                    Any location, any time of day!
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-
+          </Link>
           <div className="bg-gradient-to-b from-[#FFDFDF] to-[#FFFFFF] rounded-2xl p-6 shadow-sm hover:shadow-md transition border border-white">
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 rounded-full flex items-center justify-center">
@@ -154,7 +136,6 @@ function Home() {
               </div>
             </div>
           </div>
-
           <div className="bg-gradient-to-b from-[#DFFCFF] to-[#FFFFFF] rounded-2xl p-6 shadow-sm hover:shadow-md transition border border-white">
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 rounded-full flex items-center justify-center">
