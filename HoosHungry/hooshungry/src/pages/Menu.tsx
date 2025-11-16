@@ -6,12 +6,16 @@ import InfoBanner from "../components/menu/InfoBanner";
 import StationSection from "../components/menu/StationSection";
 import SearchFilter from "../components/menu/SearchFilter";
 import { useAvailablePeriods } from "../hooks/useAvailablePeriods";
+import type { MenuItem } from "../api/endpoints";
+import ItemDetailsPanel from "../components/menu/ItemDetailsPanel";
 
 export default function Menu() {
   const [hall, setHall] = useState<"ohill" | "newcomb" | "runk">("ohill");
   const [period, setPeriod] = useState<
     "breakfast" | "lunch" | "dinner" | "late_night"
   >("breakfast");
+  const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filters, setFilters] = useState<{
     allergens: string[];
@@ -230,7 +234,13 @@ export default function Menu() {
                   className="animate-slideInStagger"
                   style={{ animationDelay: `${(index + 1) * 100}ms` }}
                 >
-                  <StationSection station={station} />
+                  <StationSection
+                    station={station}
+                    onDetails={(item) => {
+                      setSelectedItem(item);
+                      setIsDetailsOpen(true);
+                    }}
+                  />
                 </div>
               ))
             ) : (
@@ -252,6 +262,12 @@ export default function Menu() {
           </>
         )}
       </div>
+      {isDetailsOpen && selectedItem && (
+        <ItemDetailsPanel
+          item={selectedItem}
+          onClose={() => setIsDetailsOpen(false)}
+        />
+      )}
     </div>
   );
 }

@@ -2,6 +2,7 @@ import type { MenuItem } from "../../api/endpoints";
 
 interface MenuItemCardProps {
   item: MenuItem;
+  onDetails?: (item: MenuItem) => void;
 }
 
 // Small card for sides (0 calories)
@@ -27,7 +28,7 @@ function SmallMenuItemCard({ item }: MenuItemCardProps) {
 }
 
 // Regular card for full menu items
-export default function MenuItemCard({ item }: MenuItemCardProps) {
+export default function MenuItemCard({ item, onDetails }: MenuItemCardProps) {
   const calories = item.nutrition_info?.calories
     ? Math.round(parseFloat(item.nutrition_info.calories))
     : 0;
@@ -151,7 +152,8 @@ export default function MenuItemCard({ item }: MenuItemCardProps) {
 
       {/* Action buttons */}
       <div className="flex gap-3 mt-4">
-        <button className="px-8 py-2.5 bg-white border border-gray-300 rounded-full text-sm font-semibold text-gray-700 hover:bg-gray-50 transition">
+        <button className="px-8 py-2.5 bg-white border border-gray-300 rounded-full text-sm font-semibold text-gray-700 hover:bg-gray-50 transition"
+                onClick={() => onDetails?.(item)}>
           Details
         </button>
         <button className="px-8 py-2.5 bg-white border-2 border-orange-400 rounded-full text-sm font-semibold text-orange-500 hover:bg-orange-50 transition">

@@ -1,12 +1,14 @@
 import { useState } from "react";
-import type { Station } from "../../api/endpoints";
+import type { MenuItem, Station } from "../../api/endpoints";
 import MenuItemCard from "./MenuItemCard";
+import ItemDetailsPanel from "./ItemDetailsPanel";
 
 interface StationSectionProps {
   station: Station;
+  onDetails: (item: MenuItem) => void;
 }
 
-export default function StationSection({ station }: StationSectionProps) {
+export default function StationSection({ station, onDetails }: StationSectionProps) {
   const [isExpanded, setIsExpanded] = useState(true);
 
   // Separate items into main dishes and sides
@@ -54,7 +56,11 @@ export default function StationSection({ station }: StationSectionProps) {
           {mainItems.length > 0 && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
               {mainItems.map((item) => (
-                <MenuItemCard key={item.id} item={item} />
+                <MenuItemCard
+                  key={item.id}
+                  item={item}
+                  onDetails={() => onDetails(item)}
+                />
               ))}
             </div>
           )}
