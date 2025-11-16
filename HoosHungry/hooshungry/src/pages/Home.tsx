@@ -32,9 +32,13 @@ function Home() {
                 >
                   See Menus
                 </Link>
-                <button className="px-6 py-3 bg-white rounded-full font-semibold text-gray-800 shadow-sm hover:shadow-md transition">
+
+                <Link
+                  to="/plan"
+                  className="px-6 py-3 bg-white rounded-full font-semibold text-gray-800 shadow-sm hover:shadow-md transition text-center"
+                >
                   View Plan
-                </button>
+                </Link>
                 <button className="px-6 py-3 rounded-full font-semibold text-white shadow-md hover:shadow-lg transition bg-gradient-to-r from-[#F48210] to-[#FFC831]">
                   Prompt AI
                 </button>
@@ -119,23 +123,25 @@ function Home() {
               </div>
             </div>
           </Link>
-          <div className="bg-gradient-to-b from-[#FFDFDF] to-[#FFFFFF] rounded-2xl p-6 shadow-sm hover:shadow-md transition border border-white">
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center">
-                <img
-                  src={plan}
-                  alt="Browse dining halls"
-                  className="w-7 h-7 object-contain"
-                />
-              </div>
-              <div>
-                <h3 className="font-bold text-lg mb-1">Make a Plan</h3>
-                <p className="text-gray-600 text-sm">
-                  Click, click: simple as that.
-                </p>
+          <Link to="/plan" className="block">
+            <div className="bg-gradient-to-b from-[#FFDFDF] to-[#FFFFFF] rounded-2xl p-6 shadow-sm hover:shadow-md transition border border-white">
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center">
+                  <img
+                    src={plan}
+                    alt="Browse dining halls"
+                    className="w-7 h-7 object-contain"
+                  />
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg mb-1">Make a Plan</h3>
+                  <p className="text-gray-600 text-sm">
+                    Click, click: simple as that.
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          </Link>
           <div className="bg-gradient-to-b from-[#DFFCFF] to-[#FFFFFF] rounded-2xl p-6 shadow-sm hover:shadow-md transition border border-white">
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 rounded-full flex items-center justify-center">
