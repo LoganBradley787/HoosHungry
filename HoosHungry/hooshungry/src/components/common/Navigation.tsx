@@ -1,7 +1,9 @@
 import { useLocation, Link } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 export default function Navigation() {
   const location = useLocation();
+  const { user, logout } = useAuth();
 
   return (
     <nav className="flex items-center justify-between px-8 py-4 bg-white/80 backdrop-blur-sm">
@@ -57,9 +59,26 @@ export default function Navigation() {
         </Link>
       </div>
 
-      <button className="w-12 h-12 bg-blue-300 rounded-full flex items-center justify-center text-white font-semibold">
-        S
-      </button>
+      <div className="flex items-center gap-4">
+        {user ? (
+          <>
+            <span className="text-gray-700">Welcome, {user.username}!</span>
+            <button
+              onClick={logout}
+              className="px-4 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition"
+            >
+              Logout
+            </button>
+          </>
+        ) : (
+          <a
+            href="/login"
+            className="px-4 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition"
+          >
+            Login
+          </a>
+        )}
+      </div>
     </nav>
   );
 }
