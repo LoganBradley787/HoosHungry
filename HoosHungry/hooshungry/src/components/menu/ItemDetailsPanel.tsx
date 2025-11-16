@@ -151,7 +151,7 @@ export default function ItemDetailsPanel({ item, onClose }: ItemDetailsPanelProp
         {/* Micros */}
         <div className="mb-8">
           <h3 className="text-lg font-semibold mb-3">Micronutrients</h3>
-          <div className="grid grid-cols-2 gap-y-3 gap-x-12 text-sm">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-12 text-sm">
             {micros.map(([label, value, unit]) => (
               <div key={label} className="flex justify-between">
                 <span className="text-gray-600">{label}</span>
