@@ -19,19 +19,31 @@ export default function Menu() {
   }>({ allergens: [], excludeAllergens: true });
   const [showContent, setShowContent] = useState(false);
 
-  const { periods: availablePeriods, loading: loadingPeriods } =
-    useAvailablePeriods(hall);
+  const {
+    periods: availablePeriods,
+    loading: loadingPeriods,
+    currentHall,
+  } = useAvailablePeriods(hall);
 
   // Whenever hall changes, reset the period to the first available one
   useEffect(() => {
     if (availablePeriods.length > 0) {
-      setPeriod(availablePeriods[0].key as any);
+      const periodExistsInNewHall = availablePeriods.some(
+        (p) => p.key === period
+      );
+
+      if (!periodExistsInNewHall) {
+        setPeriod(availablePeriods[0].key as any);
+      }
     }
-  }, [availablePeriods, hall]);
+  }, [availablePeriods]);
   const { data, loading, error } = useMenuData({
     hall,
     period,
-    skip: availablePeriods.length === 0,
+    skip:
+      currentHall !== hall || // Skip if periods don't match current hall
+      availablePeriods.length === 0 ||
+      !availablePeriods.some((p) => p.key === period),
   });
 
   // Trigger animation when data changes

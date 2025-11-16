@@ -8,10 +8,12 @@ export function useMenuData(params: MenuInfoParams & { skip?: boolean }) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // Reset error state when params change
+    setError(null);
+
     // Early return if skip is true
     if (params.skip) {
       setData(null);
-      setError(null);
       setLoading(false);
       return;
     }
@@ -19,7 +21,6 @@ export function useMenuData(params: MenuInfoParams & { skip?: boolean }) {
     const fetchMenu = async () => {
       try {
         setLoading(true);
-        setError(null);
         const menuData = await menuAPI.getMenuInfo(params);
         setData(menuData);
       } catch (err: any) {
