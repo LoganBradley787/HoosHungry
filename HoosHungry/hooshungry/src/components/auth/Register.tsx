@@ -23,9 +23,9 @@ export default function Register() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-pink-100 via-orange-50 to-yellow-100 flex items-center justify-center">
-      <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-lg w-full max-w-md">
-        <h1 className="text-4xl font-bold text-orange-500 mb-6 text-center">
+    <div className="min-h-screen bg-gradient-to-r from-pink-100 via-orange-50 to-yellow-100 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+      <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 sm:p-8 shadow-lg w-full max-w-md">
+        <h1 className="text-3xl sm:text-4xl font-bold text-orange-500 mb-6 text-center">
           Register
         </h1>
 
@@ -82,7 +82,7 @@ export default function Register() {
           </button>
         </form>
 
-        <p className="text-center text-gray-600 mt-4">
+        <p className="text-center text-gray-600 mt-4 text-sm sm:text-base">
           Already have an account?{" "}
           <Link to="/login" className="text-orange-500 hover:underline">
             Login

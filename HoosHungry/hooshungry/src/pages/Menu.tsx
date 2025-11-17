@@ -118,65 +118,75 @@ export default function Menu() {
       <Navigation />
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-8 py-8">
-        <h1 className="text-6xl font-bold text-orange-500 mb-8">Menu</h1>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-orange-500 mb-6 sm:mb-8">
+          Menu
+        </h1>
 
-        {/* Control Pills and Search */}
-        <div className="flex justify-between items-start mb-8 gap-4">
-          {/* Left: Dining Hall Pills */}
-          <div className="flex gap-2 bg-white/60 backdrop-blur-sm rounded-full p-1 shadow-sm">
-            <PillButton
-              active={hall === "ohill"}
-              onClick={() => setHall("ohill")}
-            >
-              OHill
-            </PillButton>
-            <PillButton
-              active={hall === "newcomb"}
-              onClick={() => setHall("newcomb")}
-            >
-              Newcomb
-            </PillButton>
-            <PillButton
-              active={hall === "runk"}
-              onClick={() => setHall("runk")}
-            >
-              Runk
-            </PillButton>
+        {/* Control Pills and Search - Responsive Layout */}
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 mb-6 sm:mb-8">
+          {/* Left Side: Dining Hall Pills */}
+          <div className="flex justify-center lg:justify-start">
+            <div className="flex gap-1 sm:gap-2 bg-white/60 backdrop-blur-sm rounded-full p-1 shadow-sm overflow-x-auto">
+              <PillButton
+                active={hall === "ohill"}
+                onClick={() => setHall("ohill")}
+              >
+                OHill
+              </PillButton>
+              <PillButton
+                active={hall === "newcomb"}
+                onClick={() => setHall("newcomb")}
+              >
+                Newcomb
+              </PillButton>
+              <PillButton
+                active={hall === "runk"}
+                onClick={() => setHall("runk")}
+              >
+                Runk
+              </PillButton>
+            </div>
           </div>
 
           {/* Center: Period Pills */}
-          <div className="flex gap-2 bg-white/60 backdrop-blur-sm rounded-full p-1 shadow-sm">
-            {loadingPeriods ? (
-              <div className="px-4 py-2 text-gray-500">Loading periods...</div>
-            ) : availablePeriods.length === 0 ? (
-              <div className="px-4 py-2 text-red-600 font-medium">
-                This hall is closed today
-              </div>
-            ) : (
-              availablePeriods.map((p) => (
-                <PillButton
-                  key={p.key}
-                  active={period === p.key}
-                  onClick={() => setPeriod(p.key as any)}
-                >
-                  {p.name}
-                </PillButton>
-              ))
-            )}
+          <div className="flex justify-center lg:justify-start overflow-x-auto">
+            <div className="flex gap-1 sm:gap-2 bg-white/60 backdrop-blur-sm rounded-full p-1 shadow-sm min-w-fit">
+              {loadingPeriods ? (
+                <div className="px-3 sm:px-4 py-2 text-gray-500 text-xs sm:text-sm">
+                  Loading periods...
+                </div>
+              ) : availablePeriods.length === 0 ? (
+                <div className="px-3 sm:px-4 py-2 text-red-600 font-medium text-xs sm:text-sm">
+                  This hall is closed today
+                </div>
+              ) : (
+                availablePeriods.map((p) => (
+                  <PillButton
+                    key={p.key}
+                    active={period === p.key}
+                    onClick={() => setPeriod(p.key as any)}
+                  >
+                    {p.name}
+                  </PillButton>
+                ))
+              )}
+            </div>
           </div>
 
-          {/* Right: Search and Filter */}
-          <SearchFilter
-            onSearchChange={setSearchTerm}
-            onFilterChange={setFilters}
-          />
+          {/* Right Side: Search and Filter */}
+          <div className="w-full lg:w-auto lg:flex-1 lg:max-w-md">
+            <SearchFilter
+              onSearchChange={setSearchTerm}
+              onFilterChange={setFilters}
+            />
+          </div>
         </div>
 
         {/* Loading State */}
         {loading && (
           <div className="flex items-center justify-center py-20">
-            <div className="text-xl text-gray-600 animate-pulse">
+            <div className="text-lg sm:text-xl text-gray-600 animate-pulse">
               Loading menu...
             </div>
           </div>
@@ -184,11 +194,11 @@ export default function Menu() {
 
         {/* Error State */}
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-2xl p-6 text-center animate-fadeIn">
-            <p className="text-red-600 font-semibold mb-2">
+          <div className="bg-red-50 border border-red-200 rounded-2xl p-4 sm:p-6 text-center animate-fadeIn">
+            <p className="text-red-600 font-semibold mb-2 text-sm sm:text-base">
               Error loading menu
             </p>
-            <p className="text-red-500 text-sm">{error}</p>
+            <p className="text-red-500 text-xs sm:text-sm">{error}</p>
           </div>
         )}
 
@@ -215,7 +225,7 @@ export default function Menu() {
             {/* Show results count if filtering */}
             {(searchTerm || filters.allergens.length > 0) && (
               <div
-                className="mb-4 text-sm text-gray-600 animate-slideInStagger"
+                className="mb-4 text-xs sm:text-sm text-gray-600 animate-slideInStagger"
                 style={{ animationDelay: "100ms" }}
               >
                 Found{" "}
@@ -247,8 +257,8 @@ export default function Menu() {
                 </div>
               ))
             ) : (
-              <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-12 text-center animate-fadeIn">
-                <p className="text-gray-600 text-lg">
+              <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-8 sm:p-12 text-center animate-fadeIn">
+                <p className="text-gray-600 text-base sm:text-lg">
                   No items found matching your criteria
                 </p>
                 <button
@@ -256,7 +266,7 @@ export default function Menu() {
                     setSearchTerm("");
                     setFilters({ allergens: [], excludeAllergens: true });
                   }}
-                  className="mt-4 px-6 py-2 bg-orange-500 text-white rounded-full font-medium hover:bg-orange-600 transition"
+                  className="mt-4 px-6 py-2 bg-orange-500 text-white rounded-full font-medium hover:bg-orange-600 transition text-sm sm:text-base"
                 >
                   Clear Filters
                 </button>
@@ -277,8 +287,7 @@ export default function Menu() {
           stationMealType={period}
           onClose={() => setAddToPlanItem(null)}
         />
-)}
-      
+      )}
     </div>
   );
 }

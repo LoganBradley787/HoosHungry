@@ -40,18 +40,24 @@ export default function ProgressStats({
   const fatPercentage = Math.min(Math.round((currentFat / goalFat) * 100), 100);
 
   return (
-    <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-6 shadow-lg">
-      <h3 className="font-bold text-lg mb-6">Today's Progress</h3>
+    <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-4 sm:p-6 shadow-lg">
+      <h3 className="font-bold text-base sm:text-lg mb-4 sm:mb-6">
+        Today's Progress
+      </h3>
 
       {/* Calories Progress */}
-      <div className="mb-8">
+      <div className="mb-6 sm:mb-8">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-sm font-medium text-gray-700">Calories</span>
+          <span className="text-xs sm:text-sm font-medium text-gray-700">
+            Calories
+          </span>
           <div className="flex items-baseline gap-1">
-            <span className="text-2xl font-bold text-gray-900">
+            <span className="text-xl sm:text-2xl font-bold text-gray-900">
               🔥 {currentCalories}
             </span>
-            <span className="text-sm text-gray-500">/ {goalCalories}</span>
+            <span className="text-xs sm:text-sm text-gray-500">
+              / {goalCalories}
+            </span>
           </div>
         </div>
         <div className="text-xs text-gray-500 text-right mb-2">
@@ -66,11 +72,30 @@ export default function ProgressStats({
       </div>
 
       {/* Macros Progress */}
-      <div className="flex gap-4 justify-center">
+      <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
         {/* Protein */}
         <div className="flex flex-col items-center">
-          <div className="relative w-20 h-20">
-            <svg className="w-20 h-20 transform -rotate-90">
+          <div className="relative w-16 h-16 sm:w-20 sm:h-20">
+            <svg className="w-16 h-16 sm:w-20 sm:h-20 transform -rotate-90">
+              <circle
+                cx="32"
+                cy="32"
+                r="28"
+                stroke="#e5e7eb"
+                strokeWidth="6"
+                fill="none"
+                className="sm:hidden"
+              />
+              <circle
+                cx="32"
+                cy="32"
+                r="28"
+                stroke="#3b82f6"
+                strokeWidth="6"
+                fill="none"
+                strokeDasharray={`${proteinPercentage * 1.76} 176`}
+                className="transition-all duration-500 sm:hidden"
+              />
               <circle
                 cx="40"
                 cy="40"
@@ -78,6 +103,7 @@ export default function ProgressStats({
                 stroke="#e5e7eb"
                 strokeWidth="8"
                 fill="none"
+                className="hidden sm:block"
               />
               <circle
                 cx="40"
@@ -87,11 +113,11 @@ export default function ProgressStats({
                 strokeWidth="8"
                 fill="none"
                 strokeDasharray={`${proteinPercentage * 2.01} 201`}
-                className="transition-all duration-500"
+                className="transition-all duration-500 hidden sm:block"
               />
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-sm font-bold text-gray-800">
+              <span className="text-xs sm:text-sm font-bold text-gray-800">
                 {proteinPercentage}%
               </span>
             </div>
@@ -104,8 +130,27 @@ export default function ProgressStats({
 
         {/* Carbs */}
         <div className="flex flex-col items-center">
-          <div className="relative w-20 h-20">
-            <svg className="w-20 h-20 transform -rotate-90">
+          <div className="relative w-16 h-16 sm:w-20 sm:h-20">
+            <svg className="w-16 h-16 sm:w-20 sm:h-20 transform -rotate-90">
+              <circle
+                cx="32"
+                cy="32"
+                r="28"
+                stroke="#e5e7eb"
+                strokeWidth="6"
+                fill="none"
+                className="sm:hidden"
+              />
+              <circle
+                cx="32"
+                cy="32"
+                r="28"
+                stroke="#8b5cf6"
+                strokeWidth="6"
+                fill="none"
+                strokeDasharray={`${carbsPercentage * 1.76} 176`}
+                className="transition-all duration-500 sm:hidden"
+              />
               <circle
                 cx="40"
                 cy="40"
@@ -113,6 +158,7 @@ export default function ProgressStats({
                 stroke="#e5e7eb"
                 strokeWidth="8"
                 fill="none"
+                className="hidden sm:block"
               />
               <circle
                 cx="40"
@@ -122,11 +168,11 @@ export default function ProgressStats({
                 strokeWidth="8"
                 fill="none"
                 strokeDasharray={`${carbsPercentage * 2.01} 201`}
-                className="transition-all duration-500"
+                className="transition-all duration-500 hidden sm:block"
               />
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-sm font-bold text-gray-800">
+              <span className="text-xs sm:text-sm font-bold text-gray-800">
                 {carbsPercentage}%
               </span>
             </div>
@@ -139,8 +185,27 @@ export default function ProgressStats({
 
         {/* Fat */}
         <div className="flex flex-col items-center">
-          <div className="relative w-20 h-20">
-            <svg className="w-20 h-20 transform -rotate-90">
+          <div className="relative w-16 h-16 sm:w-20 sm:h-20">
+            <svg className="w-16 h-16 sm:w-20 sm:h-20 transform -rotate-90">
+              <circle
+                cx="32"
+                cy="32"
+                r="28"
+                stroke="#e5e7eb"
+                strokeWidth="6"
+                fill="none"
+                className="sm:hidden"
+              />
+              <circle
+                cx="32"
+                cy="32"
+                r="28"
+                stroke="#f59e0b"
+                strokeWidth="6"
+                fill="none"
+                strokeDasharray={`${fatPercentage * 1.76} 176`}
+                className="transition-all duration-500 sm:hidden"
+              />
               <circle
                 cx="40"
                 cy="40"
@@ -148,6 +213,7 @@ export default function ProgressStats({
                 stroke="#e5e7eb"
                 strokeWidth="8"
                 fill="none"
+                className="hidden sm:block"
               />
               <circle
                 cx="40"
@@ -157,11 +223,11 @@ export default function ProgressStats({
                 strokeWidth="8"
                 fill="none"
                 strokeDasharray={`${fatPercentage * 2.01} 201`}
-                className="transition-all duration-500"
+                className="transition-all duration-500 hidden sm:block"
               />
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-sm font-bold text-gray-800">
+              <span className="text-xs sm:text-sm font-bold text-gray-800">
                 {fatPercentage}%
               </span>
             </div>

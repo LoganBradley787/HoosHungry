@@ -13,19 +13,19 @@ function Home() {
       <Navigation />
 
       {/* Hero Section */}
-      <div className="max-w-7xl mx-auto px-8 py-16">
-        <div className="bg-white/45 backdrop-blur-md rounded-3xl p-12 shadow-lg border border-white/20">
-          <div className="grid grid-cols-1 lg:grid-cols-[40%_60%] gap-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
+        <div className="bg-white/45 backdrop-blur-md rounded-3xl p-6 sm:p-8 lg:p-12 shadow-lg border border-white/20">
+          <div className="grid grid-cols-1 lg:grid-cols-[40%_60%] gap-6 lg:gap-8">
             {/* Left Column */}
             <div>
-              <h1 className="text-5xl font-bold bg-gradient-to-r from-[#F48210] to-[#FFC831] text-transparent pb-6 mb-2 bg-clip-text">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-[#F48210] to-[#FFC831] text-transparent pb-4 sm:pb-6 mb-2 bg-clip-text">
                 Finally, dining hall planning that just works
               </h1>
-              <p className="text-gray-600 text-lg mb-8">
+              <p className="text-gray-600 text-base sm:text-lg mb-6 sm:mb-8">
                 Pick a hall, browse menu items, make a plan. How hungry are you,
                 Hoo?
               </p>
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                 <Link
                   to="/menu"
                   className="px-6 py-3 bg-white rounded-full font-semibold text-gray-800 shadow-sm hover:shadow-md transition text-center"
@@ -46,10 +46,10 @@ function Home() {
             </div>
 
             {/* Right Column - Feature Cards */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-gradient-to-b from-[#EDF9FF] to-[#FFFFFF] rounded-2xl p-6 shadow-sm">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6 lg:mt-0">
+              <div className="bg-gradient-to-b from-[#EDF9FF] to-[#FFFFFF] rounded-2xl p-4 sm:p-6 shadow-sm">
                 <div className="text-sm text-gray-600 mb-2">Locate</div>
-                <div className="font-bold text-lg mb-2">
+                <div className="font-bold text-base sm:text-lg mb-2">
                   Where can I find grilled chicken?
                 </div>
                 <div className="text-sm text-gray-600 flex items-center gap-1">
@@ -68,16 +68,16 @@ function Home() {
                 </div>
               </div>
 
-              <div className="bg-gradient-to-b from-[#F1FFED] to-[#FFFFFF] rounded-2xl p-6 shadow-sm transform -rotate-4">
+              <div className="bg-gradient-to-b from-[#F1FFED] to-[#FFFFFF] rounded-2xl p-4 sm:p-6 shadow-sm sm:transform sm:-rotate-4">
                 <div className="text-sm text-gray-600 mb-2">Prompt</div>
-                <div className="font-bold text-lg">
+                <div className="font-bold text-base sm:text-lg">
                   "Low sodium dinner @ Runk?"
                 </div>
               </div>
 
-              <div className="bg-gradient-to-b from-[#FFEDED] to-[#FFFFFF] rounded-2xl p-6 shadow-sm">
+              <div className="bg-gradient-to-b from-[#FFEDED] to-[#FFFFFF] rounded-2xl p-4 sm:p-6 shadow-sm">
                 <div className="text-sm text-gray-600 mb-2">Filter</div>
-                <div className="font-bold text-lg mb-3">
+                <div className="font-bold text-base sm:text-lg mb-3">
                   No dairy or meat for me, please!
                 </div>
                 <div className="flex gap-2 flex-wrap">
@@ -90,9 +90,9 @@ function Home() {
                 </div>
               </div>
 
-              <div className="bg-gradient-to-b from-[#F8EDFF] to-[#FFFFFF] rounded-2xl p-6 shadow-sm">
+              <div className="bg-gradient-to-b from-[#F8EDFF] to-[#FFFFFF] rounded-2xl p-4 sm:p-6 shadow-sm">
                 <div className="text-sm text-gray-600 mb-2">Plan</div>
-                <div className="font-bold text-lg">
+                <div className="font-bold text-base sm:text-lg">
                   3 meals/day, 3500 cals, 150g protein, low-sugar.
                 </div>
               </div>
@@ -101,11 +101,11 @@ function Home() {
         </div>
 
         {/* Bottom Feature Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 mt-6 sm:mt-8">
           <Link to="/menu" className="block">
-            <div className="bg-gradient-to-b from-[#FEFFDF] to-[#FFFFFF] rounded-2xl p-6 shadow-sm hover:shadow-md transition border border-white cursor-pointer">
+            <div className="bg-gradient-to-b from-[#FEFFDF] to-[#FFFFFF] rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition border border-white cursor-pointer">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
                   <img
                     src={globe}
                     alt="Browse dining halls"
@@ -113,7 +113,7 @@ function Home() {
                   />
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg mb-1">
+                  <h3 className="font-bold text-base sm:text-lg mb-1">
                     Browse Dining Halls
                   </h3>
                   <p className="text-gray-600 text-sm">
@@ -124,17 +124,19 @@ function Home() {
             </div>
           </Link>
           <Link to="/plan" className="block">
-            <div className="bg-gradient-to-b from-[#FFDFDF] to-[#FFFFFF] rounded-2xl p-6 shadow-sm hover:shadow-md transition border border-white">
+            <div className="bg-gradient-to-b from-[#FFDFDF] to-[#FFFFFF] rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition border border-white">
               <div className="flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
                   <img
                     src={plan}
-                    alt="Browse dining halls"
+                    alt="Make a plan"
                     className="w-7 h-7 object-contain"
                   />
                 </div>
                 <div>
-                  <h3 className="font-bold text-lg mb-1">Make a Plan</h3>
+                  <h3 className="font-bold text-base sm:text-lg mb-1">
+                    Make a Plan
+                  </h3>
                   <p className="text-gray-600 text-sm">
                     Click, click: simple as that.
                   </p>
@@ -142,23 +144,27 @@ function Home() {
               </div>
             </div>
           </Link>
-          <div className="bg-gradient-to-b from-[#DFFCFF] to-[#FFFFFF] rounded-2xl p-6 shadow-sm hover:shadow-md transition border border-white">
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 rounded-full flex items-center justify-center">
-                <img
-                  src={stars}
-                  alt="Browse dining halls"
-                  className="w-7 h-7 object-contain"
-                />
-              </div>
-              <div>
-                <h3 className="font-bold text-lg mb-1">Ask CavBot</h3>
-                <p className="text-gray-600 text-sm">
-                  Food tailored to your goals.
-                </p>
+          <Link to="/prompt" className="block sm:col-span-2 md:col-span-1">
+            <div className="bg-gradient-to-b from-[#DFFCFF] to-[#FFFFFF] rounded-2xl p-5 sm:p-6 shadow-sm hover:shadow-md transition border border-white cursor-pointer">
+              <div className="flex items-start gap-4">
+                <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0">
+                  <img
+                    src={stars}
+                    alt="Ask CavBot"
+                    className="w-7 h-7 object-contain"
+                  />
+                </div>
+                <div>
+                  <h3 className="font-bold text-base sm:text-lg mb-1">
+                    Ask CavBot
+                  </h3>
+                  <p className="text-gray-600 text-sm">
+                    Food tailored to your goals.
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
+          </Link>
         </div>
       </div>
     </div>

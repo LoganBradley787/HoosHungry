@@ -9,11 +9,11 @@ interface MenuItemCardProps {
 // Small card for sides (0 calories)
 function SmallMenuItemCard({ item }: MenuItemCardProps) {
   return (
-    <div className="bg-white rounded-xl px-4 py-3 shadow-sm border border-gray-200 hover:border-orange-300 transition">
-      <div className="flex justify-between items-center">
-        <h4 className="font-semibold text-sm">{item.item_name}</h4>
+    <div className="bg-white rounded-xl px-3 sm:px-4 py-2 sm:py-3 shadow-sm border border-gray-200 hover:border-orange-300 transition">
+      <div className="flex justify-between items-center flex-wrap gap-2">
+        <h4 className="font-semibold text-xs sm:text-sm">{item.item_name}</h4>
         {item.allergens && item.allergens.length > 0 && (
-          <span className="text-xs text-gray-500 ml-2 italic">
+          <span className="text-xs text-gray-500 italic">
             {item.allergens
               .map((a) =>
                 a.name === "Information Not Available"
@@ -29,7 +29,11 @@ function SmallMenuItemCard({ item }: MenuItemCardProps) {
 }
 
 // Regular card for full menu items
-export default function MenuItemCard({ item, onDetails, onAddToPlan }: MenuItemCardProps) {
+export default function MenuItemCard({
+  item,
+  onDetails,
+  onAddToPlan,
+}: MenuItemCardProps) {
   const calories = item.nutrition_info?.calories
     ? Math.round(parseFloat(item.nutrition_info.calories))
     : 0;
@@ -40,32 +44,34 @@ export default function MenuItemCard({ item, onDetails, onAddToPlan }: MenuItemC
   }
 
   return (
-    <div className="bg-gradient-to-b from-blue-50 to-white rounded-2xl p-5 shadow-sm border border-blue-100">
+    <div className="bg-gradient-to-b from-blue-50 to-white rounded-2xl p-4 sm:p-5 shadow-sm border border-blue-100">
       {/* Header row: title and calories */}
-      <div className="flex justify-between items-start mb-2">
-        <h3 className="font-bold text-lg">{item.item_name}</h3>
-        <div className="text-right ml-4 flex-shrink-0">
-          <div className="text-xl font-bold text-gray-800">
+      <div className="flex justify-between items-start mb-2 gap-2 sm:gap-4">
+        <h3 className="font-bold text-base sm:text-lg flex-1">
+          {item.item_name}
+        </h3>
+        <div className="text-right flex-shrink-0">
+          <div className="text-lg sm:text-xl font-bold text-gray-800">
             {calories.toFixed(2)} cal
           </div>
-          <div className="text-sm text-gray-500">
+          <div className="text-xs sm:text-sm text-gray-500">
             {item.nutrition_info?.serving_size || "1 serving"}
           </div>
         </div>
       </div>
 
-      {/* Two column layout */}
-      <div className="grid grid-cols-2 gap-6">
+      {/* Two column layout - Stack on mobile */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Left column: description and allergens */}
         <div>
           {item.item_description && (
-            <p className="text-sm text-gray-600 mb-3">
+            <p className="text-xs sm:text-sm text-gray-600 mb-3">
               {item.item_description}
             </p>
           )}
 
           {item.allergens && item.allergens.length > 0 && (
-            <p className="text-sm text-gray-600 italic">
+            <p className="text-xs sm:text-sm text-gray-600 italic">
               {item.allergens
                 .map((a) =>
                   a.name === "Information Not Available"
@@ -94,7 +100,7 @@ export default function MenuItemCard({ item, onDetails, onAddToPlan }: MenuItemC
                 />
               )}
             </div>
-            <span className="text-sm text-gray-700 w-14 text-right">
+            <span className="text-xs sm:text-sm text-gray-700 w-12 sm:w-14 text-right">
               {item.nutrition_info?.protein
                 ? `${Math.round(parseFloat(item.nutrition_info.protein))}g P`
                 : "?? g P"}
@@ -118,7 +124,7 @@ export default function MenuItemCard({ item, onDetails, onAddToPlan }: MenuItemC
                 />
               )}
             </div>
-            <span className="text-sm text-gray-700 w-14 text-right">
+            <span className="text-xs sm:text-sm text-gray-700 w-12 sm:w-14 text-right">
               {item.nutrition_info?.total_carbohydrates
                 ? `${Math.round(
                     parseFloat(item.nutrition_info.total_carbohydrates)
@@ -142,7 +148,7 @@ export default function MenuItemCard({ item, onDetails, onAddToPlan }: MenuItemC
                 />
               )}
             </div>
-            <span className="text-sm text-gray-700 w-14 text-right">
+            <span className="text-xs sm:text-sm text-gray-700 w-12 sm:w-14 text-right">
               {item.nutrition_info?.total_fat
                 ? `${Math.round(parseFloat(item.nutrition_info.total_fat))}g F`
                 : "?? g F"}
@@ -151,16 +157,16 @@ export default function MenuItemCard({ item, onDetails, onAddToPlan }: MenuItemC
         </div>
       </div>
 
-      {/* Action buttons */}
-      <div className="flex gap-3 mt-4">
+      {/* Action buttons - Stack on mobile */}
+      <div className="flex flex-col sm:flex-row gap-3 mt-4">
         <button
-          className="px-8 py-2.5 bg-white border border-gray-300 rounded-full text-sm font-semibold text-gray-700 hover:bg-gray-50 transition"
+          className="px-6 sm:px-8 py-2.5 bg-white border border-gray-300 rounded-full text-xs sm:text-sm font-semibold text-gray-700 hover:bg-gray-50 transition"
           onClick={() => onDetails?.(item)}
         >
           Details
         </button>
         <button
-          className="px-8 py-2.5 bg-white border-2 border-orange-400 rounded-full text-sm font-semibold text-orange-500 hover:bg-orange-50 transition disabled:opacity-50"
+          className="px-6 sm:px-8 py-2.5 bg-white border-2 border-orange-400 rounded-full text-xs sm:text-sm font-semibold text-orange-500 hover:bg-orange-50 transition disabled:opacity-50"
           onClick={() => onAddToPlan?.(item)}
         >
           Add to Plan

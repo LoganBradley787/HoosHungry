@@ -20,8 +20,9 @@ export default function InfoBanner({
   periodHours,
 }: InfoBannerProps) {
   return (
-    <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-4 mb-6 shadow-sm">
-      <div className="flex justify-between items-center text-sm text-gray-600">
+    <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-3 sm:p-4 mb-6 shadow-sm">
+      {/* Desktop Layout */}
+      <div className="hidden sm:flex justify-between items-center text-xs sm:text-sm text-gray-600">
         <span>
           {dayName}, {date}
         </span>
@@ -31,6 +32,21 @@ export default function InfoBanner({
         <span>
           {periodName}: {periodHours.start_time} - {periodHours.end_time}
         </span>
+      </div>
+
+      {/* Mobile Layout */}
+      <div className="flex flex-col gap-2 sm:hidden text-xs text-gray-600">
+        <div className="font-semibold text-center">
+          {dayName}, {date}
+        </div>
+        <div className="flex justify-between">
+          <span>
+            Hall: {hallHours.open_time} - {hallHours.close_time}
+          </span>
+          <span>
+            {periodName}: {periodHours.start_time} - {periodHours.end_time}
+          </span>
+        </div>
       </div>
     </div>
   );

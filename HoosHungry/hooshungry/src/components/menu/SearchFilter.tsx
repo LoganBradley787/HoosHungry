@@ -60,10 +60,10 @@ export default function SearchFilter({
   };
 
   return (
-    <div className="relative">
+    <div className="relative w-full sm:w-auto">
       {/* Search Bar */}
       <div className="flex gap-2">
-        <div className="relative flex-1">
+        <div className="relative flex-1 sm:min-w-[250px]">
           <input
             type="text"
             placeholder="Search dishes, ingredients..."
@@ -89,7 +89,7 @@ export default function SearchFilter({
         {/* Filter Button */}
         <button
           onClick={() => setIsFilterOpen(!isFilterOpen)}
-          className={`px-6 py-2.5 rounded-full font-medium transition-all flex items-center gap-2 ${
+          className={`px-4 sm:px-6 py-2.5 rounded-full font-medium transition-all flex items-center gap-2 whitespace-nowrap ${
             selectedAllergens.length > 0 || searchTerm
               ? "bg-orange-500 text-white"
               : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-50"
@@ -110,7 +110,7 @@ export default function SearchFilter({
               d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"
             />
           </svg>
-          Filter
+          <span className="hidden sm:inline">Filter</span>
           {selectedAllergens.length > 0 && (
             <span className="bg-white text-orange-500 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
               {selectedAllergens.length}
@@ -121,9 +121,9 @@ export default function SearchFilter({
 
       {/* Filter Dropdown with animation */}
       {isFilterOpen && (
-        <div className="absolute top-full mt-2 right-0 bg-white rounded-2xl shadow-xl border border-gray-200 p-6 w-96 z-10 animate-slideDown">
+        <div className="absolute top-full mt-2 right-0 left-0 sm:left-auto bg-white rounded-2xl shadow-xl border border-gray-200 p-4 sm:p-6 w-full sm:w-96 z-10 animate-slideDown">
           <div className="flex justify-between items-center mb-4">
-            <h3 className="font-bold text-lg">Filter Options</h3>
+            <h3 className="font-bold text-base sm:text-lg">Filter Options</h3>
             <button
               onClick={clearFilters}
               className="text-sm text-orange-500 hover:text-orange-600 font-medium transition-colors"
@@ -157,7 +157,7 @@ export default function SearchFilter({
             <h4 className="text-sm font-semibold text-gray-700 mb-3">
               Allergens
             </h4>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
               {commonAllergens.map((allergen) => (
                 <label
                   key={allergen}

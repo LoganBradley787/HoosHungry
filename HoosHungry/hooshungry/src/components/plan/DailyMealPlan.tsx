@@ -25,9 +25,9 @@ export default function DailyMealPlan({
 
   if (loading) {
     return (
-      <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-8 shadow-lg">
+      <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-6 sm:p-8 shadow-lg">
         <div className="flex items-center justify-center py-20">
-          <div className="text-xl text-gray-600 animate-pulse">
+          <div className="text-lg sm:text-xl text-gray-600 animate-pulse">
             Loading meal plan...
           </div>
         </div>
@@ -52,12 +52,12 @@ export default function DailyMealPlan({
     ) || 0;
 
   return (
-    <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-8 shadow-lg">
+    <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-4 sm:p-6 lg:p-8 shadow-lg">
       {/* Header with Date Navigation */}
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold">Daily Meal Plan</h2>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
+        <h2 className="text-xl sm:text-2xl font-bold">Daily Meal Plan</h2>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center justify-center sm:justify-end gap-4">
           <button
             onClick={() => onDateChange("prev")}
             className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition"
@@ -66,9 +66,11 @@ export default function DailyMealPlan({
             <ChevronLeft className="w-5 h-5 text-gray-600" />
           </button>
 
-          <div className="text-center min-w-[180px]">
-            <div className="font-semibold text-gray-800">{dayName}</div>
-            <div className="text-sm text-gray-600">{monthDay}</div>
+          <div className="text-center min-w-[160px] sm:min-w-[180px]">
+            <div className="font-semibold text-gray-800 text-sm sm:text-base">
+              {dayName}
+            </div>
+            <div className="text-xs sm:text-sm text-gray-600">{monthDay}</div>
           </div>
 
           <button
