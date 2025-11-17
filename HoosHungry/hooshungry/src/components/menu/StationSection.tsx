@@ -1,14 +1,14 @@
 import { useState } from "react";
 import type { MenuItem, Station } from "../../api/endpoints";
 import MenuItemCard from "./MenuItemCard";
-import ItemDetailsPanel from "./ItemDetailsPanel";
 
 interface StationSectionProps {
   station: Station;
   onDetails: (item: MenuItem) => void;
+  onAddToPlan: (item: MenuItem) => void;
 }
 
-export default function StationSection({ station, onDetails }: StationSectionProps) {
+export default function StationSection({ station, onDetails, onAddToPlan }: StationSectionProps) {
   const [isExpanded, setIsExpanded] = useState(true);
 
   // Separate items into main dishes and sides
@@ -60,6 +60,7 @@ export default function StationSection({ station, onDetails }: StationSectionPro
                   key={item.id}
                   item={item}
                   onDetails={() => onDetails(item)}
+                  onAddToPlan={() => onAddToPlan(item)}
                 />
               ))}
             </div>

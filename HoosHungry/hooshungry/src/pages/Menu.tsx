@@ -8,6 +8,7 @@ import SearchFilter from "../components/menu/SearchFilter";
 import { useAvailablePeriods } from "../hooks/useAvailablePeriods";
 import type { MenuItem } from "../api/endpoints";
 import ItemDetailsPanel from "../components/menu/ItemDetailsPanel";
+import AddToPlanPopup from "../components/menu/AddToPlanPopup";
 
 export default function Menu() {
   const [hall, setHall] = useState<"ohill" | "newcomb" | "runk">("ohill");
@@ -15,6 +16,7 @@ export default function Menu() {
     "breakfast" | "lunch" | "dinner" | "late_night"
   >("breakfast");
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
+  const [addToPlanItem, setAddToPlanItem] = useState<MenuItem | null>(null);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [filters, setFilters] = useState<{
@@ -240,6 +242,7 @@ export default function Menu() {
                       setSelectedItem(item);
                       setIsDetailsOpen(true);
                     }}
+                    onAddToPlan={(item) => setAddToPlanItem(item)}
                   />
                 </div>
               ))
@@ -268,6 +271,14 @@ export default function Menu() {
           onClose={() => setIsDetailsOpen(false)}
         />
       )}
+      {addToPlanItem && (
+        <AddToPlanPopup
+          item={addToPlanItem}
+          stationMealType={period}
+          onClose={() => setAddToPlanItem(null)}
+        />
+)}
+      
     </div>
   );
 }
