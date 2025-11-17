@@ -1,23 +1,20 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import MealItemCard from "./MealItemCard";
-
-interface MealItem {
-  id: number;
-  name: string;
-  calories: number;
-}
+import type { MealItem } from "../../api/planEndpoints";
 
 interface MealSectionProps {
   title: string;
   totalCalories: number;
   items: MealItem[];
+  onRefresh: () => void;
 }
 
 export default function MealSection({
   title,
   totalCalories,
   items,
+  onRefresh,
 }: MealSectionProps) {
   const [isExpanded, setIsExpanded] = useState(true);
 
@@ -54,11 +51,7 @@ export default function MealSection({
             </div>
           ) : (
             items.map((item) => (
-              <MealItemCard
-                key={item.id}
-                name={item.name}
-                calories={item.calories}
-              />
+              <MealItemCard key={item.id} item={item} onRefresh={onRefresh} />
             ))
           )}
         </div>

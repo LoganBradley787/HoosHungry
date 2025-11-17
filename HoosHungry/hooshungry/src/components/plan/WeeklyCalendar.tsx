@@ -1,24 +1,20 @@
 import { forwardRef, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import type { DailySummary } from "../../api/planEndpoints";
 
 interface WeeklyCalendarProps {
   weekDates: Date[];
   selectedDate: Date;
   onDaySelect: (date: Date) => void;
   onWeekChange: (direction: "prev" | "next") => void;
+  weekSummary?: DailySummary[];
 }
 
-// Mock data for calories per day
-const MOCK_DAY_CALORIES: { [key: string]: number } = {
-  Mon: 0,
-  Tue: 0,
-  Wed: 3284,
-  Thu: 0,
-  Fri: 0,
-};
-
 const WeeklyCalendar = forwardRef<HTMLDivElement, WeeklyCalendarProps>(
-  ({ weekDates, selectedDate, onDaySelect, onWeekChange }, ref) => {
+  (
+    { weekDates, selectedDate, onDaySelect, onWeekChange, weekSummary },
+    ref
+  ) => {
     const selectedDayRef = useRef<HTMLButtonElement>(null);
 
     // Scroll selected day into view when it changes
@@ -38,6 +34,12 @@ const WeeklyCalendar = forwardRef<HTMLDivElement, WeeklyCalendarProps>(
 
     const isSelectedDate = (date: Date) => {
       return formatDateKey(date) === formatDateKey(selectedDate);
+    };
+
+    // Get summary for a specific date
+    const getSummaryForDate = (date: Date): DailySummary | undefined => {
+      const dateStr = formatDateKey(date);
+      return weekSummary?.find((s) => s.date === dateStr);
     };
 
     // Get date range text
@@ -98,7 +100,9 @@ const WeeklyCalendar = forwardRef<HTMLDivElement, WeeklyCalendarProps>(
             });
             const dayDate = date.getDate();
             const isSelected = isSelectedDate(date);
-            const calories = MOCK_DAY_CALORIES[dayName] || 0;
+            const summary = getSummaryForDate(date);
+            const calories = summary?.total_calories || 0;
+            const hasMeals = summary?.has_meals || false;
 
             return (
               <button
@@ -108,7 +112,7 @@ const WeeklyCalendar = forwardRef<HTMLDivElement, WeeklyCalendarProps>(
                 className={`w-full rounded-2xl p-3 transition-all duration-500 ease-in-out ${
                   isSelected
                     ? "bg-orange-500 text-white shadow-lg"
-                    : calories > 0
+                    : hasMeals
                     ? "bg-white border-2 border-gray-200 hover:border-orange-300"
                     : "bg-white border border-gray-200 hover:border-gray-300"
                 }`}
@@ -143,41 +147,41 @@ const WeeklyCalendar = forwardRef<HTMLDivElement, WeeklyCalendarProps>(
                           isSelected ? "text-white" : "text-gray-700"
                         }`}
                       >
-                        {calories > 0 ? `${calories} cal` : "0 cal"}
+                        {calories} cal
                       </div>
                       <div
                         className={`text-xs truncate transition-colors duration-500 ${
                           isSelected ? "text-white/70" : "text-gray-500"
                         }`}
                       >
-                        {calories > 0 ? "0 items" : "0 items"}
+                        {summary?.meal_count || 0} items
                       </div>
                     </div>
                   </div>
 
                   {/* Meal Indicators - only show if there are meals */}
-                  {calories > 0 && (
+                  {hasMeals && (
                     <div className="flex flex-col gap-0.5 text-right flex-shrink-0">
                       <div
                         className={`text-xs transition-colors duration-500 ${
                           isSelected ? "text-white/90" : "text-gray-600"
                         }`}
                       >
-                        B: 0
+                        B: {summary?.breakfast_count || 0}
                       </div>
                       <div
                         className={`text-xs transition-colors duration-500 ${
                           isSelected ? "text-white/90" : "text-gray-600"
                         }`}
                       >
-                        L: 0
+                        L: {summary?.lunch_count || 0}
                       </div>
                       <div
                         className={`text-xs transition-colors duration-500 ${
                           isSelected ? "text-white/90" : "text-gray-600"
                         }`}
                       >
-                        D: 0
+                        D: {summary?.dinner_count || 0}
                       </div>
                     </div>
                   )}

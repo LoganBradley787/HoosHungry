@@ -1,4 +1,7 @@
+import { useState } from "react";
 import type { MenuItem } from "../../api/endpoints";
+import { planAPI } from "../../api/planEndpoints";
+import { useAuth } from "../../contexts/AuthContext";
 
 interface MenuItemCardProps {
   item: MenuItem;
@@ -37,6 +40,46 @@ export default function MenuItemCard({ item, onDetails }: MenuItemCardProps) {
   if (calories === 0) {
     return <SmallMenuItemCard item={item} />;
   }
+
+  const { user } = useAuth();
+  const [isAdding, setIsAdding] = useState(false);
+
+  const handleAddToPlan = async () => {
+    if (!user) {
+      alert("Please log in to add items to your plan");
+      return;
+    }
+
+    const mealType = prompt(
+      "Which meal? (breakfast, lunch, dinner, snack)"
+    )?.toLowerCase();
+
+    if (
+      !mealType ||
+      !["breakfast", "lunch", "dinner", "snack"].includes(mealType)
+    ) {
+      return;
+    }
+
+    try {
+      setIsAdding(true);
+      const today = new Date().toISOString().split("T")[0];
+
+      await planAPI.addMealItem({
+        date: today,
+        menu_item_id: item.id,
+        meal_type: mealType as "breakfast" | "lunch" | "dinner" | "snack",
+        servings: 1,
+      });
+
+      alert("Item added to your plan!");
+    } catch (error) {
+      console.error("Failed to add item:", error);
+      alert("Failed to add item to plan");
+    } finally {
+      setIsAdding(false);
+    }
+  };
 
   return (
     <div className="bg-gradient-to-b from-blue-50 to-white rounded-2xl p-5 shadow-sm border border-blue-100">
@@ -152,12 +195,18 @@ export default function MenuItemCard({ item, onDetails }: MenuItemCardProps) {
 
       {/* Action buttons */}
       <div className="flex gap-3 mt-4">
-        <button className="px-8 py-2.5 bg-white border border-gray-300 rounded-full text-sm font-semibold text-gray-700 hover:bg-gray-50 transition"
-                onClick={() => onDetails?.(item)}>
+        <button
+          className="px-8 py-2.5 bg-white border border-gray-300 rounded-full text-sm font-semibold text-gray-700 hover:bg-gray-50 transition"
+          onClick={() => onDetails?.(item)}
+        >
           Details
         </button>
-        <button className="px-8 py-2.5 bg-white border-2 border-orange-400 rounded-full text-sm font-semibold text-orange-500 hover:bg-orange-50 transition">
-          Add to Plan
+        <button
+          className="px-8 py-2.5 bg-white border-2 border-orange-400 rounded-full text-sm font-semibold text-orange-500 hover:bg-orange-50 transition disabled:opacity-50"
+          onClick={handleAddToPlan}
+          disabled={isAdding}
+        >
+          {isAdding ? "Adding..." : "Add to Plan"}
         </button>
       </div>
     </div>

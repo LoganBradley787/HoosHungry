@@ -3,6 +3,8 @@ import Navigation from "../components/common/Navigation";
 import DailyMealPlan from "../components/plan/DailyMealPlan";
 import WeeklyCalendar from "../components/plan/WeeklyCalendar";
 import ProgressStats from "../components/plan/ProgressStats";
+import { useWeekPlan } from "../hooks/usePlanData";
+import { useDailyPlan } from "../hooks/useDailyPlan";
 
 // Helper to get week dates
 function getWeekDates(date: Date): Date[] {
@@ -17,15 +19,18 @@ function getWeekDates(date: Date): Date[] {
   return week;
 }
 
-// Helper to format date as YYYY-MM-DD
-function formatDate(date: Date): string {
-  return date.toISOString().split("T")[0];
-}
-
 export default function Plan() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [weekDates, setWeekDates] = useState(getWeekDates(new Date()));
   const weeklyCalendarRef = useRef<HTMLDivElement>(null);
+
+  // Fetch week and daily plan data
+  const { data: weekData, loading: weekLoading } = useWeekPlan(selectedDate);
+  const {
+    data: dailyData,
+    loading: dailyLoading,
+    refresh: refreshDaily,
+  } = useDailyPlan(selectedDate);
 
   // Update week dates when selected date changes
   useEffect(() => {
@@ -63,18 +68,22 @@ export default function Plan() {
             <DailyMealPlan
               selectedDate={selectedDate}
               onDateChange={handleDateChange}
+              dailyData={dailyData}
+              loading={dailyLoading}
+              onRefresh={refreshDaily}
             />
           </div>
 
           {/* Right Column - Progress & Weekly Calendar */}
           <div className="space-y-6">
-            <ProgressStats />
+            <ProgressStats dailyData={dailyData} goals={dailyData?.goals} />
             <WeeklyCalendar
               ref={weeklyCalendarRef}
               weekDates={weekDates}
               selectedDate={selectedDate}
               onDaySelect={handleDaySelect}
               onWeekChange={handleWeekChange}
+              weekSummary={weekData?.week_summary}
             />
           </div>
         </div>

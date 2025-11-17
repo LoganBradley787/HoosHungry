@@ -1,35 +1,55 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import MealSection from "./MealSection";
+import type { DailyPlanResponse } from "../../api/planEndpoints";
 
 interface DailyMealPlanProps {
   selectedDate: Date;
   onDateChange: (direction: "prev" | "next") => void;
+  dailyData: DailyPlanResponse | null;
+  loading: boolean;
+  onRefresh: () => void;
 }
-
-// Mock data for placeholder
-const MOCK_MEALS = {
-  breakfast: [
-    { id: 1, name: "Scrambled Eggs", calories: 1284 },
-    { id: 2, name: "Scrambled Eggs", calories: 1284 },
-    { id: 3, name: "Scrambled Eggs", calories: 1284 },
-  ],
-  lunch: [],
-  dinner: [
-    { id: 4, name: "Scrambled Eggs", calories: 1284 },
-    { id: 5, name: "Scrambled Eggs", calories: 1284 },
-    { id: 6, name: "Scrambled Eggs", calories: 1284 },
-  ],
-};
 
 export default function DailyMealPlan({
   selectedDate,
   onDateChange,
+  dailyData,
+  loading,
+  onRefresh,
 }: DailyMealPlanProps) {
   const dayName = selectedDate.toLocaleDateString("en-US", { weekday: "long" });
   const monthDay = selectedDate.toLocaleDateString("en-US", {
     month: "long",
     day: "numeric",
   });
+
+  if (loading) {
+    return (
+      <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-8 shadow-lg">
+        <div className="flex items-center justify-center py-20">
+          <div className="text-xl text-gray-600 animate-pulse">
+            Loading meal plan...
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const breakfastCalories =
+    dailyData?.meals.breakfast.reduce(
+      (sum, item) => sum + item.total_calories,
+      0
+    ) || 0;
+  const lunchCalories =
+    dailyData?.meals.lunch.reduce(
+      (sum, item) => sum + item.total_calories,
+      0
+    ) || 0;
+  const dinnerCalories =
+    dailyData?.meals.dinner.reduce(
+      (sum, item) => sum + item.total_calories,
+      0
+    ) || 0;
 
   return (
     <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-8 shadow-lg">
@@ -65,20 +85,23 @@ export default function DailyMealPlan({
       <div className="space-y-6">
         <MealSection
           title="Breakfast"
-          totalCalories={1284}
-          items={MOCK_MEALS.breakfast}
+          totalCalories={breakfastCalories}
+          items={dailyData?.meals.breakfast || []}
+          onRefresh={onRefresh}
         />
 
         <MealSection
           title="Lunch"
-          totalCalories={1284}
-          items={MOCK_MEALS.lunch}
+          totalCalories={lunchCalories}
+          items={dailyData?.meals.lunch || []}
+          onRefresh={onRefresh}
         />
 
         <MealSection
           title="Dinner"
-          totalCalories={1284}
-          items={MOCK_MEALS.dinner}
+          totalCalories={dinnerCalories}
+          items={dailyData?.meals.dinner || []}
+          onRefresh={onRefresh}
         />
       </div>
     </div>
