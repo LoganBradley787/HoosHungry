@@ -1,9 +1,11 @@
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
+
 
 export default function Navigation() {
   const location = useLocation();
   const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <nav className="flex items-center justify-between px-8 py-4 bg-white/80 backdrop-blur-sm">
@@ -64,7 +66,7 @@ export default function Navigation() {
           <>
             <span className="text-gray-700">Welcome, {user.username}!</span>
             <button
-              onClick={logout}
+              onClick={async () => { await logout(); navigate("/"); }}
               className="px-4 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition"
             >
               Logout

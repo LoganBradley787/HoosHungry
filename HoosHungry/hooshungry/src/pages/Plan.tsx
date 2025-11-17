@@ -5,6 +5,8 @@ import WeeklyCalendar from "../components/plan/WeeklyCalendar";
 import ProgressStats from "../components/plan/ProgressStats";
 import { useWeekPlan } from "../hooks/usePlanData";
 import { useDailyPlan } from "../hooks/useDailyPlan";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 // Helper to get week dates
 function getWeekDates(date: Date): Date[] {
@@ -20,6 +22,12 @@ function getWeekDates(date: Date): Date[] {
 }
 
 export default function Plan() {
+  const { user } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) navigate("/login", { replace: true });
+  }, [user, navigate]);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [weekDates, setWeekDates] = useState(getWeekDates(new Date()));
   const weeklyCalendarRef = useRef<HTMLDivElement>(null);
