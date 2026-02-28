@@ -2,242 +2,103 @@ import type { DailyPlanResponse } from "../../api/planEndpoints";
 
 interface ProgressStatsProps {
   dailyData: DailyPlanResponse | null;
-  goals?: {
-    calories: number | null;
-    protein: number | null;
-    carbs: number | null;
-    fat: number | null;
-  } | null;
+  goals?: { calories: number | null; protein: number | null; carbs: number | null; fat: number | null } | null;
 }
 
-export default function ProgressStats({
-  dailyData,
-  goals,
-}: ProgressStatsProps) {
+function MacroBar({
+  label,
+  current,
+  goal,
+  unit,
+  color,
+}: {
+  label: string;
+  current: number;
+  goal: number;
+  unit: string;
+  color: string;
+}) {
+  const pct = Math.min(Math.round((current / goal) * 100), 100);
+  return (
+    <div className="mb-4">
+      <div className="flex justify-between items-baseline mb-1.5">
+        <span
+          className="text-xs uppercase tracking-widest"
+          style={{ color: "var(--ink-muted)", fontFamily: "'DM Sans', sans-serif" }}
+        >
+          {label}
+        </span>
+        <span className="font-mono-data text-xs" style={{ color: "var(--ink-muted)" }}>
+          {Math.round(current)}{unit} / {goal}{unit}
+        </span>
+      </div>
+      <div className="w-full h-1 rounded-full" style={{ backgroundColor: "var(--rule)" }}>
+        <div
+          className="h-1 rounded-full transition-all duration-500"
+          style={{ width: `${pct}%`, backgroundColor: color }}
+        />
+      </div>
+    </div>
+  );
+}
+
+export default function ProgressStats({ dailyData, goals }: ProgressStatsProps) {
   const currentCalories = dailyData?.total_calories || 0;
   const goalCalories = goals?.calories || 2000;
-  const caloriePercentage = Math.min(
-    Math.round((currentCalories / goalCalories) * 100),
-    100
-  );
-
-  const currentProtein = dailyData?.total_protein || 0;
-  const goalProtein = goals?.protein || 150;
-  const proteinPercentage = Math.min(
-    Math.round((currentProtein / goalProtein) * 100),
-    100
-  );
-
-  const currentCarbs = dailyData?.total_carbs || 0;
-  const goalCarbs = goals?.carbs || 250;
-  const carbsPercentage = Math.min(
-    Math.round((currentCarbs / goalCarbs) * 100),
-    100
-  );
-
-  const currentFat = dailyData?.total_fat || 0;
-  const goalFat = goals?.fat || 65;
-  const fatPercentage = Math.min(Math.round((currentFat / goalFat) * 100), 100);
+  const caloriePercentage = Math.min(Math.round((currentCalories / goalCalories) * 100), 100);
 
   return (
-    <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-4 sm:p-6 shadow-lg">
-      <h3 className="font-bold text-base sm:text-lg mb-4 sm:mb-6">
-        Today's Progress
-      </h3>
-
-      {/* Calories Progress */}
-      <div className="mb-6 sm:mb-8">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-xs sm:text-sm font-medium text-gray-700">
-            Calories
+    <div className="card-editorial p-5 sm:p-6">
+      {/* Calories headline */}
+      <div className="mb-6">
+        <p
+          className="text-xs uppercase tracking-widest mb-2"
+          style={{ color: "var(--ink-muted)", fontFamily: "'DM Sans', sans-serif" }}
+        >
+          Today's Progress
+        </p>
+        <div className="flex items-baseline gap-2">
+          <span
+            className="font-display italic"
+            style={{ fontSize: "2.5rem", color: "var(--ink)", lineHeight: 1, fontWeight: 400 }}
+          >
+            {currentCalories.toLocaleString()}
           </span>
-          <div className="flex items-baseline gap-1">
-            <span className="text-xl sm:text-2xl font-bold text-gray-900">
-              🔥 {currentCalories}
-            </span>
-            <span className="text-xs sm:text-sm text-gray-500">
-              / {goalCalories}
-            </span>
-          </div>
+          <span className="font-mono-data text-sm" style={{ color: "var(--ink-muted)" }}>
+            / {goalCalories} kcal
+          </span>
         </div>
-        <div className="text-xs text-gray-500 text-right mb-2">
-          {caloriePercentage}% Goal
-        </div>
-        <div className="w-full bg-gray-200 rounded-full h-2">
+        <div className="w-full h-1 rounded-full mt-3" style={{ backgroundColor: "var(--rule)" }}>
           <div
-            className="bg-blue-500 h-2 rounded-full transition-all duration-500"
-            style={{ width: `${caloriePercentage}%` }}
+            className="h-1 rounded-full transition-all duration-500"
+            style={{ width: `${caloriePercentage}%`, backgroundColor: "var(--orange)" }}
           />
         </div>
       </div>
 
-      {/* Macros Progress */}
-      <div className="flex flex-wrap justify-center gap-4 sm:gap-6">
-        {/* Protein */}
-        <div className="flex flex-col items-center">
-          <div className="relative w-16 h-16 sm:w-20 sm:h-20">
-            <svg className="w-16 h-16 sm:w-20 sm:h-20 transform -rotate-90">
-              <circle
-                cx="32"
-                cy="32"
-                r="28"
-                stroke="#e5e7eb"
-                strokeWidth="6"
-                fill="none"
-                className="sm:hidden"
-              />
-              <circle
-                cx="32"
-                cy="32"
-                r="28"
-                stroke="#3b82f6"
-                strokeWidth="6"
-                fill="none"
-                strokeDasharray={`${proteinPercentage * 1.76} 176`}
-                className="transition-all duration-500 sm:hidden"
-              />
-              <circle
-                cx="40"
-                cy="40"
-                r="32"
-                stroke="#e5e7eb"
-                strokeWidth="8"
-                fill="none"
-                className="hidden sm:block"
-              />
-              <circle
-                cx="40"
-                cy="40"
-                r="32"
-                stroke="#3b82f6"
-                strokeWidth="8"
-                fill="none"
-                strokeDasharray={`${proteinPercentage * 2.01} 201`}
-                className="transition-all duration-500 hidden sm:block"
-              />
-            </svg>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-xs sm:text-sm font-bold text-gray-800">
-                {proteinPercentage}%
-              </span>
-            </div>
-          </div>
-          <span className="text-xs text-gray-600 mt-2">Protein</span>
-          <span className="text-xs text-gray-500">
-            {Math.round(currentProtein)}g
-          </span>
-        </div>
+      <hr className="editorial-rule mb-5" />
 
-        {/* Carbs */}
-        <div className="flex flex-col items-center">
-          <div className="relative w-16 h-16 sm:w-20 sm:h-20">
-            <svg className="w-16 h-16 sm:w-20 sm:h-20 transform -rotate-90">
-              <circle
-                cx="32"
-                cy="32"
-                r="28"
-                stroke="#e5e7eb"
-                strokeWidth="6"
-                fill="none"
-                className="sm:hidden"
-              />
-              <circle
-                cx="32"
-                cy="32"
-                r="28"
-                stroke="#8b5cf6"
-                strokeWidth="6"
-                fill="none"
-                strokeDasharray={`${carbsPercentage * 1.76} 176`}
-                className="transition-all duration-500 sm:hidden"
-              />
-              <circle
-                cx="40"
-                cy="40"
-                r="32"
-                stroke="#e5e7eb"
-                strokeWidth="8"
-                fill="none"
-                className="hidden sm:block"
-              />
-              <circle
-                cx="40"
-                cy="40"
-                r="32"
-                stroke="#8b5cf6"
-                strokeWidth="8"
-                fill="none"
-                strokeDasharray={`${carbsPercentage * 2.01} 201`}
-                className="transition-all duration-500 hidden sm:block"
-              />
-            </svg>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-xs sm:text-sm font-bold text-gray-800">
-                {carbsPercentage}%
-              </span>
-            </div>
-          </div>
-          <span className="text-xs text-gray-600 mt-2">Carbs</span>
-          <span className="text-xs text-gray-500">
-            {Math.round(currentCarbs)}g
-          </span>
-        </div>
-
-        {/* Fat */}
-        <div className="flex flex-col items-center">
-          <div className="relative w-16 h-16 sm:w-20 sm:h-20">
-            <svg className="w-16 h-16 sm:w-20 sm:h-20 transform -rotate-90">
-              <circle
-                cx="32"
-                cy="32"
-                r="28"
-                stroke="#e5e7eb"
-                strokeWidth="6"
-                fill="none"
-                className="sm:hidden"
-              />
-              <circle
-                cx="32"
-                cy="32"
-                r="28"
-                stroke="#f59e0b"
-                strokeWidth="6"
-                fill="none"
-                strokeDasharray={`${fatPercentage * 1.76} 176`}
-                className="transition-all duration-500 sm:hidden"
-              />
-              <circle
-                cx="40"
-                cy="40"
-                r="32"
-                stroke="#e5e7eb"
-                strokeWidth="8"
-                fill="none"
-                className="hidden sm:block"
-              />
-              <circle
-                cx="40"
-                cy="40"
-                r="32"
-                stroke="#f59e0b"
-                strokeWidth="8"
-                fill="none"
-                strokeDasharray={`${fatPercentage * 2.01} 201`}
-                className="transition-all duration-500 hidden sm:block"
-              />
-            </svg>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-xs sm:text-sm font-bold text-gray-800">
-                {fatPercentage}%
-              </span>
-            </div>
-          </div>
-          <span className="text-xs text-gray-600 mt-2">Fat</span>
-          <span className="text-xs text-gray-500">
-            {Math.round(currentFat)}g
-          </span>
-        </div>
-      </div>
+      <MacroBar
+        label="Protein"
+        current={dailyData?.total_protein || 0}
+        goal={goals?.protein || 150}
+        unit="g"
+        color="var(--amber)"
+      />
+      <MacroBar
+        label="Carbs"
+        current={dailyData?.total_carbs || 0}
+        goal={goals?.carbs || 250}
+        unit="g"
+        color="var(--terracotta)"
+      />
+      <MacroBar
+        label="Fat"
+        current={dailyData?.total_fat || 0}
+        goal={goals?.fat || 65}
+        unit="g"
+        color="var(--terracotta)"
+      />
     </div>
   );
 }
