@@ -71,15 +71,15 @@ export default function Navigation() {
               </button>
             </>
           ) : (
-            <a
-              href="/login"
+            <Link
+              to="/login"
               className="text-sm flex items-center gap-1 transition-colors"
               style={{ color: "var(--ink-muted)" }}
               onMouseEnter={e => (e.currentTarget.style.color = "var(--orange)")}
               onMouseLeave={e => (e.currentTarget.style.color = "var(--ink-muted)")}
             >
               Login →
-            </a>
+            </Link>
           )}
         </div>
 
@@ -128,14 +128,14 @@ export default function Navigation() {
                 Logout →
               </button>
             ) : (
-              <a
-                href="/login"
+              <Link
+                to="/login"
                 onClick={() => setMobileMenuOpen(false)}
                 className="text-sm"
                 style={{ color: "var(--ink-muted)" }}
               >
                 Login →
-              </a>
+              </Link>
             )}
           </div>
         </div>
