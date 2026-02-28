@@ -1,47 +1,119 @@
 @import "tailwindcss";
 @import "./styles/prompt.css";
+
+/* ── Design Tokens ─────────────────────────────────────────── */
+:root {
+  --cream:      #FAF7F2;
+  --warm-white: #FFFCF7;
+  --ink:        #1A1208;
+  --ink-muted:  #6B5B4E;
+  --orange:     #F48210;
+  --amber:      #FFC831;
+  --terracotta: #C4896A;
+  --rule:       #E8E0D4;
+}
+
+/* ── Base ──────────────────────────────────────────────────── */
+body {
+  background-color: var(--cream);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Typography helpers ────────────────────────────────────── */
+.font-display {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+}
+
+.font-mono-data {
+  font-family: 'DM Mono', monospace;
+}
+
+/* ── Rule divider ──────────────────────────────────────────── */
+.editorial-rule {
+  border: none;
+  border-top: 1px solid var(--rule);
+  margin: 0;
+}
+
+/* ── Editorial card surface ────────────────────────────────── */
+.card-editorial {
+  background-color: var(--warm-white);
+  border: 1px solid var(--rule);
+  border-radius: 8px;
+}
+
+/* ── Tab nav (hall/period selectors) ───────────────────────── */
+.tab-link {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  padding-bottom: 4px;
+  border-bottom: 2px solid transparent;
+  transition: color 150ms, border-color 150ms;
+  background: none;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  cursor: pointer;
+}
+
+.tab-link:hover {
+  color: var(--ink);
+}
+
+.tab-link.active {
+  color: var(--ink);
+  border-bottom-color: var(--orange);
+}
+
+/* ── Section header (newspaper rule style) ─────────────────── */
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 1rem;
+}
+
+.section-header-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  white-space: nowrap;
+}
+
+.section-header-rule {
+  flex: 1;
+  height: 1px;
+  background-color: var(--rule);
+}
+
+/* ── Existing animations (kept) ────────────────────────────── */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slideInStagger {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-.animate-fadeIn {
-  animation: fadeIn 0.3s ease-out;
-}
-
-.animate-slideDown {
-  animation: slideDown 0.2s ease-out;
-}
-
+.animate-fadeIn        { animation: fadeIn 0.3s ease-out; }
+.animate-slideDown     { animation: slideDown 0.2s ease-out; }
 .animate-slideInStagger {
   animation: slideInStagger 0.4s ease-out forwards;
-  opacity: 0; /* Start invisible */
+  opacity: 0;
 }
