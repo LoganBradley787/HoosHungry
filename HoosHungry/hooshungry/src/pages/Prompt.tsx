@@ -53,11 +53,7 @@ export default function Prompt() {
 
   return (
     <div
-      className={`min-h-screen flex flex-col transition-all duration-700 ease-out relative overflow-hidden ${
-        isTransitioned
-          ? "bg-gray-950"
-          : "bg-gradient-to-r from-pink-100 via-orange-50 to-yellow-100"
-      }`}
+      className="min-h-screen flex flex-col transition-all duration-700 ease-out relative overflow-hidden bg-gray-950"
     >
       {/* Liquid Ether Background - Full Page */}
       {isTransitioned && (

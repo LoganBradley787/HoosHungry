@@ -146,11 +146,11 @@ export default function SearchFilter({
                 onChange={handleExcludeToggle}
                 className="w-4 h-4 text-orange-500 rounded focus:ring-orange-400 transition-all"
               />
-              <span className="text-sm font-medium text-gray-700">
+              <span className="text-sm font-medium" style={{ color: "var(--ink)" }}>
                 Exclude selected allergens
               </span>
             </label>
-            <p className="text-xs text-gray-500 mt-1 ml-7">
+            <p className="text-xs mt-1 ml-7" style={{ color: "var(--ink-muted)" }}>
               {excludeAllergens
                 ? "Hide items containing these allergens"
                 : "Show only items with these allergens"}
@@ -174,7 +174,7 @@ export default function SearchFilter({
                     onChange={() => handleAllergenToggle(allergen)}
                     className="w-4 h-4 text-orange-500 rounded focus:ring-orange-400 transition-all"
                   />
-                  <span className="text-sm text-gray-700">{allergen}</span>
+                  <span className="text-sm" style={{ color: "var(--ink)" }}>{allergen}</span>
                 </label>
               ))}
             </div>

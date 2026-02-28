@@ -188,7 +188,7 @@ export default function Menu() {
         {/* Loading State */}
         {loading && (
           <div className="flex items-center justify-center py-20">
-            <div className="text-lg sm:text-xl text-gray-600 animate-pulse">
+            <div className="text-lg sm:text-xl animate-pulse" style={{ color: "var(--ink-muted)" }}>
               Loading menu...
             </div>
           </div>
@@ -227,7 +227,8 @@ export default function Menu() {
             {/* Show results count if filtering */}
             {(searchTerm || filters.allergens.length > 0) && (
               <div
-                className="mb-4 text-xs sm:text-sm text-gray-600 animate-slideInStagger"
+                className="mb-4 text-xs sm:text-sm animate-slideInStagger"
+                style={{ color: "var(--ink-muted)" }}
                 style={{ animationDelay: "100ms" }}
               >
                 Found{" "}
@@ -267,7 +268,7 @@ export default function Menu() {
                   borderRadius: "8px",
                 }}
               >
-                <p className="text-gray-600 text-base sm:text-lg">
+                <p className="text-base sm:text-lg" style={{ color: "var(--ink-muted)" }}>
                   No items found matching your criteria
                 </p>
                 <button
