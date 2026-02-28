@@ -33,11 +33,11 @@ export default function NavigationDark() {
     >
       <div className="flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4">
         {/* Logo */}
-        <div className="flex items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-3">
           <img
             src={brand_img}
             alt="HoosHungry"
-            className="w-12 h-12 sm:w-16 sm:h-16 object-contain"
+            className="w-10 h-10 sm:w-12 sm:h-12 object-contain"
           />
           <span
             className="font-display text-xl sm:text-2xl font-normal italic"
@@ -48,7 +48,7 @@ export default function NavigationDark() {
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-6 lg:gap-8">
+        <div className="hidden md:flex items-center gap-8">
           {navLinks.map((link) => (
             <Link
               key={link.to}
@@ -78,7 +78,7 @@ export default function NavigationDark() {
         </div>
 
         {/* Desktop Auth */}
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-6">
           {user ? (
             <>
               <span
@@ -126,34 +126,12 @@ export default function NavigationDark() {
           aria-label="Toggle menu"
         >
           {mobileMenuOpen ? (
-            // X icon
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
             </svg>
           ) : (
-            // Hamburger icon
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M4 6h16M4 12h16M4 18h16"
-              />
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           )}
         </button>
@@ -162,59 +140,49 @@ export default function NavigationDark() {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div
-          className="md:hidden"
+          className="md:hidden px-4 py-4 space-y-4 animate-slideDown"
           style={{
             borderTop: "1px solid rgba(255, 255, 255, 0.08)",
             backgroundColor: "rgba(17, 10, 4, 0.95)",
           }}
         >
-          <div className="px-4 py-4 space-y-3">
-            {/* Mobile Navigation Links */}
-            {navLinks.map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                onClick={() => setMobileMenuOpen(false)}
-                className="block tab-link py-2"
-                style={{
-                  color:
-                    location.pathname === link.to
-                      ? "var(--cream-on-orange)"
-                      : "rgba(255, 255, 255, 0.6)",
-                  borderBottomColor:
-                    location.pathname === link.to ? "var(--amber)" : "transparent",
-                }}
+          {navLinks.map((link) => (
+            <Link
+              key={link.to}
+              to={link.to}
+              onClick={() => setMobileMenuOpen(false)}
+              className="block tab-link"
+              style={{
+                color:
+                  location.pathname === link.to
+                    ? "var(--cream-on-orange)"
+                    : "rgba(255, 255, 255, 0.6)",
+                borderBottomColor:
+                  location.pathname === link.to ? "var(--amber)" : "transparent",
+              }}
+            >
+              {link.label}
+            </Link>
+          ))}
+          <div style={{ borderTop: "1px solid rgba(255, 255, 255, 0.08)", paddingTop: "1rem" }}>
+            {user ? (
+              <button
+                onClick={handleLogout}
+                className="text-sm"
+                style={{ color: "rgba(255, 255, 255, 0.75)" }}
               >
-                {link.label}
+                Logout →
+              </button>
+            ) : (
+              <Link
+                to="/login"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-sm"
+                style={{ color: "rgba(255, 255, 255, 0.75)" }}
+              >
+                Login →
               </Link>
-            ))}
-
-            {/* Mobile Auth */}
-            <div className="pt-3" style={{ borderTop: "1px solid rgba(255, 255, 255, 0.08)" }}>
-              {user ? (
-                <>
-                  <span className="block py-2 text-sm" style={{ color: "rgba(255, 255, 255, 0.65)" }}>
-                    {user.username}
-                  </span>
-                  <button
-                    onClick={handleLogout}
-                    className="text-sm"
-                    style={{ color: "rgba(255, 255, 255, 0.75)" }}
-                  >
-                    Logout →
-                  </button>
-                </>
-              ) : (
-                <a
-                  href="/login"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-sm"
-                  style={{ color: "rgba(255, 255, 255, 0.75)" }}
-                >
-                  Login →
-                </a>
-              )}
-            </div>
+            )}
           </div>
         </div>
       )}
