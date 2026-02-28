@@ -54,8 +54,8 @@ const SUGGESTION_CHIPS: ChipData[] = [
     icon: Sparkles,
     label: "Optimize",
     prompt: "Can you look at my current plan and suggest improvements based on my goals?",
-    gradient: "from-blue-500 to-cyan-500",
-    shadowColor: "rgba(59, 130, 246, 0.3)",
+    gradient: "from-orange-500 to-amber-500",
+    shadowColor: "rgba(244, 130, 16, 0.3)",
   },
   {
     icon: Zap,

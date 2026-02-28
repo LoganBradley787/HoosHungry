@@ -57,10 +57,10 @@ export default function SuggestionCard({ suggestion, onApply }: SuggestionCardPr
       glow: "rgba(239, 68, 68, 0.15)",
     },
     swap: {
-      bg: "bg-blue-500/10",
-      text: "text-blue-400",
-      border: "border-blue-500/30",
-      glow: "rgba(59, 130, 246, 0.15)",
+      bg: "bg-orange-500/10",
+      text: "text-orange-400",
+      border: "border-orange-500/30",
+      glow: "rgba(244, 130, 16, 0.15)",
     },
   };
 
@@ -108,7 +108,7 @@ export default function SuggestionCard({ suggestion, onApply }: SuggestionCardPr
               <span className="text-orange-400">🔥</span> {suggestion.calories} cal
             </span>
             <span className="flex items-center gap-1">
-              <span className="text-blue-400">💪</span> {suggestion.protein}g protein
+              <span className="text-amber-400">💪</span> {suggestion.protein}g protein
             </span>
           </div>
           <p className="text-xs text-gray-300 mt-2 italic leading-relaxed">
