@@ -24,6 +24,7 @@ export default function Menu() {
     excludeAllergens: boolean;
   }>({ allergens: [], excludeAllergens: true });
   const [showContent, setShowContent] = useState(false);
+  const [selectedStation, setSelectedStation] = useState<string | null>(null);
 
   const {
     periods: availablePeriods,
@@ -60,6 +61,10 @@ export default function Menu() {
       setTimeout(() => setShowContent(true), 50);
     }
   }, [data, loading, hall, period]);
+
+  useEffect(() => {
+    setSelectedStation(null);
+  }, [hall, period, searchTerm, filters]);
 
   // Filter stations and menu items
   const filteredStations = useMemo(() => {
