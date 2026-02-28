@@ -2,7 +2,6 @@ import React, { useState, useMemo, useEffect } from "react";
 import { useMenuData } from "../hooks/useMenuData";
 import Navigation from "../components/common/Navigation";
 import PillButton from "../components/menu/PillButton";
-import InfoBanner from "../components/menu/InfoBanner";
 import StationSection from "../components/menu/StationSection";
 import SearchFilter from "../components/menu/SearchFilter";
 import { useAvailablePeriods } from "../hooks/useAvailablePeriods";
@@ -142,6 +141,18 @@ export default function Menu() {
           >
             Menu
           </h1>
+          {data && (
+            <p
+              className="font-mono-data mt-2"
+              style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.45)", letterSpacing: "0.05em" }}
+            >
+              {data.day_name}, {data.date}
+              <span style={{ margin: "0 0.5em", opacity: 0.5 }}>·</span>
+              Hall {data.hall_hours.open_time}–{data.hall_hours.close_time}
+              <span style={{ margin: "0 0.5em", opacity: 0.5 }}>·</span>
+              {data.period.name} {data.period.start_time}–{data.period.end_time}
+            </p>
+          )}
         </div>
       </div>
 
@@ -228,23 +239,6 @@ export default function Menu() {
         {/* Menu Content with staggered animations */}
         {data && !loading && !error && showContent && (
           <>
-            {/* Info Banner - appears first */}
-            <div
-              className="animate-slideInStagger"
-              style={{ animationDelay: "0ms" }}
-            >
-              <InfoBanner
-                dayName={data.day_name}
-                date={data.date}
-                hallHours={data.hall_hours}
-                periodName={data.period.name}
-                periodHours={{
-                  start_time: data.period.start_time,
-                  end_time: data.period.end_time,
-                }}
-              />
-            </div>
-
             {/* Station selector bar */}
             {filteredStations.length > 1 && (
               <div
