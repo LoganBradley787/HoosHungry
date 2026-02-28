@@ -162,7 +162,7 @@ export default function NavigationDark() {
       {/* Mobile Menu */}
       {mobileMenuOpen && (
         <div
-          className="md:hidden backdrop-blur-sm"
+          className="md:hidden"
           style={{
             borderTop: "1px solid rgba(255, 255, 255, 0.08)",
             backgroundColor: "rgba(17, 10, 4, 0.95)",
