@@ -165,7 +165,7 @@ export default function Menu() {
         >
           {/* Hall + Period unified — horizontal scroll on overflow */}
           <div
-            className="hide-scrollbar flex items-center gap-5 overflow-x-auto flex-shrink-0 pr-4"
+            className="hide-scrollbar flex items-end gap-5 overflow-x-auto flex-shrink-0 pr-4"
             style={{ scrollbarWidth: "none" }}
           >
             <PillButton active={hall === "ohill"} onClick={() => setHall("ohill")}>OHill</PillButton>
@@ -190,7 +190,7 @@ export default function Menu() {
                   key={p.key}
                   active={period === p.key}
                   onClick={() => setPeriod(p.key as any)}
-                  style={{ fontSize: "0.67rem" }}
+                  style={{ fontSize: "0.6rem" }}
                 >
                   {p.name}
                 </PillButton>
