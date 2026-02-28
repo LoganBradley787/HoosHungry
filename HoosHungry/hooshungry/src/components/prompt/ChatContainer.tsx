@@ -90,7 +90,7 @@ export default function ChatContainer({ className = "" }: ChatContainerProps) {
                 "opacity 400ms cubic-bezier(0.4, 0, 0.2, 1) 150ms, transform 400ms cubic-bezier(0.4, 0, 0.2, 1) 150ms",
             }}
           >
-            <h2 className="font-semibold text-white flex items-center gap-2">
+            <h2 className="font-display italic text-xl text-white flex items-center gap-2">
               <GradientText
                 colors={["#f97316", "#fb923c", "#f97316"]}
                 animate={true}
@@ -99,7 +99,7 @@ export default function ChatContainer({ className = "" }: ChatContainerProps) {
                 CavBot
               </GradientText>
             </h2>
-            <p className="text-xs text-gray-400">
+            <p className="text-xs" style={{ color: "rgba(255,255,255,0.5)", fontFamily: "'DM Sans', sans-serif" }}>
               Your AI meal planning assistant
             </p>
           </div>
@@ -249,7 +249,7 @@ function EmptyState({
             "opacity 500ms cubic-bezier(0.4, 0, 0.2, 1), transform 500ms cubic-bezier(0.4, 0, 0.2, 1)",
         }}
       >
-        <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3">
+        <h3 className="font-display italic text-white mb-3" style={{ fontSize: "clamp(1.75rem, 4vw, 2.5rem)", fontWeight: 400 }}>
           {showTitle && (
             <SplitText
               text="Hey there! I'm CavBot"
@@ -304,7 +304,7 @@ function EmptyState({
             }}
           >
             <div className="text-2xl mb-2">{feature.icon}</div>
-            <div className="font-semibold text-white text-sm">
+            <div className="text-sm text-white" style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 500 }}>
               {feature.title}
             </div>
             <div className="text-xs text-gray-400">{feature.desc}</div>
