@@ -61,6 +61,7 @@ body {
   transition: color 150ms, border-color 150ms;
   background: none;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .tab-link:hover {
