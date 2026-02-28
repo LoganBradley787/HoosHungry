@@ -66,7 +66,9 @@ export default function ItemDetailsPanel({
         {/* Close button */}
         <button
           onClick={onClose}
-          className="text-gray-400 hover:text-gray-600 text-2xl absolute top-3 right-4 sm:top-4 sm:right-6"
+          aria-label="Close"
+          className="text-2xl absolute top-3 right-4 sm:top-4 sm:right-6"
+          style={{ color: "var(--ink-muted)" }}
         >
           ×
         </button>
@@ -78,7 +80,7 @@ export default function ItemDetailsPanel({
 
         {/* Description */}
         {item.item_description && (
-          <p className="text-sm sm:text-base text-gray-700 mb-6">
+          <p className="text-sm sm:text-base mb-6" style={{ color: "var(--ink-muted)" }}>
             {item.item_description}
           </p>
         )}
@@ -88,7 +90,7 @@ export default function ItemDetailsPanel({
           <div className="font-mono-data text-2xl sm:text-3xl mb-1" style={{ color: "var(--orange)" }}>
             {calories ?? "??"} cal
           </div>
-          <div className="text-xs sm:text-sm text-gray-500">
+          <div className="text-xs sm:text-sm" style={{ color: "var(--ink-muted)" }}>
             {item.nutrition_info?.serving_size || "1 serving"}
           </div>
         </div>
@@ -117,7 +119,7 @@ export default function ItemDetailsPanel({
             <h3 className="section-header-label mb-3">
               Ingredients
             </h3>
-            <p className="text-xs sm:text-sm text-gray-700">
+            <p className="text-xs sm:text-sm" style={{ color: "var(--ink-muted)" }}>
               {item.ingredients}
             </p>
           </div>
@@ -129,7 +131,7 @@ export default function ItemDetailsPanel({
             <h3 className="section-header-label mb-3">
               Allergens
             </h3>
-            <p className="italic text-gray-600 text-xs sm:text-sm">
+            <p className="italic text-xs sm:text-sm" style={{ color: "var(--ink-muted)" }}>
               {allergens
                 .map((a) =>
                   a.name === "Information Not Available"
@@ -184,7 +186,7 @@ export default function ItemDetailsPanel({
           <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-12 text-xs sm:text-sm">
             {micros.map(([label, value, unit]) => (
               <div key={label} className="flex justify-between">
-                <span className="text-gray-600">{label}</span>
+                <span style={{ color: "var(--ink-muted)" }}>{label}</span>
                 <span className="font-medium">
                   {value !== null ? `${value}${unit}` : "??"}
                 </span>

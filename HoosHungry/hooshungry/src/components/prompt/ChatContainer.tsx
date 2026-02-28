@@ -4,7 +4,7 @@ import ChatMessage from "./ChatMessage";
 import ChatInput from "./ChatInput";
 import SuggestionChips from "./SuggestionChips";
 import { useChat } from "../../hooks/useChat";
-import { SplitText, GradientText, BlurText, Stagger, FadeContent } from "../reactbits";
+import { SplitText, GradientText } from "../reactbits";
 import type { MealSuggestion } from "../../api/promptEndpoints";
 
 interface ChatContainerProps {
@@ -52,21 +52,23 @@ export default function ChatContainer({ className = "" }: ChatContainerProps) {
   return (
     <div className={`flex flex-col h-full ${className}`}>
       {/* Header - Slides in from top */}
-      <div 
-        className="flex items-center justify-between px-4 py-3 border-b border-gray-700/30 bg-gray-800/30 backdrop-blur-sm"
+      <div
+        className="flex-shrink-0 flex items-center justify-between px-4 py-3 border-b border-gray-700/30 bg-gray-800/30 backdrop-blur-sm"
         style={{
           opacity: showHeader ? 1 : 0,
           transform: showHeader ? "translateY(0)" : "translateY(-10px)",
-          transition: "opacity 400ms cubic-bezier(0.4, 0, 0.2, 1), transform 400ms cubic-bezier(0.4, 0, 0.2, 1)",
+          transition:
+            "opacity 400ms cubic-bezier(0.4, 0, 0.2, 1), transform 400ms cubic-bezier(0.4, 0, 0.2, 1)",
         }}
       >
         <div className="flex items-center gap-3">
-          <div 
+          <div
             className="relative"
             style={{
               opacity: showHeader ? 1 : 0,
               transform: showHeader ? "scale(1)" : "scale(0.8)",
-              transition: "opacity 500ms cubic-bezier(0.4, 0, 0.2, 1) 100ms, transform 500ms cubic-bezier(0.4, 0, 0.2, 1) 100ms",
+              transition:
+                "opacity 500ms cubic-bezier(0.4, 0, 0.2, 1) 100ms, transform 500ms cubic-bezier(0.4, 0, 0.2, 1) 100ms",
             }}
           >
             <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600 flex items-center justify-center shadow-lg shadow-orange-500/30">
@@ -84,11 +86,12 @@ export default function ChatContainer({ className = "" }: ChatContainerProps) {
             style={{
               opacity: showHeader ? 1 : 0,
               transform: showHeader ? "translateX(0)" : "translateX(-10px)",
-              transition: "opacity 400ms cubic-bezier(0.4, 0, 0.2, 1) 150ms, transform 400ms cubic-bezier(0.4, 0, 0.2, 1) 150ms",
+              transition:
+                "opacity 400ms cubic-bezier(0.4, 0, 0.2, 1) 150ms, transform 400ms cubic-bezier(0.4, 0, 0.2, 1) 150ms",
             }}
           >
             <h2 className="font-semibold text-white flex items-center gap-2">
-              <GradientText 
+              <GradientText
                 colors={["#f97316", "#fb923c", "#f97316"]}
                 animate={true}
                 animationDuration={3}
@@ -96,7 +99,9 @@ export default function ChatContainer({ className = "" }: ChatContainerProps) {
                 CavBot
               </GradientText>
             </h2>
-            <p className="text-xs text-gray-400">Your AI meal planning assistant</p>
+            <p className="text-xs text-gray-400">
+              Your AI meal planning assistant
+            </p>
           </div>
         </div>
 
@@ -108,7 +113,8 @@ export default function ChatContainer({ className = "" }: ChatContainerProps) {
             style={{
               opacity: showHeader ? 1 : 0,
               transform: showHeader ? "scale(1)" : "scale(0.8)",
-              transition: "opacity 400ms cubic-bezier(0.4, 0, 0.2, 1) 200ms, transform 400ms cubic-bezier(0.4, 0, 0.2, 1) 200ms, background-color 200ms, color 200ms",
+              transition:
+                "opacity 400ms cubic-bezier(0.4, 0, 0.2, 1) 200ms, transform 400ms cubic-bezier(0.4, 0, 0.2, 1) 200ms, background-color 200ms, color 200ms",
             }}
           >
             <Trash2 className="w-5 h-5 group-hover:scale-110 transition-transform" />
@@ -116,16 +122,20 @@ export default function ChatContainer({ className = "" }: ChatContainerProps) {
         )}
       </div>
 
-      {/* Messages Area - Fades in */}
-      <div 
-        className="flex-1 overflow-y-auto px-4 py-6 space-y-4 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent"
+      {/* Messages Area - Uses flex-1 and min-h-0 to stay within bounds */}
+      <div
+        className="flex-1 min-h-0 overflow-y-auto px-4 py-6 space-y-4 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent"
         style={{
           opacity: showContent ? 1 : 0,
           transition: "opacity 500ms cubic-bezier(0.4, 0, 0.2, 1)",
         }}
       >
         {!hasMessages ? (
-          <EmptyState onSelectPrompt={handleSendMessage} disabled={isLoading} show={showContent} />
+          <EmptyState
+            onSelectPrompt={handleSendMessage}
+            disabled={isLoading}
+            show={showContent}
+          />
         ) : (
           <>
             {messages.map((message, index) => (
@@ -133,7 +143,9 @@ export default function ChatContainer({ className = "" }: ChatContainerProps) {
                 key={message.id}
                 message={message}
                 onApplySuggestion={handleApplySuggestion}
-                isLatest={index === messages.length - 1 && message.role === "assistant"}
+                isLatest={
+                  index === messages.length - 1 && message.role === "assistant"
+                }
               />
             ))}
             {isLoading && <TypingIndicator />}
@@ -142,24 +154,28 @@ export default function ChatContainer({ className = "" }: ChatContainerProps) {
         )}
       </div>
 
-      {/* Input Area - Slides in from bottom */}
-      <div 
-        className="p-4 border-t border-gray-700/30 bg-gray-800/30 backdrop-blur-sm"
+      {/* Input Area - Now with flex-shrink-0 to prevent it from moving */}
+      <div
+        className="flex-shrink-0 p-4 border-t border-gray-700/30 bg-gray-800/30 backdrop-blur-sm"
         style={{
           opacity: showInput ? 1 : 0,
           transform: showInput ? "translateY(0)" : "translateY(20px)",
-          transition: "opacity 500ms cubic-bezier(0.4, 0, 0.2, 1), transform 500ms cubic-bezier(0.4, 0, 0.2, 1)",
+          transition:
+            "opacity 500ms cubic-bezier(0.4, 0, 0.2, 1), transform 500ms cubic-bezier(0.4, 0, 0.2, 1)",
         }}
       >
         {hasMessages && (
-          <div 
+          <div
             className="mb-3 overflow-x-auto pb-2 -mx-4 px-4"
             style={{
               opacity: showInput ? 1 : 0,
               transition: "opacity 400ms cubic-bezier(0.4, 0, 0.2, 1) 100ms",
             }}
           >
-            <SuggestionChips onSelect={handleSendMessage} disabled={isLoading} />
+            <SuggestionChips
+              onSelect={handleSendMessage}
+              disabled={isLoading}
+            />
           </div>
         )}
         <ChatInput onSend={handleSendMessage} disabled={isLoading} />
@@ -186,35 +202,42 @@ function EmptyState({
 
   useEffect(() => {
     if (!show) return;
-    
+
     const timers: ReturnType<typeof setTimeout>[] = [];
     timers.push(setTimeout(() => setShowLogo(true), 100));
     timers.push(setTimeout(() => setShowTitle(true), 300));
     timers.push(setTimeout(() => setShowSubtitle(true), 500));
     timers.push(setTimeout(() => setShowFeatures(true), 700));
     timers.push(setTimeout(() => setShowChips(true), 1000));
-    
+
     return () => timers.forEach(clearTimeout);
   }, [show]);
 
   return (
     <div className="flex flex-col items-center justify-center h-full text-center px-4 py-8">
       {/* Animated Logo */}
-      <div 
+      <div
         className="relative mb-8"
         style={{
           opacity: showLogo ? 1 : 0,
           transform: showLogo ? "scale(1)" : "scale(0.5)",
           filter: showLogo ? "blur(0px)" : "blur(10px)",
-          transition: "opacity 600ms cubic-bezier(0.4, 0, 0.2, 1), transform 600ms cubic-bezier(0.34, 1.56, 0.64, 1), filter 600ms cubic-bezier(0.4, 0, 0.2, 1)",
+          transition:
+            "opacity 600ms cubic-bezier(0.4, 0, 0.2, 1), transform 600ms cubic-bezier(0.34, 1.56, 0.64, 1), filter 600ms cubic-bezier(0.4, 0, 0.2, 1)",
         }}
       >
         <div className="w-24 h-24 rounded-full bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600 flex items-center justify-center shadow-2xl shadow-orange-500/30">
           <Sparkles className="w-12 h-12 text-white" />
         </div>
         {/* Pulse rings */}
-        <div className="absolute inset-0 rounded-full bg-orange-500/20 animate-ping" style={{ animationDuration: "2s" }} />
-        <div className="absolute inset-0 rounded-full bg-orange-500/10 animate-ping" style={{ animationDuration: "2s", animationDelay: "0.5s" }} />
+        <div
+          className="absolute inset-0 rounded-full bg-orange-500/20 animate-ping"
+          style={{ animationDuration: "2s" }}
+        />
+        <div
+          className="absolute inset-0 rounded-full bg-orange-500/10 animate-ping"
+          style={{ animationDuration: "2s", animationDelay: "0.5s" }}
+        />
       </div>
 
       {/* Title with split text animation */}
@@ -222,35 +245,38 @@ function EmptyState({
         style={{
           opacity: showTitle ? 1 : 0,
           transform: showTitle ? "translateY(0)" : "translateY(20px)",
-          transition: "opacity 500ms cubic-bezier(0.4, 0, 0.2, 1), transform 500ms cubic-bezier(0.4, 0, 0.2, 1)",
+          transition:
+            "opacity 500ms cubic-bezier(0.4, 0, 0.2, 1), transform 500ms cubic-bezier(0.4, 0, 0.2, 1)",
         }}
       >
         <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3">
           {showTitle && (
-            <SplitText 
-              text="Hey there! I'm CavBot" 
+            <SplitText
+              text="Hey there! I'm CavBot"
               delay={0}
               staggerDelay={0.04}
             />
           )}
         </h3>
       </div>
-      
+
       {/* Subtitle with blur text animation */}
-      <div 
+      <div
         className="text-gray-400 mb-10 max-w-md text-sm sm:text-base"
         style={{
           opacity: showSubtitle ? 1 : 0,
           transform: showSubtitle ? "translateY(0)" : "translateY(15px)",
           filter: showSubtitle ? "blur(0px)" : "blur(8px)",
-          transition: "opacity 600ms cubic-bezier(0.4, 0, 0.2, 1), transform 600ms cubic-bezier(0.4, 0, 0.2, 1), filter 600ms cubic-bezier(0.4, 0, 0.2, 1)",
+          transition:
+            "opacity 600ms cubic-bezier(0.4, 0, 0.2, 1), transform 600ms cubic-bezier(0.4, 0, 0.2, 1), filter 600ms cubic-bezier(0.4, 0, 0.2, 1)",
         }}
       >
-        I can help you plan your meals, find nutritious options, and optimize your dining hall experience.
+        I can help you plan your meals, find nutritious options, and optimize
+        your dining hall experience.
       </div>
 
       {/* Feature highlights - Staggered animation */}
-      <div 
+      <div
         className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-10 w-full max-w-2xl"
         style={{
           opacity: showFeatures ? 1 : 0,
@@ -267,24 +293,33 @@ function EmptyState({
             className="bg-gray-800/40 backdrop-blur-sm rounded-xl p-4 border border-gray-700/30 hover:border-orange-500/30 transition-all duration-300 hover:bg-gray-800/60"
             style={{
               opacity: showFeatures ? 1 : 0,
-              transform: showFeatures ? "translateY(0) scale(1)" : "translateY(20px) scale(0.95)",
-              transition: `opacity 500ms cubic-bezier(0.4, 0, 0.2, 1) ${index * 100}ms, transform 500ms cubic-bezier(0.4, 0, 0.2, 1) ${index * 100}ms`,
+              transform: showFeatures
+                ? "translateY(0) scale(1)"
+                : "translateY(20px) scale(0.95)",
+              transition: `opacity 500ms cubic-bezier(0.4, 0, 0.2, 1) ${
+                index * 100
+              }ms, transform 500ms cubic-bezier(0.4, 0, 0.2, 1) ${
+                index * 100
+              }ms`,
             }}
           >
             <div className="text-2xl mb-2">{feature.icon}</div>
-            <div className="font-semibold text-white text-sm">{feature.title}</div>
+            <div className="font-semibold text-white text-sm">
+              {feature.title}
+            </div>
             <div className="text-xs text-gray-400">{feature.desc}</div>
           </div>
         ))}
       </div>
 
       {/* Suggestion chips */}
-      <div 
+      <div
         className="w-full max-w-2xl"
         style={{
           opacity: showChips ? 1 : 0,
           transform: showChips ? "translateY(0)" : "translateY(20px)",
-          transition: "opacity 600ms cubic-bezier(0.4, 0, 0.2, 1), transform 600ms cubic-bezier(0.4, 0, 0.2, 1)",
+          transition:
+            "opacity 600ms cubic-bezier(0.4, 0, 0.2, 1), transform 600ms cubic-bezier(0.4, 0, 0.2, 1)",
         }}
       >
         <p className="text-sm text-gray-500 mb-4">Try asking about:</p>
@@ -297,7 +332,7 @@ function EmptyState({
 // Typing indicator component
 function TypingIndicator() {
   return (
-    <div 
+    <div
       className="flex justify-start mb-4"
       style={{
         animation: "fade-in-up 400ms cubic-bezier(0.4, 0, 0.2, 1)",

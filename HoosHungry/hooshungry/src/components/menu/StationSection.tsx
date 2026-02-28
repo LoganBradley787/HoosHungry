@@ -26,7 +26,7 @@ export default function StationSection({ station, onDetails, onAddToPlan }: Stat
       {/* Newspaper-style section header */}
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="section-header w-full text-left mb-6"
+        className="section-header w-full text-left"
         style={{ background: "none", cursor: "pointer", border: "none" }}
       >
         <span className="section-header-label">{station.name}</span>
@@ -59,7 +59,7 @@ export default function StationSection({ station, onDetails, onAddToPlan }: Stat
 
         {sides.length > 0 && (
           <div className="mt-4">
-            <div className="section-header mb-3">
+            <div className="section-header">
               <span className="section-header-label">Sides & Add-ons</span>
               <div className="section-header-rule" />
             </div>
