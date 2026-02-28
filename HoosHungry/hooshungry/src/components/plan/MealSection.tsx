@@ -1,4 +1,3 @@
-import { ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 import MealItemCard from "./MealItemCard";
 import type { MealItem } from "../../api/planEndpoints";
@@ -10,43 +9,33 @@ interface MealSectionProps {
   onRefresh: () => void;
 }
 
-export default function MealSection({
-  title,
-  totalCalories,
-  items,
-  onRefresh,
-}: MealSectionProps) {
+export default function MealSection({ title, totalCalories, items, onRefresh }: MealSectionProps) {
   const [isExpanded, setIsExpanded] = useState(true);
 
   return (
-    <div className="border-b border-gray-200 last:border-b-0 pb-6 last:pb-0">
-      {/* Section Header */}
+    <div className="pb-6 last:pb-0" style={{ borderBottom: "1px solid var(--rule)" }}>
       <div
         className="flex items-center justify-between mb-4 cursor-pointer"
         onClick={() => setIsExpanded(!isExpanded)}
       >
-        <div className="flex items-center gap-2">
-          <h3 className="text-lg font-semibold">{title}</h3>
-          {isExpanded ? (
-            <ChevronUp className="w-5 h-5 text-gray-500" />
-          ) : (
-            <ChevronDown className="w-5 h-5 text-gray-500" />
-          )}
+        <div className="section-header flex-1 mb-0 mr-4">
+          <span className="section-header-label">{title}</span>
+          <div className="section-header-rule" />
         </div>
-
-        <div className="text-right">
-          <div className="text-sm font-medium text-gray-800">
-            {totalCalories} calories
-          </div>
-          <div className="text-xs text-gray-500">{items.length} items</div>
+        <div className="flex items-center gap-3 flex-shrink-0">
+          <span className="font-mono-data text-xs" style={{ color: "var(--ink-muted)" }}>
+            {totalCalories} cal
+          </span>
+          <span className="text-xs" style={{ color: "var(--ink-muted)" }}>
+            {isExpanded ? "↑" : "↓"}
+          </span>
         </div>
       </div>
 
-      {/* Meal Items */}
       {isExpanded && (
         <div className="space-y-3">
           {items.length === 0 ? (
-            <div className="text-center py-8 text-gray-400 text-sm">
+            <div className="py-8 text-center text-sm" style={{ color: "var(--ink-muted)" }}>
               No items added yet
             </div>
           ) : (

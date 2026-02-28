@@ -68,36 +68,41 @@ export default function MealItemCard({ item, onRefresh }: MealItemCardProps) {
   const displayCalories = Math.round(item.calories_per_serving * servings);
 
   return (
-    <div className="bg-white rounded-xl p-3 sm:p-4 shadow-sm border border-gray-100 hover:border-orange-300 transition-all duration-300">
+    <div
+      className="p-3 sm:p-4 transition-colors"
+      style={{ backgroundColor: "var(--warm-white)", border: "1px solid var(--rule)", borderRadius: "6px" }}
+      onMouseEnter={e => (e.currentTarget.style.borderColor = "var(--orange)")}
+      onMouseLeave={e => (e.currentTarget.style.borderColor = "var(--rule)")}
+    >
       <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
         {/* Item Info */}
         <div className="flex-1 min-w-0">
-          <h4 className="font-semibold text-gray-800 text-sm sm:text-base truncate">
+          <h4 className="font-display italic text-base truncate" style={{ color: "var(--ink)" }}>
             {item.menu_item_name}
           </h4>
-          <div className="text-xs sm:text-sm text-gray-500 transition-all duration-300">
-            {displayCalories} calories • {Number(servings).toFixed(2)} serving
+          <div className="font-mono-data text-xs" style={{ color: "var(--ink-muted)" }}>
+            {displayCalories} cal · {Number(servings).toFixed(2)} serving
             {servings !== 1 ? "s" : ""}
           </div>
-          <div className="text-xs text-gray-400 mt-1 truncate">
-            {item.dining_hall} - {item.station_name}
+          <div className="text-xs mt-0.5 truncate" style={{ color: "var(--ink-muted)", opacity: 0.7 }}>
+            {item.dining_hall} · {item.station_name}
           </div>
         </div>
 
         {/* Serving Controls */}
         <div className="flex items-center justify-between sm:justify-end gap-3">
           {/* Serving Adjustment */}
-          <div className="flex items-center gap-2 bg-gray-50 rounded-lg p-1">
+          <div className="flex items-center gap-2 rounded px-1" style={{ backgroundColor: "var(--cream)" }}>
             <button
               onClick={handleDecrement}
               disabled={servings <= 0.25 || isUpdating}
               className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-white transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
               aria-label="Decrease servings"
             >
-              <Minus className="w-4 h-4 text-gray-600" />
+              <Minus className="w-4 h-4" style={{ color: "var(--ink-muted)" }} />
             </button>
 
-            <span className="text-xs sm:text-sm font-medium text-gray-800 min-w-[32px] text-center transition-all duration-300">
+            <span className="font-mono-data text-xs min-w-[32px] text-center transition-all duration-300" style={{ color: "var(--ink)" }}>
               {Number(servings).toFixed(2)}
             </span>
 
@@ -107,7 +112,7 @@ export default function MealItemCard({ item, onRefresh }: MealItemCardProps) {
               className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-white transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed"
               aria-label="Increase servings"
             >
-              <Plus className="w-4 h-4 text-gray-600" />
+              <Plus className="w-4 h-4" style={{ color: "var(--ink-muted)" }} />
             </button>
           </div>
 
@@ -115,7 +120,10 @@ export default function MealItemCard({ item, onRefresh }: MealItemCardProps) {
           <button
             onClick={handleDelete}
             disabled={isUpdating}
-            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-50 transition-all duration-200 text-gray-400 hover:text-red-500 disabled:opacity-40"
+            className="w-8 h-8 flex items-center justify-center rounded-full transition-all duration-200 disabled:opacity-40"
+            style={{ color: "var(--ink-muted)" }}
+            onMouseEnter={e => (e.currentTarget.style.color = "#ef4444")}
+            onMouseLeave={e => (e.currentTarget.style.color = "var(--ink-muted)")}
             aria-label="Remove item"
           >
             <svg
