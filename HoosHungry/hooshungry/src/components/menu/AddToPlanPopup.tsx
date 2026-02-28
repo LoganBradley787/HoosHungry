@@ -15,10 +15,10 @@ type Normalized = Meal | "needs-choice";
 
 /**
  * Convert the dining hall's period name into a concrete meal plan bucket.
- * Breakfast → breakfast  
- * Brunch → lunch  
- * Late Night → dinner  
- * All Day / Grill / other → needs-choice  
+ * Breakfast → breakfast
+ * Brunch → lunch
+ * Late Night → dinner
+ * All Day / Grill / other → needs-choice
  */
 const normalizeMeal = (raw: string): Normalized => {
   const value = raw.toLowerCase();
@@ -82,7 +82,15 @@ export default function AddToPlanPopup({
       {/* Outside click closes popup */}
       <div className="absolute inset-0" onClick={onClose} />
 
-      <div className="relative bg-white w-full max-w-md rounded-2xl shadow-xl p-8 animate-fadeIn">
+      <div
+        className="relative w-full max-w-md p-8 animate-fadeIn"
+        style={{
+          backgroundColor: "var(--warm-white)",
+          border: "1px solid var(--rule)",
+          borderRadius: "8px",
+          boxShadow: "0 8px 40px rgba(26,18,8,0.12)",
+        }}
+      >
         {/* Close button */}
         <button
           className="absolute top-4 right-5 text-gray-400 hover:text-gray-600 text-2xl"
@@ -94,21 +102,23 @@ export default function AddToPlanPopup({
         {/* ---- LOGIN REQUIRED ---- */}
         {!user ? (
           <>
-            <h2 className="text-2xl font-bold mb-2">Log In Required</h2>
-            <p className="text-gray-700 mb-6">
+            <h2 className="font-display italic text-2xl mb-2" style={{ color: "var(--ink)" }}>Log In Required</h2>
+            <p className="text-sm mb-6" style={{ color: "var(--ink-muted)" }}>
               You must be logged in to add items to your meal plan.
             </p>
 
             <div className="flex justify-end gap-3 mt-8">
               <button
-                className="px-4 py-2 text-sm rounded-lg border border-gray-300 hover:bg-gray-50"
+                className="px-4 py-2 text-sm transition-colors"
+                style={{ color: "var(--ink-muted)", background: "none", border: "none", cursor: "pointer" }}
                 onClick={onClose}
               >
                 Cancel
               </button>
 
               <button
-                className="px-5 py-2 text-sm rounded-lg bg-orange-500 text-white font-semibold hover:bg-orange-600"
+                className="px-5 py-2 text-sm text-white transition-opacity hover:opacity-90 disabled:opacity-40"
+                style={{ backgroundColor: "var(--orange)", borderRadius: "4px" }}
                 onClick={() => navigate("/login")}
               >
                 Log In
@@ -118,12 +128,12 @@ export default function AddToPlanPopup({
         ) : (
           <>
             {/* ---- ADD TO PLAN ---- */}
-            <h2 className="text-2xl font-bold mb-2">Add to Plan</h2>
-            <p className="text-gray-700 mb-6">{item.item_name}</p>
+            <h2 className="font-display italic text-2xl mb-2" style={{ color: "var(--ink)" }}>Add to Plan</h2>
+            <p className="text-sm mb-6" style={{ color: "var(--ink-muted)" }}>{item.item_name}</p>
 
             {normalized === "needs-choice" ? (
               <>
-                <p className="text-gray-600 mb-4">
+                <p className="text-sm mb-4" style={{ color: "var(--ink-muted)" }}>
                   Which meal do you want to add this item to?
                 </p>
 
@@ -133,11 +143,15 @@ export default function AddToPlanPopup({
                     <button
                       key={m}
                       onClick={() => setUserMealChoice(m)}
-                      className={`w-full px-4 py-2 rounded-lg border text-sm font-medium transition ${
-                        userMealChoice === m
-                          ? "border-orange-500 bg-orange-50 text-orange-700"
-                          : "border-gray-300 hover:bg-gray-50"
-                      }`}
+                      className="w-full px-4 py-2.5 text-sm text-left transition-colors"
+                      style={{
+                        border: `1px solid ${userMealChoice === m ? "var(--orange)" : "var(--rule)"}`,
+                        backgroundColor: userMealChoice === m ? "var(--cream)" : "transparent",
+                        color: userMealChoice === m ? "var(--orange)" : "var(--ink-muted)",
+                        borderRadius: "4px",
+                        fontFamily: "'DM Sans', sans-serif",
+                        cursor: "pointer",
+                      }}
                     >
                       {m[0].toUpperCase() + m.slice(1)}
                     </button>
@@ -146,7 +160,7 @@ export default function AddToPlanPopup({
               </>
             ) : (
               <div className="mb-6">
-                <p className="text-gray-700">
+                <p className="text-sm mb-4" style={{ color: "var(--ink-muted)" }}>
                   Add to{" "}
                   <span className="font-semibold">
                     {normalized[0].toUpperCase() + normalized.slice(1)}
@@ -158,7 +172,8 @@ export default function AddToPlanPopup({
 
             <div className="flex justify-end gap-3">
               <button
-                className="px-4 py-2 text-sm rounded-lg border border-gray-300 hover:bg-gray-50"
+                className="px-4 py-2 text-sm transition-colors"
+                style={{ color: "var(--ink-muted)", background: "none", border: "none", cursor: "pointer" }}
                 onClick={onClose}
               >
                 Cancel
@@ -167,7 +182,8 @@ export default function AddToPlanPopup({
               <button
                 disabled={!selectedMeal || isSaving}
                 onClick={handleConfirm}
-                className="px-5 py-2 text-sm rounded-lg bg-orange-500 text-white font-semibold hover:bg-orange-600 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-5 py-2 text-sm text-white transition-opacity hover:opacity-90 disabled:opacity-40"
+                style={{ backgroundColor: "var(--orange)", borderRadius: "4px" }}
               >
                 {isSaving ? "Adding..." : "Add"}
               </button>

@@ -54,7 +54,15 @@ export default function ItemDetailsPanel({
       <div className="absolute inset-0" onClick={onClose} />
 
       {/* Centered card */}
-      <div className="relative w-full max-w-xl max-h-[90vh] bg-white rounded-2xl shadow-xl p-6 sm:p-8 overflow-y-auto animate-fadeIn">
+      <div
+        className="relative w-full max-w-xl max-h-[90vh] overflow-y-auto p-6 sm:p-8 animate-fadeIn"
+        style={{
+          backgroundColor: "var(--warm-white)",
+          border: "1px solid var(--rule)",
+          borderRadius: "8px",
+          boxShadow: "0 8px 40px rgba(26,18,8,0.12)",
+        }}
+      >
         {/* Close button */}
         <button
           onClick={onClose}
@@ -64,7 +72,7 @@ export default function ItemDetailsPanel({
         </button>
 
         {/* Title */}
-        <h2 className="text-2xl sm:text-3xl font-bold mb-2 pr-8">
+        <h2 className="font-display italic pr-8 mb-2" style={{ fontSize: "1.75rem", color: "var(--ink)", fontWeight: 500 }}>
           {item.item_name}
         </h2>
 
@@ -77,7 +85,7 @@ export default function ItemDetailsPanel({
 
         {/* Calories */}
         <div className="mb-6">
-          <div className="text-2xl sm:text-3xl font-semibold text-blue-700 mb-1">
+          <div className="font-mono-data text-2xl sm:text-3xl mb-1" style={{ color: "var(--orange)" }}>
             {calories ?? "??"} cal
           </div>
           <div className="text-xs sm:text-sm text-gray-500">
@@ -88,12 +96,13 @@ export default function ItemDetailsPanel({
         {/* Dietary flags */}
         {dietaryFlags.length > 0 && (
           <div className="mb-6">
-            <h3 className="text-base sm:text-lg font-semibold mb-2">Dietary</h3>
+            <h3 className="section-header-label mb-3">Dietary</h3>
             <div className="flex flex-wrap gap-2">
               {dietaryFlags.map((tag) => (
                 <span
                   key={tag}
-                  className="px-3 py-1 rounded-full bg-orange-100 text-orange-700 text-xs sm:text-sm font-medium"
+                  className="text-xs px-2 py-0.5 rounded-sm"
+                  style={{ backgroundColor: "var(--cream)", color: "var(--ink-muted)", border: "1px solid var(--rule)" }}
                 >
                   {tag}
                 </span>
@@ -105,7 +114,7 @@ export default function ItemDetailsPanel({
         {/* Ingredients */}
         {item.ingredients && (
           <div className="mb-6">
-            <h3 className="text-base sm:text-lg font-semibold mb-2">
+            <h3 className="section-header-label mb-3">
               Ingredients
             </h3>
             <p className="text-xs sm:text-sm text-gray-700">
@@ -117,7 +126,7 @@ export default function ItemDetailsPanel({
         {/* Allergens */}
         {allergens.length > 0 && (
           <div className="mb-6">
-            <h3 className="text-base sm:text-lg font-semibold mb-2">
+            <h3 className="section-header-label mb-3">
               Allergens
             </h3>
             <p className="italic text-gray-600 text-xs sm:text-sm">
@@ -134,7 +143,7 @@ export default function ItemDetailsPanel({
 
         {/* Macros */}
         <div className="mb-8">
-          <h3 className="text-base sm:text-lg font-semibold mb-3">
+          <h3 className="section-header-label mb-3">
             Macronutrients
           </h3>
           <div className="space-y-3">
@@ -146,11 +155,12 @@ export default function ItemDetailsPanel({
                     {value !== null ? `${value}${unit}` : "??"}
                   </span>
                 </div>
-                <div className="w-full bg-gray-200 h-2 rounded-full">
+                <div className="w-full h-1 rounded-full" style={{ backgroundColor: "var(--rule)" }}>
                   {value !== null && (
                     <div
-                      className="h-2 bg-blue-500 rounded-full"
+                      className="h-1 rounded-full"
                       style={{
+                        backgroundColor: label === "Protein" ? "var(--amber)" : "var(--terracotta)",
                         width:
                           label === "Protein"
                             ? `${Math.min((value / 50) * 100, 100)}%`
@@ -168,7 +178,7 @@ export default function ItemDetailsPanel({
 
         {/* Micros */}
         <div className="mb-8">
-          <h3 className="text-base sm:text-lg font-semibold mb-3">
+          <h3 className="section-header-label mb-3">
             Micronutrients
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-12 text-xs sm:text-sm">
