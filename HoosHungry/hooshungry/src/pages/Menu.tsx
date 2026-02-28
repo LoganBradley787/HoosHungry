@@ -158,43 +158,32 @@ export default function Menu() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        {/* Control Pills and Search - Responsive Layout */}
+        {/* Control Row */}
         <div
-          className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-8 pb-4"
+          className="flex items-center justify-between gap-4 mb-8 pb-4"
           style={{ borderBottom: "1px solid var(--rule)" }}
         >
-          {/* Left Side: Dining Hall Pills */}
-          <div className="flex items-center gap-6 overflow-x-auto">
-            <PillButton
-              active={hall === "ohill"}
-              onClick={() => setHall("ohill")}
-            >
-              OHill
-            </PillButton>
-            <PillButton
-              active={hall === "newcomb"}
-              onClick={() => setHall("newcomb")}
-            >
-              Newcomb
-            </PillButton>
-            <PillButton
-              active={hall === "runk"}
-              onClick={() => setHall("runk")}
-            >
-              Runk
-            </PillButton>
-          </div>
+          {/* Hall + Period unified — horizontal scroll on overflow */}
+          <div
+            className="hide-scrollbar flex items-center gap-5 overflow-x-auto flex-shrink-0 pr-4"
+            style={{ scrollbarWidth: "none" }}
+          >
+            <PillButton active={hall === "ohill"} onClick={() => setHall("ohill")}>OHill</PillButton>
+            <PillButton active={hall === "newcomb"} onClick={() => setHall("newcomb")}>Newcomb</PillButton>
+            <PillButton active={hall === "runk"} onClick={() => setHall("runk")}>Runk</PillButton>
 
-          {/* Center: Period Pills */}
-          <div className="flex items-center gap-6 overflow-x-auto">
+            <span
+              className="select-none flex-shrink-0"
+              style={{ color: "var(--rule)", fontSize: "1rem", lineHeight: 1 }}
+              aria-hidden="true"
+            >
+              /
+            </span>
+
             {loadingPeriods ? (
-              <div className="text-xs" style={{ color: "var(--ink-muted)" }}>
-                Loading periods...
-              </div>
+              <span className="text-xs" style={{ color: "var(--ink-muted)" }}>…</span>
             ) : availablePeriods.length === 0 ? (
-              <div className="text-xs font-medium" style={{ color: "var(--orange)" }}>
-                This hall is closed today
-              </div>
+              <span className="text-xs font-medium" style={{ color: "var(--orange)" }}>Closed today</span>
             ) : (
               availablePeriods.map((p) => (
                 <PillButton
@@ -208,12 +197,9 @@ export default function Menu() {
             )}
           </div>
 
-          {/* Right Side: Search and Filter */}
-          <div className="w-full lg:w-auto lg:flex-1 lg:max-w-md">
-            <SearchFilter
-              onSearchChange={setSearchTerm}
-              onFilterChange={setFilters}
-            />
+          {/* Search + Filter */}
+          <div className="flex-shrink-0">
+            <SearchFilter onSearchChange={setSearchTerm} onFilterChange={setFilters} />
           </div>
         </div>
 
