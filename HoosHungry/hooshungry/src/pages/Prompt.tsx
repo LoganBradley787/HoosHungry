@@ -4,13 +4,10 @@ import { useAuth } from "../contexts/AuthContext";
 import { ChatContainer, NavigationDark } from "../components/prompt";
 import Navigation from "../components/common/Navigation";
 import {
-  LiquidEther,
   GradientText,
   SpotlightCard,
-  FadeContent,
   BlurText,
 } from "../components/reactbits";
-import FloatingLines from "../components/reactbits/FloatingLines";
 
 export default function Prompt() {
   const { user } = useAuth();
@@ -32,7 +29,7 @@ export default function Prompt() {
     const timers: ReturnType<typeof setTimeout>[] = [];
 
     // Background transition
-    timers.push(setTimeout(() => setIsTransitioned(true), 50));
+    timers.push(setTimeout(() => setIsTransitioned(true), 300));
 
     // Header fades in
     timers.push(setTimeout(() => setShowHeader(true), 400));
@@ -53,68 +50,24 @@ export default function Prompt() {
 
   return (
     <div
-      className="min-h-screen flex flex-col transition-all duration-700 ease-out relative overflow-hidden bg-gray-950"
+      className="min-h-screen flex flex-col relative overflow-hidden"
+      style={{
+        backgroundColor: isTransitioned ? "#110A04" : "var(--cream)",
+        transition: "background-color 700ms cubic-bezier(0.4, 0, 0.2, 1)",
+      }}
     >
-      {/* Liquid Ether Background - Full Page */}
-      {isTransitioned && (
-        <>
-          <LiquidEther
-            colors={["#78350f", "#c2410c", "#ea580c"]}
-            mouseForce={20}
-            cursorSize={100}
-            isViscous={false}
-            viscous={30}
-            iterationsViscous={32}
-            iterationsPoisson={32}
-            resolution={0.5}
-            isBounce={false}
-            autoDemo={true}
-            autoSpeed={0.5}
-            autoIntensity={2.2}
-            takeoverDuration={0.25}
-            autoResumeDelay={3000}
-            autoRampDuration={0.6}
-            style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: "100vw",
-              height: "100vh",
-              zIndex: 0,
-            }}
-          />
-          {/*
-          <div
-            style={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              width: "100vw",
-              height: "100vh",
-              zIndex: 0,
-              pointerEvents: "none",
-            }}
-          >
-            <FloatingLines
-              linesGradient={["#78350f", "#c2410c", "#ea580c", "#fb923c"]}
-              enabledWaves={["top", "middle", "bottom"]}
-              lineCount={[8, 12, 16]}
-              lineDistance={[10, 8, 5]}
-              animationSpeed={0.6}
-              bendRadius={5.0}
-              bendStrength={-10}
-              interactive={false}
-              parallax={false}
-              mixBlendMode="screen"
-            />
-          </div> /*)
-
-          {/* Dark overlay for better readability */}
-          {/* <div className="fixed inset-0 bg-gray-950/40 pointer-events-none z-[1]" /> */}
-          {/* Subtle noise texture */}
-          {/* Vignette overlay */}
-        </>
-      )}
+      {/* Warm dark ambient gradient — only visible in dark mode */}
+      <div
+        className="fixed inset-0 pointer-events-none z-0"
+        style={{
+          opacity: isTransitioned ? 1 : 0,
+          background: [
+            "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(194, 65, 12, 0.12) 0%, transparent 70%)",
+            "radial-gradient(ellipse 60% 40% at 50% 100%, rgba(120, 53, 15, 0.15) 0%, transparent 60%)",
+          ].join(", "),
+          transition: "opacity 700ms cubic-bezier(0.4, 0, 0.2, 1)",
+        }}
+      />
 
       {/* Navigation - Cross-fades from light to dark mode */}
       <div className="relative z-20">
@@ -163,12 +116,18 @@ export default function Prompt() {
                 Prompt
               </GradientText>
             </h1>
-            <div className="mt-2">
+            <div
+              className="mt-2"
+              style={{
+                color: isTransitioned ? "rgba(250, 215, 170, 0.55)" : "var(--ink-muted)",
+                transition: "color 700ms cubic-bezier(0.4, 0, 0.2, 1)",
+              }}
+            >
               <BlurText
                 text="Chat with CavBot to optimize your meal plan"
                 delay={600}
                 duration={0.5}
-                className="text-gray-400 text-sm sm:text-base"
+                className="text-sm sm:text-base"
               />
             </div>
           </div>
@@ -222,11 +181,15 @@ export default function Prompt() {
       </div>
 
       {/* Bottom ambient glow */}
-      {isTransitioned && (
-        <div className="fixed bottom-0 left-0 right-0 h-48 pointer-events-none z-[4]">
-          <div className="absolute inset-0 bg-gradient-to-t from-orange-500/10 via-orange-500/5 to-transparent" />
-        </div>
-      )}
+      <div
+        className="fixed bottom-0 left-0 right-0 h-48 pointer-events-none z-[4]"
+        style={{
+          opacity: isTransitioned ? 1 : 0,
+          transition: "opacity 700ms cubic-bezier(0.4, 0, 0.2, 1)",
+        }}
+      >
+        <div className="absolute inset-0 bg-gradient-to-t from-orange-900/20 via-orange-900/5 to-transparent" />
+      </div>
     </div>
   );
 }
