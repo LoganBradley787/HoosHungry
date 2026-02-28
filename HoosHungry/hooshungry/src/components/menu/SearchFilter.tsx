@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface SearchFilterProps {
   onSearchChange: (search: string) => void;
@@ -15,6 +15,14 @@ export default function SearchFilter({
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (isSearchExpanded) {
+      const t = setTimeout(() => inputRef.current?.focus(), 50);
+      return () => clearTimeout(t);
+    }
+  }, [isSearchExpanded]);
   const [selectedAllergens, setSelectedAllergens] = useState<string[]>([]);
   const [excludeAllergens, setExcludeAllergens] = useState(true);
 
@@ -56,66 +64,60 @@ export default function SearchFilter({
   };
 
   return (
-    <div className="relative flex items-center gap-4">
-      {/* Expanded search input */}
-      {isSearchExpanded ? (
-        <div className="flex items-center gap-2">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search dishes…"
-              value={searchTerm}
-              onChange={(e) => handleSearchChange(e.target.value)}
-              autoFocus
-              className="py-2 pl-7 pr-3 text-sm bg-transparent focus:outline-none"
-              style={{
-                borderBottom: "1px solid var(--rule)",
-                color: "var(--ink)",
-                fontFamily: "'DM Sans', sans-serif",
-                width: "180px",
-              }}
-            />
-            <svg
-              className="absolute left-0 top-2.5 w-3.5 h-3.5"
-              style={{ color: "var(--ink-muted)" }}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-          </div>
-
-          {/* Collapse / clear button */}
-          <button
-            onClick={handleCollapseSearch}
-            style={{ color: "var(--ink-muted)", background: "none", cursor: "pointer", lineHeight: 1 }}
-            aria-label="Clear search"
-          >
-            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-        </div>
-      ) : (
-        /* Collapsed: search icon only */
-        <button
-          onClick={() => setIsSearchExpanded(true)}
+    <div className="relative flex items-center gap-3">
+      {/* Horizontally sliding input — always mounted, no height change */}
+      <div
+        style={{
+          width: isSearchExpanded ? "160px" : "0px",
+          overflow: "hidden",
+          transition: "width 220ms ease",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <input
+          ref={inputRef}
+          type="text"
+          placeholder="Search dishes…"
+          value={searchTerm}
+          onChange={(e) => handleSearchChange(e.target.value)}
           style={{
-            color: searchTerm ? "var(--orange)" : "var(--ink-muted)",
-            background: "none",
-            cursor: "pointer",
-            lineHeight: 1,
+            width: "160px",
+            flexShrink: 0,
+            borderBottom: "1px solid var(--rule)",
+            color: "var(--ink)",
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: "0.75rem",
+            background: "transparent",
+            outline: "none",
+            paddingBottom: "2px",
           }}
-          aria-label="Search"
-        >
+        />
+      </div>
+
+      {/* Toggle button: search icon when collapsed, × when expanded */}
+      <button
+        onClick={isSearchExpanded ? handleCollapseSearch : () => setIsSearchExpanded(true)}
+        style={{
+          color: isSearchExpanded || searchTerm ? "var(--orange)" : "var(--ink-muted)",
+          background: "none",
+          cursor: "pointer",
+          lineHeight: 1,
+          flexShrink: 0,
+        }}
+        aria-label={isSearchExpanded ? "Clear search" : "Search"}
+      >
+        {isSearchExpanded ? (
+          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        ) : (
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
               d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
-        </button>
-      )}
+        )}
+      </button>
 
       {/* Filter button — always visible */}
       <button
