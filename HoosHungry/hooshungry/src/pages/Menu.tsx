@@ -118,6 +118,17 @@ export default function Menu() {
       .filter((station) => station.menu_items.length > 0); // Remove empty stations
   }, [data, searchTerm, filters]);
 
+  const sortedStations = useMemo(() => {
+    if (!selectedStation) return filteredStations;
+    const idx = filteredStations.findIndex((s) => s.name === selectedStation);
+    if (idx <= 0) return filteredStations; // not found or already first
+    return [
+      filteredStations[idx],
+      ...filteredStations.slice(0, idx),
+      ...filteredStations.slice(idx + 1),
+    ];
+  }, [filteredStations, selectedStation]);
+
   return (
     <div className="min-h-screen" style={{ backgroundColor: "var(--cream)" }}>
       <Navigation />
@@ -251,8 +262,8 @@ export default function Menu() {
             )}
 
             {/* Stations - each appears with increasing delay */}
-            {filteredStations.length > 0 ? (
-              filteredStations.map((station, index) => (
+            {sortedStations.length > 0 ? (
+              sortedStations.map((station, index) => (
                 <div
                   key={station.id}
                   className="animate-slideInStagger"
