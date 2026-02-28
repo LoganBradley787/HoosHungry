@@ -62,12 +62,12 @@ export default function Plan() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-pink-100 via-orange-50 to-yellow-100">
+    <div className="min-h-screen" style={{ backgroundColor: "var(--cream)" }}>
       <Navigation />
 
-      <div className="max-w-7xl mx-auto px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Page Title */}
-        <h1 className="text-6xl font-bold text-orange-500 mb-8">Plan</h1>
+        <h1 className="font-display italic mb-8" style={{ fontSize: "clamp(3rem, 8vw, 6rem)", fontWeight: 300, color: "var(--ink)" }}>Plan</h1>
 
         {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6">

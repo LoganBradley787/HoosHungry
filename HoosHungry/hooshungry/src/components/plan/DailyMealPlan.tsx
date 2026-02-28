@@ -25,9 +25,9 @@ export default function DailyMealPlan({
 
   if (loading) {
     return (
-      <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-6 sm:p-8 shadow-lg">
+      <div className="card-editorial p-6 sm:p-8">
         <div className="flex items-center justify-center py-20">
-          <div className="text-lg sm:text-xl text-gray-600 animate-pulse">
+          <div className="text-lg sm:text-xl animate-pulse" style={{ color: "var(--ink-muted)" }}>
             Loading meal plan...
           </div>
         </div>
@@ -52,33 +52,35 @@ export default function DailyMealPlan({
     ) || 0;
 
   return (
-    <div className="bg-white/60 backdrop-blur-sm rounded-3xl p-4 sm:p-6 lg:p-8 shadow-lg">
+    <div className="card-editorial p-4 sm:p-6 lg:p-8">
       {/* Header with Date Navigation */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
-        <h2 className="text-xl sm:text-2xl font-bold">Daily Meal Plan</h2>
+        <h2 className="font-display italic text-2xl" style={{ color: "var(--ink)" }}>Daily Meal Plan</h2>
 
         <div className="flex items-center justify-center sm:justify-end gap-4">
           <button
             onClick={() => onDateChange("prev")}
-            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition"
+            className="w-8 h-8 flex items-center justify-center transition-colors rounded"
             aria-label="Previous day"
+            style={{ color: "var(--ink-muted)" }}
           >
-            <ChevronLeft className="w-5 h-5 text-gray-600" />
+            <ChevronLeft className="w-5 h-5" />
           </button>
 
           <div className="text-center min-w-[160px] sm:min-w-[180px]">
-            <div className="font-semibold text-gray-800 text-sm sm:text-base">
+            <div className="font-display italic" style={{ color: "var(--ink)", fontSize: "1.1rem" }}>
               {dayName}
             </div>
-            <div className="text-xs sm:text-sm text-gray-600">{monthDay}</div>
+            <div className="font-mono-data text-xs" style={{ color: "var(--ink-muted)" }}>{monthDay}</div>
           </div>
 
           <button
             onClick={() => onDateChange("next")}
-            className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition"
+            className="w-8 h-8 flex items-center justify-center transition-colors rounded"
             aria-label="Next day"
+            style={{ color: "var(--ink-muted)" }}
           >
-            <ChevronRight className="w-5 h-5 text-gray-600" />
+            <ChevronRight className="w-5 h-5" />
           </button>
         </div>
       </div>
