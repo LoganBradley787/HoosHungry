@@ -132,3 +132,6 @@ body {
   animation: slideInStagger 0.4s ease-out forwards;
   opacity: 0;
 }
+
+/* ── Hide scrollbar on overflow-x scroll containers ───────── */
+.hide-scrollbar::-webkit-scrollbar { display: none; }

@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useMenuData } from "../hooks/useMenuData";
 import Navigation from "../components/common/Navigation";
 import PillButton from "../components/menu/PillButton";
@@ -244,6 +244,34 @@ export default function Menu() {
                 }}
               />
             </div>
+
+            {/* Station selector bar */}
+            {sortedStations.length > 1 && (
+              <div
+                className="hide-scrollbar flex items-center gap-6 overflow-x-auto pb-1 mb-6 animate-slideInStagger"
+                style={{
+                  animationDelay: "80ms",
+                  scrollbarWidth: "none",
+                  msOverflowStyle: "none",
+                } as React.CSSProperties}
+              >
+                <button
+                  className={`tab-link ${selectedStation === null ? "active" : ""}`}
+                  onClick={() => setSelectedStation(null)}
+                >
+                  All
+                </button>
+                {sortedStations.map((station) => (
+                  <button
+                    key={station.id}
+                    className={`tab-link ${selectedStation === station.name ? "active" : ""}`}
+                    onClick={() => setSelectedStation(station.name)}
+                  >
+                    {station.name}
+                  </button>
+                ))}
+              </div>
+            )}
 
             {/* Show results count if filtering */}
             {(searchTerm || filters.allergens.length > 0) && (
