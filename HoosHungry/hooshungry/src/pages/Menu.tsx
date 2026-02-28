@@ -246,7 +246,7 @@ export default function Menu() {
             </div>
 
             {/* Station selector bar */}
-            {sortedStations.length > 1 && (
+            {filteredStations.length > 1 && (
               <div
                 className="hide-scrollbar flex items-center gap-6 overflow-x-auto pb-1 mb-6 animate-slideInStagger"
                 style={{
@@ -261,7 +261,7 @@ export default function Menu() {
                 >
                   All
                 </button>
-                {sortedStations.map((station) => (
+                {filteredStations.map((station) => (
                   <button
                     key={station.id}
                     className={`tab-link ${selectedStation === station.name ? "active" : ""}`}
