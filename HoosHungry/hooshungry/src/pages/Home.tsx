@@ -9,60 +9,64 @@ function Home() {
     <div className="min-h-screen" style={{ backgroundColor: "var(--cream)" }}>
       <Navigation />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-24">
-        {/* Hero */}
-        <div className="max-w-2xl mb-16 sm:mb-24">
-          <p
-            className="text-xs uppercase tracking-widest mb-4"
-            style={{ color: "var(--ink-muted)", fontFamily: "'DM Sans', sans-serif" }}
-          >
-            UVA Dining · Plan Smarter
-          </p>
-          <h1
-            className="font-display italic mb-6 leading-tight"
-            style={{
-              fontSize: "clamp(2.5rem, 6vw, 5rem)",
-              color: "var(--ink)",
-              fontWeight: 300,
-            }}
-          >
-            Finally, dining hall planning that just works.
-          </h1>
-          <p className="text-base sm:text-lg mb-8" style={{ color: "var(--ink-muted)" }}>
-            Pick a hall, browse menu items, make a plan. How hungry are you, Hoo?
-          </p>
-          <div className="flex flex-wrap items-center gap-4">
-            <Link
-              to="/menu"
-              className="text-sm transition-colors"
-              style={{ color: "var(--ink-muted)" }}
-              onMouseEnter={e => (e.currentTarget.style.color = "var(--ink)")}
-              onMouseLeave={e => (e.currentTarget.style.color = "var(--ink-muted)")}
+      {/* Orange gradient hero strip */}
+      <div style={{ background: "linear-gradient(135deg, var(--orange-deep) 0%, var(--orange-mid) 100%)" }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-20 lg:py-28">
+          <div className="max-w-2xl">
+            <p
+              className="text-xs uppercase tracking-widest mb-4"
+              style={{ color: "rgba(255,255,255,0.6)", fontFamily: "'DM Sans', sans-serif" }}
             >
-              See Menus →
-            </Link>
-            <Link
-              to="/plan"
-              className="text-sm transition-colors"
-              style={{ color: "var(--ink-muted)" }}
-              onMouseEnter={e => (e.currentTarget.style.color = "var(--ink)")}
-              onMouseLeave={e => (e.currentTarget.style.color = "var(--ink-muted)")}
+              UVA Dining · Plan Smarter
+            </p>
+            <h1
+              className="font-display italic mb-6 leading-tight"
+              style={{
+                fontSize: "clamp(2.5rem, 6vw, 5rem)",
+                color: "var(--cream-on-orange)",
+                fontWeight: 300,
+              }}
             >
-              View Plan →
-            </Link>
-            <Link
-              to="/prompt"
-              className="px-5 py-2.5 text-sm font-medium text-white rounded-sm transition-opacity hover:opacity-90"
-              style={{ backgroundColor: "var(--orange)" }}
-            >
-              Prompt AI
-            </Link>
+              Finally, dining hall planning that just works.
+            </h1>
+            <p className="text-base sm:text-lg mb-8" style={{ color: "rgba(255,255,255,0.8)" }}>
+              Pick a hall, browse menu items, make a plan. How hungry are you, Hoo?
+            </p>
+            <div className="flex flex-wrap items-center gap-4">
+              <Link
+                to="/menu"
+                className="text-sm transition-colors"
+                style={{ color: "rgba(255,255,255,0.7)" }}
+                onMouseEnter={e => (e.currentTarget.style.color = "var(--cream-on-orange)")}
+                onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.7)")}
+              >
+                See Menus →
+              </Link>
+              <Link
+                to="/plan"
+                className="text-sm transition-colors"
+                style={{ color: "rgba(255,255,255,0.7)" }}
+                onMouseEnter={e => (e.currentTarget.style.color = "var(--cream-on-orange)")}
+                onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.7)")}
+              >
+                View Plan →
+              </Link>
+              <Link
+                to="/prompt"
+                className="px-5 py-2.5 text-sm font-medium rounded-sm transition-all"
+                style={{ backgroundColor: "var(--cream-on-orange)", color: "var(--orange-deep)" }}
+                onMouseEnter={e => (e.currentTarget.style.opacity = "0.9")}
+                onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
+              >
+                Prompt AI
+              </Link>
+            </div>
           </div>
         </div>
+      </div>
 
-        {/* Rule */}
-        <hr className="editorial-rule mb-12" />
-
+      {/* Cream content area */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
         {/* Feature Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-px" style={{ backgroundColor: "var(--rule)" }}>
           <Link to="/menu" className="block">

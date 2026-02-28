@@ -23,7 +23,7 @@ export default function Navigation() {
   ];
 
   return (
-    <nav style={{ borderBottom: "1px solid var(--rule)", backgroundColor: "var(--cream)" }}>
+    <nav className="nav-orange" style={{ borderBottom: "1px solid var(--rule-on-orange)", backgroundColor: "var(--orange-deep)" }}>
       <div className="flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4">
         {/* Logo */}
         <div className="flex items-center gap-3">
@@ -34,7 +34,7 @@ export default function Navigation() {
           />
           <span
             className="font-display text-xl sm:text-2xl font-normal italic"
-            style={{ color: "var(--ink)" }}
+            style={{ color: "var(--cream-on-orange)" }}
           >
             HoosHungry
           </span>
@@ -57,15 +57,15 @@ export default function Navigation() {
         <div className="hidden md:flex items-center gap-6">
           {user ? (
             <>
-              <span className="hidden lg:inline text-sm" style={{ color: "var(--ink-muted)" }}>
+              <span className="hidden lg:inline text-sm" style={{ color: "rgba(255,255,255,0.65)" }}>
                 {user.username}
               </span>
               <button
                 onClick={handleLogout}
                 className="text-sm flex items-center gap-1 transition-colors"
-                style={{ color: "var(--ink-muted)" }}
-                onMouseEnter={e => (e.currentTarget.style.color = "var(--orange)")}
-                onMouseLeave={e => (e.currentTarget.style.color = "var(--ink-muted)")}
+                style={{ color: "rgba(255,255,255,0.75)" }}
+                onMouseEnter={e => (e.currentTarget.style.color = "var(--cream-on-orange)")}
+                onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.75)")}
               >
                 Logout →
               </button>
@@ -74,9 +74,9 @@ export default function Navigation() {
             <Link
               to="/login"
               className="text-sm flex items-center gap-1 transition-colors"
-              style={{ color: "var(--ink-muted)" }}
-              onMouseEnter={e => (e.currentTarget.style.color = "var(--orange)")}
-              onMouseLeave={e => (e.currentTarget.style.color = "var(--ink-muted)")}
+              style={{ color: "rgba(255,255,255,0.75)" }}
+              onMouseEnter={e => (e.currentTarget.style.color = "var(--cream-on-orange)")}
+              onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.75)")}
             >
               Login →
             </Link>
@@ -87,7 +87,7 @@ export default function Navigation() {
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           className="md:hidden p-2 transition-colors"
-          style={{ color: "var(--ink-muted)" }}
+          style={{ color: "rgba(255,255,255,0.75)" }}
           aria-label="Toggle menu"
         >
           {mobileMenuOpen ? (
@@ -106,7 +106,7 @@ export default function Navigation() {
       {mobileMenuOpen && (
         <div
           className="md:hidden px-4 py-4 space-y-4 animate-slideDown"
-          style={{ borderTop: "1px solid var(--rule)" }}
+          style={{ borderTop: "1px solid var(--rule-on-orange)" }}
         >
           {navLinks.map((link) => (
             <Link
@@ -118,12 +118,12 @@ export default function Navigation() {
               {link.label}
             </Link>
           ))}
-          <div style={{ borderTop: "1px solid var(--rule)", paddingTop: "1rem" }}>
+          <div style={{ borderTop: "1px solid var(--rule-on-orange)", paddingTop: "1rem" }}>
             {user ? (
               <button
                 onClick={handleLogout}
                 className="text-sm"
-                style={{ color: "var(--ink-muted)" }}
+                style={{ color: "rgba(255,255,255,0.75)" }}
               >
                 Logout →
               </button>
@@ -132,7 +132,7 @@ export default function Navigation() {
                 to="/login"
                 onClick={() => setMobileMenuOpen(false)}
                 className="text-sm"
-                style={{ color: "var(--ink-muted)" }}
+                style={{ color: "rgba(255,255,255,0.75)" }}
               >
                 Login →
               </Link>

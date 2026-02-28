@@ -3,14 +3,18 @@
 
 /* ── Design Tokens ─────────────────────────────────────────── */
 :root {
-  --cream:      #FAF7F2;
-  --warm-white: #FFFCF7;
-  --ink:        #1A1208;
-  --ink-muted:  #6B5B4E;
-  --orange:     #F48210;
-  --amber:      #FFC831;
-  --terracotta: #C4896A;
-  --rule:       #E8E0D4;
+  --cream:            #FAF7F2;
+  --warm-white:       #FFFCF7;
+  --ink:              #1A1208;
+  --ink-muted:        #6B5B4E;
+  --orange:           #EA580C;
+  --orange-deep:      #C2410C;
+  --orange-mid:       #F97316;
+  --amber:            #FFC831;
+  --terracotta:       #C4896A;
+  --rule:             #E8E0D4;
+  --cream-on-orange:  #FFF8EF;
+  --rule-on-orange:   rgba(255, 255, 255, 0.25);
 }
 
 /* ── Base ──────────────────────────────────────────────────── */
@@ -66,6 +70,20 @@ body {
 .tab-link.active {
   color: var(--ink);
   border-bottom-color: var(--orange);
+}
+
+/* ── Tab links on orange surfaces (nav) ────────────────────── */
+.nav-orange .tab-link {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.nav-orange .tab-link:hover {
+  color: var(--cream-on-orange);
+}
+
+.nav-orange .tab-link.active {
+  color: var(--cream-on-orange);
+  border-bottom-color: var(--amber);
 }
 
 /* ── Section header (newspaper rule style) ─────────────────── */

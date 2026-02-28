@@ -117,15 +117,20 @@ export default function Menu() {
     <div className="min-h-screen" style={{ backgroundColor: "var(--cream)" }}>
       <Navigation />
 
+      {/* Orange title strip */}
+      <div style={{ backgroundColor: "var(--orange-deep)" }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          <h1
+            className="font-display italic"
+            style={{ fontSize: "clamp(3rem, 8vw, 6rem)", fontWeight: 300, color: "var(--cream-on-orange)" }}
+          >
+            Menu
+          </h1>
+        </div>
+      </div>
+
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <h1
-          className="font-display italic mb-8"
-          style={{ fontSize: "clamp(3rem, 8vw, 6rem)", fontWeight: 300, color: "var(--ink)" }}
-        >
-          Menu
-        </h1>
-
         {/* Control Pills and Search - Responsive Layout */}
         <div
           className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-8 pb-4"
@@ -228,8 +233,7 @@ export default function Menu() {
             {(searchTerm || filters.allergens.length > 0) && (
               <div
                 className="mb-4 text-xs sm:text-sm animate-slideInStagger"
-                style={{ color: "var(--ink-muted)" }}
-                style={{ animationDelay: "100ms" }}
+                style={{ color: "var(--ink-muted)", animationDelay: "100ms" }}
               >
                 Found{" "}
                 {filteredStations.reduce(
