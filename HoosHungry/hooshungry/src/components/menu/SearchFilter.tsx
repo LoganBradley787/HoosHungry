@@ -13,19 +13,14 @@ export default function SearchFilter({
   onFilterChange,
 }: SearchFilterProps) {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedAllergens, setSelectedAllergens] = useState<string[]>([]);
   const [excludeAllergens, setExcludeAllergens] = useState(true);
 
   const commonAllergens = [
-    "Milk",
-    "Eggs",
-    "Wheat",
-    "Soy",
-    "Peanuts",
-    "Tree Nuts",
-    "Fish",
-    "Shellfish",
+    "Milk", "Eggs", "Wheat", "Soy",
+    "Peanuts", "Tree Nuts", "Fish", "Shellfish",
   ];
 
   const handleSearchChange = (value: string) => {
@@ -33,11 +28,15 @@ export default function SearchFilter({
     onSearchChange(value);
   };
 
+  const handleCollapseSearch = () => {
+    setIsSearchExpanded(false);
+    handleSearchChange("");
+  };
+
   const handleAllergenToggle = (allergen: string) => {
     const newAllergens = selectedAllergens.includes(allergen)
       ? selectedAllergens.filter((a) => a !== allergen)
       : [...selectedAllergens, allergen];
-
     setSelectedAllergens(newAllergens);
     onFilterChange({ allergens: newAllergens, excludeAllergens });
   };
@@ -45,10 +44,7 @@ export default function SearchFilter({
   const handleExcludeToggle = () => {
     const newExclude = !excludeAllergens;
     setExcludeAllergens(newExclude);
-    onFilterChange({
-      allergens: selectedAllergens,
-      excludeAllergens: newExclude,
-    });
+    onFilterChange({ allergens: selectedAllergens, excludeAllergens: newExclude });
   };
 
   const clearFilters = () => {
@@ -60,66 +56,90 @@ export default function SearchFilter({
   };
 
   return (
-    <div className="relative w-full sm:w-auto">
-      {/* Search Bar */}
-      <div className="flex gap-2">
-        <div className="relative flex-1 sm:min-w-[250px]">
-          <input
-            type="text"
-            placeholder="Search dishes, ingredients..."
-            value={searchTerm}
-            onChange={(e) => handleSearchChange(e.target.value)}
-            className="w-full py-2 pl-8 pr-3 text-sm bg-transparent focus:outline-none"
-            style={{
-              borderBottom: "1px solid var(--rule)",
-              color: "var(--ink)",
-              fontFamily: "'DM Sans', sans-serif",
-            }}
-          />
-          <svg
-            className="absolute left-0 top-2.5 w-4 h-4"
-            style={{ color: "var(--ink-muted)" }}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+    <div className="relative flex items-center gap-4">
+      {/* Expanded search input */}
+      {isSearchExpanded ? (
+        <div className="flex items-center gap-2">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search dishes…"
+              value={searchTerm}
+              onChange={(e) => handleSearchChange(e.target.value)}
+              autoFocus
+              className="py-2 pl-7 pr-3 text-sm bg-transparent focus:outline-none"
+              style={{
+                borderBottom: "1px solid var(--rule)",
+                color: "var(--ink)",
+                fontFamily: "'DM Sans', sans-serif",
+                width: "180px",
+              }}
             />
-          </svg>
-        </div>
+            <svg
+              className="absolute left-0 top-2.5 w-3.5 h-3.5"
+              style={{ color: "var(--ink-muted)" }}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
 
-        {/* Filter Button */}
+          {/* Collapse / clear button */}
+          <button
+            onClick={handleCollapseSearch}
+            style={{ color: "var(--ink-muted)", background: "none", cursor: "pointer", lineHeight: 1 }}
+            aria-label="Clear search"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+      ) : (
+        /* Collapsed: search icon only */
         <button
-          onClick={() => setIsFilterOpen(!isFilterOpen)}
-          className="text-xs uppercase tracking-widest flex items-center gap-2 whitespace-nowrap pb-2 transition-colors"
+          onClick={() => setIsSearchExpanded(true)}
           style={{
-            color: selectedAllergens.length > 0 ? "var(--orange)" : "var(--ink-muted)",
-            borderBottom: "1px solid var(--rule)",
-            fontFamily: "'DM Sans', sans-serif",
+            color: searchTerm ? "var(--orange)" : "var(--ink-muted)",
             background: "none",
             cursor: "pointer",
+            lineHeight: 1,
           }}
+          aria-label="Search"
         >
-          Filter
-          {selectedAllergens.length > 0 && (
-            <span
-              className="text-xs font-medium rounded-full w-4 h-4 flex items-center justify-center"
-              style={{ backgroundColor: "var(--orange)", color: "white" }}
-            >
-              {selectedAllergens.length}
-            </span>
-          )}
+          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
         </button>
-      </div>
+      )}
 
-      {/* Filter Dropdown with animation */}
+      {/* Filter button — always visible */}
+      <button
+        onClick={() => setIsFilterOpen(!isFilterOpen)}
+        className="tab-link flex items-center gap-2"
+        style={{
+          color: selectedAllergens.length > 0 ? "var(--orange)" : "var(--ink-muted)",
+        }}
+      >
+        Filter
+        {selectedAllergens.length > 0 && (
+          <span
+            className="text-xs font-medium rounded-full w-4 h-4 flex items-center justify-center"
+            style={{ backgroundColor: "var(--orange)", color: "white" }}
+          >
+            {selectedAllergens.length}
+          </span>
+        )}
+      </button>
+
+      {/* Filter dropdown — unchanged behaviour */}
       {isFilterOpen && (
         <div
-          className="absolute top-full mt-2 right-0 left-0 sm:left-auto p-5 sm:p-6 w-full sm:w-80 z-10 animate-slideDown"
+          className="absolute top-full mt-2 right-0 p-5 sm:p-6 w-72 z-10 animate-slideDown"
           style={{
             backgroundColor: "var(--warm-white)",
             border: "1px solid var(--rule)",
@@ -131,20 +151,20 @@ export default function SearchFilter({
             <h3 className="section-header-label">Filter Options</h3>
             <button
               onClick={clearFilters}
-              className="text-sm text-orange-500 hover:text-orange-600 font-medium transition-colors"
+              className="text-sm font-medium transition-colors"
+              style={{ color: "var(--orange)" }}
             >
               Clear All
             </button>
           </div>
 
-          {/* Exclude/Include Toggle */}
           <div className="mb-4 p-3 rounded" style={{ backgroundColor: "var(--cream)" }}>
             <label className="flex items-center gap-3 cursor-pointer">
               <input
                 type="checkbox"
                 checked={excludeAllergens}
                 onChange={handleExcludeToggle}
-                className="w-4 h-4 text-orange-500 rounded focus:ring-orange-400 transition-all"
+                className="w-4 h-4 rounded"
               />
               <span className="text-sm font-medium" style={{ color: "var(--ink)" }}>
                 Exclude selected allergens
@@ -157,22 +177,16 @@ export default function SearchFilter({
             </p>
           </div>
 
-          {/* Allergen Checkboxes */}
           <div>
-            <h4 className="section-header-label mb-3">
-              Allergens
-            </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <h4 className="section-header-label mb-3">Allergens</h4>
+            <div className="grid grid-cols-2 gap-2">
               {commonAllergens.map((allergen) => (
-                <label
-                  key={allergen}
-                  className="flex items-center gap-2 cursor-pointer p-2"
-                >
+                <label key={allergen} className="flex items-center gap-2 cursor-pointer p-2">
                   <input
                     type="checkbox"
                     checked={selectedAllergens.includes(allergen)}
                     onChange={() => handleAllergenToggle(allergen)}
-                    className="w-4 h-4 text-orange-500 rounded focus:ring-orange-400 transition-all"
+                    className="w-4 h-4 rounded"
                   />
                   <span className="text-sm" style={{ color: "var(--ink)" }}>{allergen}</span>
                 </label>
