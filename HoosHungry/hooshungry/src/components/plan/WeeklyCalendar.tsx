@@ -65,7 +65,7 @@ const WeeklyCalendar = forwardRef<HTMLDivElement, WeeklyCalendarProps>(
         </div>
 
         {/* Horizontal day strip */}
-        <div className="flex gap-2 overflow-x-auto pb-1">
+        <div className="hide-scrollbar flex gap-2 overflow-x-auto pb-1" style={{ scrollbarWidth: "none" }}>
           {weekDates.map((date, index) => {
             const dayName = date.toLocaleDateString("en-US", { weekday: "short" });
             const dayNum = date.getDate();
