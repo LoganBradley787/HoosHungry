@@ -7,7 +7,8 @@ interface DailyMealPlanProps {
   onDateChange: (direction: "prev" | "next") => void;
   dailyData: DailyPlanResponse | null;
   loading: boolean;
-  onRefresh: () => void;
+  onItemUpdated: (item: import("../../api/planEndpoints").MealItem) => void;
+  onItemDeleted: (id: number) => void;
 }
 
 export default function DailyMealPlan({
@@ -15,7 +16,8 @@ export default function DailyMealPlan({
   onDateChange,
   dailyData,
   loading,
-  onRefresh,
+  onItemUpdated,
+  onItemDeleted,
 }: DailyMealPlanProps) {
   const dayName = selectedDate.toLocaleDateString("en-US", { weekday: "long" });
   const monthDay = selectedDate.toLocaleDateString("en-US", {
@@ -91,21 +93,21 @@ export default function DailyMealPlan({
           title="Breakfast"
           totalCalories={breakfastCalories}
           items={dailyData?.meals.breakfast || []}
-          onRefresh={onRefresh}
+          onItemUpdated={onItemUpdated} onItemDeleted={onItemDeleted}
         />
 
         <MealSection
           title="Lunch"
           totalCalories={lunchCalories}
           items={dailyData?.meals.lunch || []}
-          onRefresh={onRefresh}
+          onItemUpdated={onItemUpdated} onItemDeleted={onItemDeleted}
         />
 
         <MealSection
           title="Dinner"
           totalCalories={dinnerCalories}
           items={dailyData?.meals.dinner || []}
-          onRefresh={onRefresh}
+          onItemUpdated={onItemUpdated} onItemDeleted={onItemDeleted}
         />
       </div>
     </div>

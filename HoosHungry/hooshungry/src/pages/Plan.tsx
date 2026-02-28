@@ -37,7 +37,8 @@ export default function Plan() {
   const {
     data: dailyData,
     loading: dailyLoading,
-    refresh: refreshDaily,
+    updateItem,
+    deleteItem,
   } = useDailyPlan(selectedDate);
 
   // Update week dates when selected date changes
@@ -87,7 +88,8 @@ export default function Plan() {
               onDateChange={handleDateChange}
               dailyData={dailyData}
               loading={dailyLoading}
-              onRefresh={refreshDaily}
+              onItemUpdated={updateItem}
+              onItemDeleted={deleteItem}
             />
           </div>
 

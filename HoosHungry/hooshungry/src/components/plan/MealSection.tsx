@@ -6,10 +6,11 @@ interface MealSectionProps {
   title: string;
   totalCalories: number;
   items: MealItem[];
-  onRefresh: () => void;
+  onItemUpdated: (item: MealItem) => void;
+  onItemDeleted: (id: number) => void;
 }
 
-export default function MealSection({ title, totalCalories, items, onRefresh }: MealSectionProps) {
+export default function MealSection({ title, totalCalories, items, onItemUpdated, onItemDeleted }: MealSectionProps) {
   const [isExpanded, setIsExpanded] = useState(true);
 
   return (
@@ -40,7 +41,7 @@ export default function MealSection({ title, totalCalories, items, onRefresh }: 
             </div>
           ) : (
             items.map((item) => (
-              <MealItemCard key={item.id} item={item} onRefresh={onRefresh} />
+              <MealItemCard key={item.id} item={item} onItemUpdated={onItemUpdated} onItemDeleted={onItemDeleted} />
             ))
           )}
         </div>
