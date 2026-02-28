@@ -114,64 +114,66 @@ export default function Menu() {
   }, [data, searchTerm, filters]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-pink-100 via-orange-50 to-yellow-100">
+    <div className="min-h-screen" style={{ backgroundColor: "var(--cream)" }}>
       <Navigation />
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-orange-500 mb-6 sm:mb-8">
+        <h1
+          className="font-display italic mb-8"
+          style={{ fontSize: "clamp(3rem, 8vw, 6rem)", fontWeight: 300, color: "var(--ink)" }}
+        >
           Menu
         </h1>
 
         {/* Control Pills and Search - Responsive Layout */}
-        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 mb-6 sm:mb-8">
+        <div
+          className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-8 pb-4"
+          style={{ borderBottom: "1px solid var(--rule)" }}
+        >
           {/* Left Side: Dining Hall Pills */}
-          <div className="flex justify-center lg:justify-start">
-            <div className="flex gap-1 sm:gap-2 bg-white/60 backdrop-blur-sm rounded-full p-1 shadow-sm overflow-x-auto">
-              <PillButton
-                active={hall === "ohill"}
-                onClick={() => setHall("ohill")}
-              >
-                OHill
-              </PillButton>
-              <PillButton
-                active={hall === "newcomb"}
-                onClick={() => setHall("newcomb")}
-              >
-                Newcomb
-              </PillButton>
-              <PillButton
-                active={hall === "runk"}
-                onClick={() => setHall("runk")}
-              >
-                Runk
-              </PillButton>
-            </div>
+          <div className="flex items-center gap-6 overflow-x-auto">
+            <PillButton
+              active={hall === "ohill"}
+              onClick={() => setHall("ohill")}
+            >
+              OHill
+            </PillButton>
+            <PillButton
+              active={hall === "newcomb"}
+              onClick={() => setHall("newcomb")}
+            >
+              Newcomb
+            </PillButton>
+            <PillButton
+              active={hall === "runk"}
+              onClick={() => setHall("runk")}
+            >
+              Runk
+            </PillButton>
           </div>
 
           {/* Center: Period Pills */}
-          <div className="flex justify-center lg:justify-start overflow-x-auto">
-            <div className="flex gap-1 sm:gap-2 bg-white/60 backdrop-blur-sm rounded-full p-1 shadow-sm min-w-fit">
-              {loadingPeriods ? (
-                <div className="px-3 sm:px-4 py-2 text-gray-500 text-xs sm:text-sm">
-                  Loading periods...
-                </div>
-              ) : availablePeriods.length === 0 ? (
-                <div className="px-3 sm:px-4 py-2 text-red-600 font-medium text-xs sm:text-sm">
-                  This hall is closed today
-                </div>
-              ) : (
-                availablePeriods.map((p) => (
-                  <PillButton
-                    key={p.key}
-                    active={period === p.key}
-                    onClick={() => setPeriod(p.key as any)}
-                  >
-                    {p.name}
-                  </PillButton>
-                ))
-              )}
-            </div>
+          <div className="flex items-center gap-6 overflow-x-auto">
+            {loadingPeriods ? (
+              <div className="text-xs" style={{ color: "var(--ink-muted)" }}>
+                Loading periods...
+              </div>
+            ) : availablePeriods.length === 0 ? (
+              <div className="text-xs font-medium" style={{ color: "var(--orange)" }}>
+                This hall is closed today
+              </div>
+            ) : (
+              availablePeriods.map((p) => (
+                <PillButton
+                  key={p.key}
+                  active={period === p.key}
+                  onClick={() => setPeriod(p.key as any)}
+                >
+                  {p.name}
+                </PillButton>
+              ))
+            )}
           </div>
 
           {/* Right Side: Search and Filter */}
@@ -194,7 +196,7 @@ export default function Menu() {
 
         {/* Error State */}
         {error && (
-          <div className="bg-red-50 border border-red-200 rounded-2xl p-4 sm:p-6 text-center animate-fadeIn">
+          <div className="p-4 sm:p-6 text-center animate-fadeIn" style={{ border: "1px solid #FECACA", borderRadius: "8px", backgroundColor: "#FEF2F2" }}>
             <p className="text-red-600 font-semibold mb-2 text-sm sm:text-base">
               Error loading menu
             </p>
