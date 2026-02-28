@@ -173,12 +173,10 @@ export default function Menu() {
             <PillButton active={hall === "runk"} onClick={() => setHall("runk")}>Runk</PillButton>
 
             <span
-              className="select-none flex-shrink-0"
-              style={{ color: "var(--rule)", fontSize: "1rem", lineHeight: 1 }}
+              className="flex-shrink-0"
+              style={{ width: "1px", alignSelf: "stretch", backgroundColor: "var(--rule)" }}
               aria-hidden="true"
-            >
-              /
-            </span>
+            />
 
             {loadingPeriods ? (
               <span className="text-xs" style={{ color: "var(--ink-muted)" }}>…</span>
