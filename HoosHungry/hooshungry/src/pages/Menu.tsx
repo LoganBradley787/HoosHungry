@@ -259,7 +259,14 @@ export default function Menu() {
                 </div>
               ))
             ) : (
-              <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-8 sm:p-12 text-center animate-fadeIn">
+              <div
+                className="p-8 sm:p-12 text-center animate-fadeIn"
+                style={{
+                  backgroundColor: "var(--warm-white)",
+                  border: "1px solid var(--rule)",
+                  borderRadius: "8px",
+                }}
+              >
                 <p className="text-gray-600 text-base sm:text-lg">
                   No items found matching your criteria
                 </p>
@@ -268,7 +275,8 @@ export default function Menu() {
                     setSearchTerm("");
                     setFilters({ allergens: [], excludeAllergens: true });
                   }}
-                  className="mt-4 px-6 py-2 bg-orange-500 text-white rounded-full font-medium hover:bg-orange-600 transition text-sm sm:text-base"
+                  className="mt-4 px-5 py-2 text-sm font-medium text-white transition-opacity hover:opacity-90"
+                  style={{ backgroundColor: "var(--orange)", borderRadius: "4px" }}
                 >
                   Clear Filters
                 </button>
