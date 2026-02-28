@@ -25,7 +25,8 @@ export default function DailyMealPlan({
     day: "numeric",
   });
 
-  if (loading) {
+  // First-time load with no data yet — show skeleton so layout isn't empty
+  if (loading && !dailyData) {
     return (
       <div className="card-editorial p-6 sm:p-8">
         <div className="flex items-center justify-center py-20">
@@ -54,7 +55,10 @@ export default function DailyMealPlan({
     ) || 0;
 
   return (
-    <div className="card-editorial p-4 sm:p-6 lg:p-8">
+    <div
+      className="card-editorial p-4 sm:p-6 lg:p-8"
+      style={{ opacity: loading ? 0.5 : 1, transition: "opacity 150ms ease" }}
+    >
       {/* Header with Date Navigation */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-4">
         <h2 className="font-display italic text-2xl" style={{ color: "var(--ink)" }}>Daily Meal Plan</h2>
