@@ -23,7 +23,14 @@ export default function NavigationDark() {
   ];
 
   return (
-    <nav className="bg-gray-900/60 backdrop-blur-sm">
+    <nav
+      style={{
+        backgroundColor: "rgba(17, 10, 4, 0.75)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+        borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+      }}
+    >
       <div className="flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4">
         {/* Logo */}
         <div className="flex items-center gap-2 sm:gap-3">
@@ -32,7 +39,10 @@ export default function NavigationDark() {
             alt="HoosHungry"
             className="w-12 h-12 sm:w-16 sm:h-16 object-contain"
           />
-          <span className="text-xl sm:text-2xl font-bold bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
+          <span
+            className="font-display text-xl sm:text-2xl font-normal italic"
+            style={{ color: "var(--cream-on-orange)" }}
+          >
             HoosHungry
           </span>
         </div>
@@ -43,11 +53,24 @@ export default function NavigationDark() {
             <Link
               key={link.to}
               to={link.to}
-              className={`transition-colors ${
-                location.pathname === link.to
-                  ? "text-orange-500 font-semibold"
-                  : "text-gray-400 hover:text-gray-200"
-              }`}
+              className="tab-link"
+              style={{
+                color:
+                  location.pathname === link.to
+                    ? "var(--cream-on-orange)"
+                    : "rgba(255, 255, 255, 0.6)",
+                borderBottomColor:
+                  location.pathname === link.to ? "var(--amber)" : "transparent",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.color = "var(--cream-on-orange)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.color =
+                  location.pathname === link.to
+                    ? "var(--cream-on-orange)"
+                    : "rgba(255, 255, 255, 0.6)")
+              }
             >
               {link.label}
             </Link>
@@ -58,22 +81,39 @@ export default function NavigationDark() {
         <div className="hidden md:flex items-center gap-4">
           {user ? (
             <>
-              <span className="text-gray-300 hidden lg:inline">
-                Welcome, {user.username}!
+              <span
+                className="hidden lg:inline text-sm"
+                style={{ color: "rgba(255, 255, 255, 0.65)" }}
+              >
+                {user.username}
               </span>
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition whitespace-nowrap"
+                className="text-sm flex items-center gap-1 transition-colors"
+                style={{ color: "rgba(255, 255, 255, 0.75)" }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.color = "var(--cream-on-orange)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.color = "rgba(255, 255, 255, 0.75)")
+                }
               >
-                Logout
+                Logout →
               </button>
             </>
           ) : (
             <a
               href="/login"
-              className="px-4 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition"
+              className="text-sm flex items-center gap-1 transition-colors"
+              style={{ color: "rgba(255, 255, 255, 0.75)" }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.color = "var(--cream-on-orange)")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.color = "rgba(255, 255, 255, 0.75)")
+              }
             >
-              Login
+              Login →
             </a>
           )}
         </div>
@@ -81,7 +121,8 @@ export default function NavigationDark() {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden p-2 text-gray-400 hover:text-gray-200 transition"
+          className="md:hidden p-2 transition-colors"
+          style={{ color: "rgba(255, 255, 255, 0.75)" }}
           aria-label="Toggle menu"
         >
           {mobileMenuOpen ? (
@@ -120,7 +161,13 @@ export default function NavigationDark() {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden border-t border-gray-700 bg-gray-900/95 backdrop-blur-sm">
+        <div
+          className="md:hidden backdrop-blur-sm"
+          style={{
+            borderTop: "1px solid rgba(255, 255, 255, 0.08)",
+            backgroundColor: "rgba(17, 10, 4, 0.95)",
+          }}
+        >
           <div className="px-4 py-4 space-y-3">
             {/* Mobile Navigation Links */}
             {navLinks.map((link) => (
@@ -128,37 +175,43 @@ export default function NavigationDark() {
                 key={link.to}
                 to={link.to}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block py-2 transition-colors ${
-                  location.pathname === link.to
-                    ? "text-orange-500 font-semibold"
-                    : "text-gray-400 hover:text-gray-200"
-                }`}
+                className="block tab-link py-2"
+                style={{
+                  color:
+                    location.pathname === link.to
+                      ? "var(--cream-on-orange)"
+                      : "rgba(255, 255, 255, 0.6)",
+                  borderBottomColor:
+                    location.pathname === link.to ? "var(--amber)" : "transparent",
+                }}
               >
                 {link.label}
               </Link>
             ))}
 
             {/* Mobile Auth */}
-            <div className="pt-3 border-t border-gray-700">
+            <div className="pt-3" style={{ borderTop: "1px solid rgba(255, 255, 255, 0.08)" }}>
               {user ? (
                 <>
-                  <span className="block text-gray-300 py-2 text-sm">
-                    Welcome, {user.username}!
+                  <span className="block py-2 text-sm" style={{ color: "rgba(255, 255, 255, 0.65)" }}>
+                    {user.username}
                   </span>
                   <button
                     onClick={handleLogout}
-                    className="w-full px-4 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition"
+                    className="text-sm"
+                    style={{ color: "rgba(255, 255, 255, 0.75)" }}
                   >
-                    Logout
+                    Logout →
                   </button>
                 </>
               ) : (
                 <a
                   href="/login"
                   onClick={() => setMobileMenuOpen(false)}
-                  className="block w-full px-4 py-2 bg-orange-500 text-white rounded-full hover:bg-orange-600 transition text-center"
+                  className="text-sm"
+                  style={{ color: "rgba(255, 255, 255, 0.75)" }}
                 >
-                  Login
+                  Login →
                 </a>
               )}
             </div>

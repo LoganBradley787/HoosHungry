@@ -164,7 +164,13 @@ export default function Prompt() {
                 "opacity 500ms cubic-bezier(0.4, 0, 0.2, 1), transform 500ms cubic-bezier(0.4, 0, 0.2, 1)",
             }}
           >
-            <p className="text-xs text-gray-500">
+            <p
+              className="text-xs"
+              style={{
+                color: isTransitioned ? "rgba(250, 215, 170, 0.35)" : "var(--ink-muted)",
+                transition: "color 700ms cubic-bezier(0.4, 0, 0.2, 1)",
+              }}
+            >
               <span className="inline-flex items-center gap-1.5">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
