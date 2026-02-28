@@ -35,7 +35,7 @@ export default function MenuItemCard({ item, onDetails, onAddToPlan }: MenuItemC
   const fat = item.nutrition_info?.total_fat ? Math.round(parseFloat(item.nutrition_info.total_fat)) : null;
 
   return (
-    <div className="p-5 sm:p-6" style={{ backgroundColor: "var(--warm-white)" }}>
+    <div className="p-4 sm:p-5" style={{ backgroundColor: "var(--warm-white)" }}>
       {/* Title row */}
       <div className="flex justify-between items-start gap-4 mb-2">
         <h3
@@ -46,7 +46,7 @@ export default function MenuItemCard({ item, onDetails, onAddToPlan }: MenuItemC
         </h3>
         <span
           className="font-mono-data text-base whitespace-nowrap flex-shrink-0"
-          style={{ color: "var(--ink)" }}
+          style={{ color: "var(--ink)", fontWeight: 600 }}
         >
           {calories} cal
         </span>
@@ -79,17 +79,17 @@ export default function MenuItemCard({ item, onDetails, onAddToPlan }: MenuItemC
       {/* Nutrition inline */}
       <div className="flex flex-wrap gap-3 mb-4">
         {protein !== null && (
-          <span className="font-mono-data text-xs" style={{ color: "var(--ink-muted)" }}>
+          <span className="font-mono-data text-xs" style={{ color: "var(--ink)" }}>
             {protein}g P
           </span>
         )}
         {carbs !== null && (
-          <span className="font-mono-data text-xs" style={{ color: "var(--ink-muted)" }}>
+          <span className="font-mono-data text-xs" style={{ color: "var(--ink)" }}>
             {carbs}g C
           </span>
         )}
         {fat !== null && (
-          <span className="font-mono-data text-xs" style={{ color: "var(--ink-muted)" }}>
+          <span className="font-mono-data text-xs" style={{ color: "var(--ink)" }}>
             {fat}g F
           </span>
         )}
