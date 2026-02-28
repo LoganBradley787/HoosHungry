@@ -56,9 +56,6 @@ body {
   border-bottom: 2px solid transparent;
   transition: color 150ms, border-color 150ms;
   background: none;
-  border-top: none;
-  border-left: none;
-  border-right: none;
   cursor: pointer;
 }
 
