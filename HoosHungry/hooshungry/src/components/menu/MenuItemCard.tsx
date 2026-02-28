@@ -46,7 +46,7 @@ export default function MenuItemCard({ item, onDetails, onAddToPlan }: MenuItemC
         </h3>
         <span
           className="font-mono-data text-base whitespace-nowrap flex-shrink-0"
-          style={{ color: "var(--ink)", fontWeight: 600 }}
+          style={{ color: "var(--ink)" }}
         >
           {calories} cal
         </span>

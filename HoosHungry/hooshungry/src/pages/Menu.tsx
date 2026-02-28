@@ -148,7 +148,7 @@ export default function Menu() {
             >
               {data.day_name}, {data.date}
               <span style={{ margin: "0 0.5em", opacity: 0.5 }}>·</span>
-              Hall {data.hall_hours.open_time}–{data.hall_hours.close_time}
+              Hours {data.hall_hours.open_time}–{data.hall_hours.close_time}
               <span style={{ margin: "0 0.5em", opacity: 0.5 }}>·</span>
               {data.period.name} {data.period.start_time}–{data.period.end_time}
             </p>
