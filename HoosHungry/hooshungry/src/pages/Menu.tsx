@@ -190,6 +190,7 @@ export default function Menu() {
                   key={p.key}
                   active={period === p.key}
                   onClick={() => setPeriod(p.key as any)}
+                  style={{ fontSize: "0.67rem" }}
                 >
                   {p.name}
                 </PillButton>
