@@ -304,21 +304,6 @@
   color: white;
 }
 
-/* Smooth transitions for dark mode */
-* {
-  transition-property: background-color, border-color, color;
-  transition-duration: 150ms;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Override for elements that shouldn't transition */
-.no-transition,
-canvas,
-svg,
-img,
-video {
-  transition: none !important;
-}
 
 /* Performance optimizations */
 .will-change-transform {
