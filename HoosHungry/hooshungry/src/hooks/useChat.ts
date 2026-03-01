@@ -1,6 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from "react";
 import { promptAPI } from "../api/promptEndpoints";
-import type { ChatMessage, MealSuggestion, ChatRequest } from "../api/promptEndpoints";
+import type { ChatMessage, MealSuggestion } from "../api/promptEndpoints";
 
 interface UseChatOptions {
   /**
@@ -24,9 +24,9 @@ interface UseChatOptions {
   onError?: (error: Error) => void;
 
   /**
-   * Context to include with each message
+   * Context to include with each message (unused - reserved for future use)
    */
-  context?: ChatRequest["context"];
+  context?: Record<string, unknown>;
 }
 
 interface UseChatReturn {
@@ -76,7 +76,6 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     onMessageSent,
     onResponseReceived,
     onError,
-    context,
   } = options;
 
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
@@ -119,9 +118,6 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
         // Send to API
         const response = await promptAPI.sendMessage({
           message: content,
-          context: context || {
-            current_plan_date: new Date().toISOString().split("T")[0],
-          },
         });
 
         // Create assistant message
@@ -152,7 +148,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
         setIsLoading(false);
       }
     },
-    [isLoading, context, generateId, onMessageSent, onResponseReceived, onError]
+    [isLoading, generateId, onMessageSent, onResponseReceived, onError]
   );
 
   /**
