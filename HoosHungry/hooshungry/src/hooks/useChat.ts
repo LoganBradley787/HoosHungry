@@ -81,6 +81,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
   const [messages, setMessages] = useState<ChatMessage[]>(initialMessages);
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const historyLoadedRef = useRef(false);
 
   // Scroll to bottom when messages change
   useEffect(() => {
@@ -90,7 +91,7 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
   // Load chat history from backend on mount
   useEffect(() => {
     promptAPI.getHistory().then((history) => {
-      if (history.length > 0) {
+      if (history.length > 0 && !historyLoadedRef.current) {
         setMessages(history);
       }
     }).catch(() => {
@@ -121,6 +122,8 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
         timestamp: new Date(),
       };
 
+      // Mark history as superseded so the async history load won't overwrite this
+      historyLoadedRef.current = true;
       // Add user message to state
       setMessages((prev) => [...prev, userMessage]);
       onMessageSent?.(userMessage);
