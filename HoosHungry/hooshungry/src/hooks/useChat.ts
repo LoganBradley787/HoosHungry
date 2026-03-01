@@ -87,6 +87,18 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
+  // Load chat history from backend on mount
+  useEffect(() => {
+    promptAPI.getHistory().then((history) => {
+      if (history.length > 0) {
+        setMessages(history);
+      }
+    }).catch(() => {
+      // silently ignore — user just starts with empty chat
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // run once on mount
+
   /**
    * Generate a unique ID for messages
    */
@@ -132,15 +144,25 @@ export function useChat(options: UseChatOptions = {}): UseChatReturn {
         // Add assistant message to state
         setMessages((prev) => [...prev, assistantMessage]);
         onResponseReceived?.(assistantMessage);
-      } catch (error) {
+      } catch (error: unknown) {
         console.error("Failed to send message:", error);
         onError?.(error as Error);
 
-        // Add error message
+        // Check for usage limit error (HTTP 402)
+        const isUsageLimit =
+          typeof error === "object" &&
+          error !== null &&
+          "response" in error &&
+          (error as { response?: { status?: number } }).response?.status === 402;
+
+        const errorContent = isUsageLimit
+          ? "You've used all your CavBot messages. Upgrade to premium for unlimited access."
+          : "Sorry, I encountered an error. Please try again.";
+
         const errorMessage: ChatMessage = {
           id: generateId("error"),
           role: "assistant",
-          content: "Sorry, I encountered an error. Please try again.",
+          content: errorContent,
           timestamp: new Date(),
         };
         setMessages((prev) => [...prev, errorMessage]);
