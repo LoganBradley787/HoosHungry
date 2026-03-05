@@ -11,10 +11,22 @@ export interface MealItem {
   protein_per_serving: number | null;
   carbs_per_serving: number | null;
   fat_per_serving: number | null;
+  fiber_per_serving: number | null;
+  sodium_per_serving: number | null;
+  sugar_per_serving: number | null;
+  cholesterol_per_serving: number | null;
+  saturated_fat_per_serving: number | null;
+  trans_fat_per_serving: number | null;
   total_calories: number;
   total_protein: number;
   total_carbs: number;
   total_fat: number;
+  total_fiber: number;
+  total_sodium: number;
+  total_sugar: number;
+  total_cholesterol: number;
+  total_saturated_fat: number;
+  total_trans_fat: number;
   dining_hall: string;
   station_name: string;
   added_at: string;
@@ -44,6 +56,8 @@ export interface WeekPlanResponse {
   daily_protein_goal: number | null;
   daily_carbs_goal: number | null;
   daily_fat_goal: number | null;
+  daily_fiber_goal: number | null;
+  daily_sodium_goal: number | null;
   week_summary: DailySummary[];
 }
 
@@ -53,12 +67,20 @@ export interface DailyPlanResponse {
   total_protein: number;
   total_carbs: number;
   total_fat: number;
+  total_fiber: number;
+  total_sodium: number;
+  total_sugar: number;
+  total_cholesterol: number;
+  total_saturated_fat: number;
+  total_trans_fat: number;
   meals: DayMeals;
   goals: {
     calories: number | null;
     protein: number | null;
     carbs: number | null;
     fat: number | null;
+    fiber: number | null;
+    sodium: number | null;
   };
 }
 
@@ -74,6 +96,18 @@ export interface UpdateGoalsRequest {
   daily_protein_goal?: number;
   daily_carbs_goal?: number;
   daily_fat_goal?: number;
+  daily_fiber_goal?: number;
+  daily_sodium_goal?: number;
+}
+
+export interface HistoryEntry {
+  date: string;
+  total_calories: number;
+  total_protein: number;
+  total_carbs: number;
+  total_fat: number;
+  total_fiber: number;
+  total_sodium: number;
 }
 
 export const planAPI = {
@@ -123,6 +157,12 @@ export const planAPI = {
     const response = await apiClient.patch("/plan/goals/", goals, {
       params: { date },
     });
+    return response.data;
+  },
+
+  // Get meal history
+  getHistory: async (days = 30): Promise<{ history: HistoryEntry[] }> => {
+    const response = await apiClient.get("/plan/history/", { params: { days } });
     return response.data;
   },
 };
