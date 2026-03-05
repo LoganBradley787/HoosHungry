@@ -53,6 +53,8 @@ export default function DailyMealPlan({
       (sum, item) => sum + item.total_calories,
       0
     ) || 0;
+  const snackCalories =
+    dailyData?.meals.snack.reduce((sum, item) => sum + item.total_calories, 0) || 0;
 
   return (
     <div
@@ -112,6 +114,14 @@ export default function DailyMealPlan({
           totalCalories={dinnerCalories}
           items={dailyData?.meals.dinner || []}
           onItemUpdated={onItemUpdated} onItemDeleted={onItemDeleted}
+        />
+
+        <MealSection
+          title="Snack"
+          totalCalories={snackCalories}
+          items={dailyData?.meals.snack || []}
+          onItemUpdated={onItemUpdated}
+          onItemDeleted={onItemDeleted}
         />
       </div>
     </div>
