@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { DailyPlanResponse } from "../../api/planEndpoints";
 
 interface ProgressStatsProps {
@@ -7,18 +7,51 @@ interface ProgressStatsProps {
   onSetGoalsClick: () => void;
 }
 
+function useCountUp(target: number, duration = 900, delay = 650): number {
+  const [value, setValue] = useState(0);
+
+  useEffect(() => {
+    setValue(0);
+    let timerId: ReturnType<typeof setTimeout>;
+    let rafId: number;
+
+    timerId = setTimeout(() => {
+      const start = performance.now();
+      const tick = (now: number) => {
+        const elapsed = now - start;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+        setValue(Math.round(target * eased));
+        if (progress < 1) {
+          rafId = requestAnimationFrame(tick);
+        }
+      };
+      rafId = requestAnimationFrame(tick);
+    }, delay);
+
+    return () => {
+      clearTimeout(timerId);
+      cancelAnimationFrame(rafId);
+    };
+  }, [target, duration, delay]);
+
+  return value;
+}
+
 function MacroBar({
   label,
   current,
   goal,
   unit,
   color,
+  mounted,
 }: {
   label: string;
   current: number;
   goal: number | null;
   unit: string;
   color: string;
+  mounted: boolean;
 }) {
   const pct = goal && goal > 0 ? Math.min(Math.round((current / goal) * 100), 100) : 0;
   return (
@@ -36,8 +69,12 @@ function MacroBar({
       </div>
       <div className="w-full h-1 rounded-full" style={{ backgroundColor: "var(--rule)" }}>
         <div
-          className="h-1 rounded-full transition-all duration-500"
-          style={{ width: `${pct}%`, backgroundColor: color }}
+          className="h-1 rounded-full"
+          style={{
+            width: mounted ? `${pct}%` : "0%",
+            backgroundColor: color,
+            transition: "width 900ms cubic-bezier(0.4, 0, 0.2, 1)",
+          }}
         />
       </div>
     </div>
@@ -58,8 +95,15 @@ function NutrientReadout({ label, value, unit }: { label: string; value: number;
 
 export default function ProgressStats({ dailyData, goals, onSetGoalsClick }: ProgressStatsProps) {
   const [showMore, setShowMore] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
-  const currentCalories = dailyData?.total_calories || 0;
+  useEffect(() => {
+    const t = setTimeout(() => setMounted(true), 650);
+    return () => clearTimeout(t);
+  }, []);
+
+  const rawCalories = dailyData?.total_calories || 0;
+  const currentCalories = useCountUp(rawCalories, 900, 650);
   const goalCalories = goals?.calories || 2000;
   const caloriePercentage = Math.min(Math.round((currentCalories / goalCalories) * 100), 100);
 
@@ -99,8 +143,12 @@ export default function ProgressStats({ dailyData, goals, onSetGoalsClick }: Pro
         </div>
         <div className="w-full h-1 rounded-full mt-3" style={{ backgroundColor: "var(--rule)" }}>
           <div
-            className="h-1 rounded-full transition-all duration-500"
-            style={{ width: `${caloriePercentage}%`, backgroundColor: "var(--orange)" }}
+            className="h-1 rounded-full"
+            style={{
+              width: mounted ? `${caloriePercentage}%` : "0%",
+              backgroundColor: "var(--orange)",
+              transition: "width 900ms cubic-bezier(0.4, 0, 0.2, 1)",
+            }}
           />
         </div>
       </div>
@@ -114,6 +162,7 @@ export default function ProgressStats({ dailyData, goals, onSetGoalsClick }: Pro
         goal={goals?.protein ?? 150}
         unit="g"
         color="var(--amber)"
+        mounted={mounted}
       />
       <MacroBar
         label="Carbs"
@@ -121,6 +170,7 @@ export default function ProgressStats({ dailyData, goals, onSetGoalsClick }: Pro
         goal={goals?.carbs ?? 250}
         unit="g"
         color="var(--terracotta)"
+        mounted={mounted}
       />
       <MacroBar
         label="Fat"
@@ -128,6 +178,7 @@ export default function ProgressStats({ dailyData, goals, onSetGoalsClick }: Pro
         goal={goals?.fat ?? 65}
         unit="g"
         color="var(--terracotta)"
+        mounted={mounted}
       />
 
       <hr className="editorial-rule mb-4 mt-2" />
@@ -139,6 +190,7 @@ export default function ProgressStats({ dailyData, goals, onSetGoalsClick }: Pro
         goal={goals?.fiber ?? 28}
         unit="g"
         color="var(--amber)"
+        mounted={mounted}
       />
       <MacroBar
         label="Sodium"
@@ -146,6 +198,7 @@ export default function ProgressStats({ dailyData, goals, onSetGoalsClick }: Pro
         goal={goals?.sodium ?? 2300}
         unit="mg"
         color="var(--terracotta)"
+        mounted={mounted}
       />
 
       {/* Expand toggle */}
