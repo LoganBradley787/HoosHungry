@@ -78,5 +78,5 @@ export function useDailyPlan(selectedDate: Date) {
     });
   }, []);
 
-  return { data, loading, error, refresh: fetchDailyPlan, updateItem, deleteItem };
+  return { data, loading, error, refresh: fetchDailyPlan, refetch: fetchDailyPlan, updateItem, deleteItem };
 }

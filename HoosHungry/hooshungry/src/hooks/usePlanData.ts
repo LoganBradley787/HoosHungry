@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { planAPI, type WeekPlanResponse } from "../api/planEndpoints";
 
 export function useWeekPlan(selectedDate: Date) {
@@ -7,33 +7,33 @@ export function useWeekPlan(selectedDate: Date) {
   const [error, setError] = useState<string | null>(null);
   const cache = useRef<Map<string, WeekPlanResponse>>(new Map());
 
-  useEffect(() => {
-    const fetchWeekPlan = async () => {
-      const dateStr = selectedDate.toISOString().split("T")[0];
-      const cached = cache.current.get(dateStr);
+  const fetchWeekPlan = useCallback(async () => {
+    const dateStr = selectedDate.toISOString().split("T")[0];
+    const cached = cache.current.get(dateStr);
 
-      if (cached) {
-        setData(cached);
-        setLoading(false);
-      } else {
-        setLoading(true);
-      }
+    if (cached) {
+      setData(cached);
+      setLoading(false);
+    } else {
+      setLoading(true);
+    }
 
-      try {
-        setError(null);
-        const weekData = await planAPI.getWeekPlan(dateStr);
-        cache.current.set(dateStr, weekData);
-        setData(weekData);
-      } catch (err: any) {
-        setError(err.response?.data?.error || "Failed to fetch week plan");
-        console.error("Error fetching week plan:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchWeekPlan();
+    try {
+      setError(null);
+      const weekData = await planAPI.getWeekPlan(dateStr);
+      cache.current.set(dateStr, weekData);
+      setData(weekData);
+    } catch (err: any) {
+      setError(err.response?.data?.error || "Failed to fetch week plan");
+      console.error("Error fetching week plan:", err);
+    } finally {
+      setLoading(false);
+    }
   }, [selectedDate]);
 
-  return { data, loading, error };
+  useEffect(() => {
+    fetchWeekPlan();
+  }, [fetchWeekPlan]);
+
+  return { data, loading, error, refetch: fetchWeekPlan };
 }

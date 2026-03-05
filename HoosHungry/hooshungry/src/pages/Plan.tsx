@@ -3,17 +3,17 @@ import Navigation from "../components/common/Navigation";
 import DailyMealPlan from "../components/plan/DailyMealPlan";
 import WeeklyCalendar from "../components/plan/WeeklyCalendar";
 import ProgressStats from "../components/plan/ProgressStats";
+import GoalSetupModal from "../components/plan/GoalSetupModal";
+import CalorieTrend from "../components/plan/CalorieTrend";
 import { useWeekPlan } from "../hooks/usePlanData";
 import { useDailyPlan } from "../hooks/useDailyPlan";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
-// Helper to get week dates
 function getWeekDates(date: Date): Date[] {
   const week = [];
   const curr = new Date(date);
-  const first = curr.getDate() - curr.getDay(); // First day is Sunday
-
+  const first = curr.getDate() - curr.getDay();
   for (let i = 0; i < 7; i++) {
     const day = new Date(curr.setDate(first + i));
     week.push(new Date(day));
@@ -28,23 +28,31 @@ export default function Plan() {
   useEffect(() => {
     if (!user) navigate("/login", { replace: true });
   }, [user, navigate]);
+
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [weekDates, setWeekDates] = useState(getWeekDates(new Date()));
+  const [goalModalOpen, setGoalModalOpen] = useState(false);
   const weeklyCalendarRef = useRef<HTMLDivElement>(null);
 
-  // Fetch week and daily plan data
-  const { data: weekData, loading: weekLoading } = useWeekPlan(selectedDate);
+  const { data: weekData, loading: weekLoading, refetch: refetchWeek } = useWeekPlan(selectedDate);
   const {
     data: dailyData,
     loading: dailyLoading,
     updateItem,
     deleteItem,
+    refetch: refetchDaily,
   } = useDailyPlan(selectedDate);
 
-  // Update week dates when selected date changes
   useEffect(() => {
     setWeekDates(getWeekDates(selectedDate));
   }, [selectedDate]);
+
+  // Auto-open goal modal on first visit when no goals are set
+  useEffect(() => {
+    if (!weekLoading && weekData && weekData.daily_calorie_goal === null) {
+      setGoalModalOpen(true);
+    }
+  }, [weekData, weekLoading]);
 
   const handleDateChange = (direction: "prev" | "next") => {
     const newDate = new Date(selectedDate);
@@ -58,8 +66,9 @@ export default function Plan() {
     setSelectedDate(newDate);
   };
 
-  const handleDaySelect = (date: Date) => {
-    setSelectedDate(date);
+  const handleGoalsSaved = () => {
+    refetchWeek?.();
+    refetchDaily?.();
   };
 
   return (
@@ -79,9 +88,8 @@ export default function Plan() {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Main Content Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6">
-          {/* Left Column - Daily Meal Plan */}
+          {/* Left Column */}
           <div>
             <DailyMealPlan
               selectedDate={selectedDate}
@@ -93,20 +101,33 @@ export default function Plan() {
             />
           </div>
 
-          {/* Right Column - Progress & Weekly Calendar */}
+          {/* Right Column */}
           <div className="space-y-6">
-            <ProgressStats dailyData={dailyData} goals={dailyData?.goals} />
+            <ProgressStats
+              dailyData={dailyData}
+              goals={dailyData?.goals}
+              onSetGoalsClick={() => setGoalModalOpen(true)}
+            />
             <WeeklyCalendar
               ref={weeklyCalendarRef}
               weekDates={weekDates}
               selectedDate={selectedDate}
-              onDaySelect={handleDaySelect}
+              onDaySelect={setSelectedDate}
               onWeekChange={handleWeekChange}
               weekSummary={weekData?.week_summary}
             />
+            <CalorieTrend calorieGoal={weekData?.daily_calorie_goal ?? null} />
           </div>
         </div>
       </div>
+
+      {goalModalOpen && (
+        <GoalSetupModal
+          currentDate={selectedDate}
+          onClose={() => setGoalModalOpen(false)}
+          onSaved={handleGoalsSaved}
+        />
+      )}
     </div>
   );
 }
