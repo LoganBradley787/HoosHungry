@@ -1,4 +1,4 @@
-import { Children, cloneElement, isValidElement, useEffect, useState } from "react";
+import { Children, isValidElement, useEffect, useState } from "react";
 
 interface StaggerProps {
   children: React.ReactNode;

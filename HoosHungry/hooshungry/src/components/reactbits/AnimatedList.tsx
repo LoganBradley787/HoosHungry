@@ -1,4 +1,4 @@
-import { useEffect, useState, Children, cloneElement, isValidElement } from "react";
+import { useEffect, useState, Children, isValidElement } from "react";
 
 interface AnimatedListProps {
   children: React.ReactNode;

@@ -23,7 +23,7 @@ export default function ChatMessage({
 
   // Orchestrate entrance animations
   useEffect(() => {
-    const timers: NodeJS.Timeout[] = [];
+    const timers: ReturnType<typeof setTimeout>[] = [];
     timers.push(setTimeout(() => setIsVisible(true), 50));
     timers.push(setTimeout(() => setShowAvatar(true), 100));
     timers.push(setTimeout(() => setShowBubble(true), 150));

@@ -11,7 +11,7 @@ interface WeeklyCalendarProps {
 }
 
 const WeeklyCalendar = forwardRef<HTMLDivElement, WeeklyCalendarProps>(
-  ({ weekDates, selectedDate, onDaySelect, onWeekChange, weekSummary }, ref) => {
+  ({ weekDates, selectedDate, onDaySelect, onWeekChange, weekSummary: _weekSummary }, ref) => {
     const selectedDayRef = useRef<HTMLButtonElement>(null);
 
     useEffect(() => {
@@ -20,8 +20,7 @@ const WeeklyCalendar = forwardRef<HTMLDivElement, WeeklyCalendarProps>(
 
     const formatDateKey = (date: Date) => date.toISOString().split("T")[0];
     const isSelectedDate = (date: Date) => formatDateKey(date) === formatDateKey(selectedDate);
-    const getSummaryForDate = (date: Date) => weekSummary?.find((s) => s.date === formatDateKey(date));
-
+    const isToday = (date: Date) => formatDateKey(date) === formatDateKey(new Date());
     const getDateRangeText = () => {
       const firstDay = weekDates[0];
       const lastDay = weekDates[6];
@@ -70,9 +69,7 @@ const WeeklyCalendar = forwardRef<HTMLDivElement, WeeklyCalendarProps>(
             const dayName = date.toLocaleDateString("en-US", { weekday: "short" });
             const dayNum = date.getDate();
             const isSelected = isSelectedDate(date);
-            const summary = getSummaryForDate(date);
-            const hasMeals = summary?.has_meals || false;
-
+            const todayFlag = isToday(date);
             return (
               <button
                 key={index}
@@ -105,12 +102,12 @@ const WeeklyCalendar = forwardRef<HTMLDivElement, WeeklyCalendarProps>(
                 >
                   {dayNum}
                 </span>
-                {/* Meal dot indicator */}
+                {/* Today dot indicator */}
                 <div
                   className="w-1 h-1 rounded-full mt-2"
                   style={{
-                    backgroundColor: hasMeals
-                      ? isSelected ? "rgba(255,255,255,0.7)" : "var(--orange)"
+                    backgroundColor: todayFlag
+                      ? isSelected ? "rgba(255,255,255,0.9)" : "var(--orange)"
                       : "transparent",
                   }}
                 />
