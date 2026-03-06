@@ -31,6 +31,8 @@ export interface UpdateProfileRequest {
   default_protein_goal?: number | null;
   default_carbs_goal?: number | null;
   default_fat_goal?: number | null;
+  default_fiber_goal?: number | null;
+  default_sodium_goal?: number | null;
   goal_type?: "maintain" | "lose" | "gain";
   activity_level?: "sedentary" | "light" | "moderate" | "active" | "very_active";
 }

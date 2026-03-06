@@ -1,4 +1,5 @@
 import apiClient from "./client";
+import { toLocalDateString } from "../utils/dateUtils";
 
 export interface ChatMessage {
   id: string;
@@ -65,7 +66,7 @@ export const promptAPI = {
   },
 
   applySuggestion: async (suggestion: MealSuggestion): Promise<void> => {
-    const today = new Date().toISOString().split("T")[0];
+    const today = toLocalDateString(new Date());
     await apiClient.post("/plan/add-item/", {
       date: today,
       menu_item_id: suggestion.id,

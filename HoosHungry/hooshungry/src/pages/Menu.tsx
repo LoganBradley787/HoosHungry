@@ -23,6 +23,7 @@ export default function Menu() {
     excludeAllergens: boolean;
   }>({ allergens: [], excludeAllergens: true });
   const [showContent, setShowContent] = useState(false);
+  const [showTitle, setShowTitle] = useState(false);
   const [selectedStation, setSelectedStation] = useState<string | null>(null);
 
   const {
@@ -60,6 +61,11 @@ export default function Menu() {
       setTimeout(() => setShowContent(true), 50);
     }
   }, [data, loading, hall, period]);
+
+  useEffect(() => {
+    const t = setTimeout(() => setShowTitle(true), 200);
+    return () => clearTimeout(t);
+  }, []);
 
   useEffect(() => {
     setSelectedStation(null);
@@ -137,14 +143,30 @@ export default function Menu() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
           <h1
             className="font-display italic"
-            style={{ fontSize: "clamp(3rem, 8vw, 6rem)", fontWeight: 300, color: "var(--cream-on-orange)" }}
+            style={{
+              fontSize: "clamp(3rem, 8vw, 6rem)",
+              fontWeight: 300,
+              color: "var(--cream-on-orange)",
+              opacity: showTitle ? 1 : 0,
+              transform: showTitle ? "translateY(0)" : "translateY(50px)",
+              filter: showTitle ? "blur(0px)" : "blur(12px)",
+              transition: "opacity 700ms cubic-bezier(0.4, 0, 0.2, 1), transform 700ms cubic-bezier(0.4, 0, 0.2, 1), filter 700ms cubic-bezier(0.4, 0, 0.2, 1)",
+            }}
           >
             Menu
           </h1>
           {data && (
             <p
               className="font-mono-data mt-2"
-              style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.45)", letterSpacing: "0.05em" }}
+              style={{
+                fontSize: "0.7rem",
+                color: "rgba(255,255,255,0.45)",
+                letterSpacing: "0.05em",
+                opacity: showContent ? 1 : 0,
+                transform: showContent ? "translateY(0)" : "translateY(12px)",
+                filter: showContent ? "blur(0px)" : "blur(6px)",
+                transition: "opacity 500ms cubic-bezier(0.4, 0, 0.2, 1), transform 500ms cubic-bezier(0.4, 0, 0.2, 1), filter 500ms cubic-bezier(0.4, 0, 0.2, 1)",
+              }}
             >
               {data.day_name}, {data.date}
               <span style={{ margin: "0 0.5em", opacity: 0.5 }}>·</span>

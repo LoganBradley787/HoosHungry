@@ -1,5 +1,14 @@
 import axios from "axios";
 
+// Holds a reference to AuthContext's clearAuth, set by AuthProvider on mount.
+// This lets the axios interceptor clear React auth state on 401 without a
+// hard page redirect or direct dependency on the context.
+let authClearCallback: (() => void) | null = null;
+
+export function setAuthClearCallback(fn: () => void) {
+  authClearCallback = fn;
+}
+
 const apiClient = axios.create({
   baseURL: "http://localhost:8000/api",
   headers: {
@@ -57,10 +66,13 @@ apiClient.interceptors.response.use(
   (error) => {
     console.error("API Error:", error.response?.data || error.message);
 
-    // Handle 401 Unauthorized - redirect to login
+    // Handle 401 Unauthorized - clear auth state so PrivateRoute redirects
     if (error.response?.status === 401) {
-      localStorage.removeItem("authToken");
-      window.location.href = "/login";
+      if (authClearCallback) {
+        authClearCallback();
+      } else {
+        localStorage.removeItem("authToken");
+      }
     }
 
     return Promise.reject(error);

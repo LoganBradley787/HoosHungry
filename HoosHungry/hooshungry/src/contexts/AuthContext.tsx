@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import type { ReactNode } from "react";
+import { setAuthClearCallback } from "../api/client";
 
 interface Plan {
   id: number;
@@ -79,6 +80,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     checkAuth();
+  }, []);
+
+  // Clears auth state locally without hitting the backend.
+  // Used by the axios interceptor when a 401 is received (token already invalid).
+  const clearAuth = () => {
+    setUser(null);
+    setToken(null);
+    localStorage.removeItem("authToken");
+  };
+
+  // Register clearAuth with the axios client so 401 responses sync React state
+  useEffect(() => {
+    setAuthClearCallback(clearAuth);
   }, []);
 
   const login = async (username: string, password: string) => {

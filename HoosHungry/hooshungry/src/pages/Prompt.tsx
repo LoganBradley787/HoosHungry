@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../contexts/AuthContext";
 import { ChatContainer, NavigationDark } from "../components/prompt";
 import Navigation from "../components/common/Navigation";
 import {
@@ -10,19 +8,10 @@ import {
 } from "../components/reactbits";
 
 export default function Prompt() {
-  const { user } = useAuth();
-  const navigate = useNavigate();
   const [isTransitioned, setIsTransitioned] = useState(false);
   const [showHeader, setShowHeader] = useState(false);
   const [showChat, setShowChat] = useState(false);
   const [showFooter, setShowFooter] = useState(false);
-
-  // Redirect to login if not authenticated
-  useEffect(() => {
-    if (!user) {
-      navigate("/login", { replace: true });
-    }
-  }, [user, navigate]);
 
   // Orchestrate staggered entrance animations
   useEffect(() => {
@@ -42,11 +31,6 @@ export default function Prompt() {
 
     return () => timers.forEach(clearTimeout);
   }, []);
-
-  // Don't render if not authenticated
-  if (!user) {
-    return null;
-  }
 
   return (
     <div

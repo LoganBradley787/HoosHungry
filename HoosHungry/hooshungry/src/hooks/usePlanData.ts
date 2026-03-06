@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { planAPI, type WeekPlanResponse } from "../api/planEndpoints";
+import { toLocalDateString } from "../utils/dateUtils";
 
 export function useWeekPlan(selectedDate: Date) {
   const [data, setData] = useState<WeekPlanResponse | null>(null);
@@ -8,7 +9,7 @@ export function useWeekPlan(selectedDate: Date) {
   const cache = useRef<Map<string, WeekPlanResponse>>(new Map());
 
   const fetchWeekPlan = useCallback(async () => {
-    const dateStr = selectedDate.toISOString().split("T")[0];
+    const dateStr = toLocalDateString(selectedDate);
     const cached = cache.current.get(dateStr);
 
     if (cached) {

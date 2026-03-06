@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import type { MenuItem } from "../../api/endpoints";
 import { planAPI } from "../../api/planEndpoints";
 import { useAuth } from "../../contexts/AuthContext";
+import { toLocalDateString } from "../../utils/dateUtils";
 
 interface AddToPlanPopupProps {
   item: MenuItem;
@@ -59,7 +60,7 @@ export default function AddToPlanPopup({
     try {
       setIsSaving(true);
 
-      const today = new Date().toISOString().split("T")[0];
+      const today = toLocalDateString(new Date());
 
       await planAPI.addMealItem({
         date: today,

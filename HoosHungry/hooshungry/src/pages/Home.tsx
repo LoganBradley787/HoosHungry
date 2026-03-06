@@ -10,8 +10,6 @@ import FadeContent from "../components/reactbits/FadeContent";
 
 function Home() {
   const [showEyebrow, setShowEyebrow] = useState(false);
-  const [showHeadline, setShowHeadline] = useState(false);
-  const [showSubtitle, setShowSubtitle] = useState(false);
   const [showCta1, setShowCta1] = useState(false);
   const [showCta2, setShowCta2] = useState(false);
   const [showCta3, setShowCta3] = useState(false);
@@ -19,8 +17,6 @@ function Home() {
   useEffect(() => {
     const timers = [
       setTimeout(() => setShowEyebrow(true), 100),
-      setTimeout(() => setShowHeadline(true), 250),
-      setTimeout(() => setShowSubtitle(true), 900),
       setTimeout(() => setShowCta1(true), 700),
       setTimeout(() => setShowCta2(true), 820),
       setTimeout(() => setShowCta3(true), 940),
@@ -56,17 +52,15 @@ function Home() {
                 fontWeight: 300,
               }}
             >
-              {showHeadline && <SplitText text="Finally, dining hall planning that just works." delay={0} staggerDelay={0.018} animateOnMount={true} />}
+              <SplitText text="Finally, dining hall planning that just works." delay={250} staggerDelay={0.018} animateOnMount={true} />
             </h1>
             <div className="text-base sm:text-lg mb-8" style={{ color: "rgba(255,255,255,0.8)" }}>
-              {showSubtitle && (
-                <BlurText
-                  text="Pick a hall, browse menu items, make a plan. How hungry are you, Hoo?"
-                  delay={0}
-                  duration={0.7}
-                  animateOnMount={true}
-                />
-              )}
+              <BlurText
+                text="Pick a hall, browse menu items, make a plan. How hungry are you, Hoo?"
+                delay={900}
+                duration={0.7}
+                animateOnMount={true}
+              />
             </div>
             <div className="flex flex-wrap items-center gap-4">
               <div style={{

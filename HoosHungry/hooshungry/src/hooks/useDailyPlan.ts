@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { planAPI, type DailyPlanResponse, type MealItem, type DayMeals } from "../api/planEndpoints";
+import { toLocalDateString } from "../utils/dateUtils";
 
 function recalcTotals(meals: DayMeals): Pick<DailyPlanResponse, "total_calories" | "total_protein" | "total_carbs" | "total_fat"> {
   const all = [...meals.breakfast, ...meals.lunch, ...meals.dinner, ...meals.snack];
@@ -18,7 +19,7 @@ export function useDailyPlan(selectedDate: Date) {
   const cache = useRef<Map<string, DailyPlanResponse>>(new Map());
 
   const fetchDailyPlan = useCallback(async () => {
-    const dateStr = selectedDate.toISOString().split("T")[0];
+    const dateStr = toLocalDateString(selectedDate);
     const cached = cache.current.get(dateStr);
 
     if (cached) {

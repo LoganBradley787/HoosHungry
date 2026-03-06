@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { accountAPI, type SuggestedGoals } from "../../api/accountEndpoints";
 import { planAPI } from "../../api/planEndpoints";
+import { toLocalDateString } from "../../utils/dateUtils";
 
 type GoalType = "maintain" | "lose" | "gain";
 type ActivityLevel = "sedentary" | "light" | "moderate" | "active" | "very_active";
@@ -58,12 +59,14 @@ export default function GoalSetupModal({ currentDate, onClose, onSaved }: GoalSe
     setSaving(true);
     setError(null);
     try {
-      const dateStr = currentDate.toISOString().split("T")[0];
+      const dateStr = toLocalDateString(currentDate);
       await accountAPI.updateProfile({
         default_calorie_goal: editedGoals.calories,
         default_protein_goal: editedGoals.protein,
         default_carbs_goal: editedGoals.carbs,
         default_fat_goal: editedGoals.fat,
+        default_fiber_goal: editedGoals.fiber,
+        default_sodium_goal: editedGoals.sodium,
       });
       await planAPI.updateGoals(dateStr, {
         daily_calorie_goal: editedGoals.calories,

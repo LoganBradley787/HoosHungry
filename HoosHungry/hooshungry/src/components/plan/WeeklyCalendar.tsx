@@ -1,6 +1,7 @@
 import { forwardRef, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import type { DailySummary } from "../../api/planEndpoints";
+import { toLocalDateString } from "../../utils/dateUtils";
 
 interface WeeklyCalendarProps {
   weekDates: Date[];
@@ -18,7 +19,7 @@ const WeeklyCalendar = forwardRef<HTMLDivElement, WeeklyCalendarProps>(
       selectedDayRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
     }, [selectedDate]);
 
-    const formatDateKey = (date: Date) => date.toISOString().split("T")[0];
+    const formatDateKey = (date: Date) => toLocalDateString(date);
     const isSelectedDate = (date: Date) => formatDateKey(date) === formatDateKey(selectedDate);
     const isToday = (date: Date) => formatDateKey(date) === formatDateKey(new Date());
     const getDateRangeText = () => {
