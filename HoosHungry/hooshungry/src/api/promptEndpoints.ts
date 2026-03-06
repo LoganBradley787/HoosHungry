@@ -29,6 +29,44 @@ export interface ChatResponse {
   suggestions?: MealSuggestion[];
 }
 
+/**
+ * If the message text looks like raw JSON (e.g. backend failed to parse a
+ * truncated LLM response), extract the "message" and "suggestions" fields.
+ */
+function tryExtractFromJson(
+  content: string,
+  existingSuggestions?: MealSuggestion[]
+): { message: string; suggestions?: MealSuggestion[] } {
+  // Quick check — only attempt if content looks like JSON or a code-fenced block
+  const trimmed = content.trim();
+  if (!trimmed.startsWith("{") && !trimmed.startsWith("```")) {
+    return { message: content, suggestions: existingSuggestions };
+  }
+
+  // Strip markdown code fences
+  let text = trimmed
+    .replace(/^```(?:json)?\s*/i, "")
+    .replace(/\s*```$/, "");
+
+  try {
+    const data = JSON.parse(text);
+    if (data.message) {
+      return { message: data.message, suggestions: data.suggestions ?? existingSuggestions };
+    }
+  } catch {
+    // JSON may be truncated — try to extract the "message" value with a regex
+    const msgMatch = text.match(/"message"\s*:\s*"((?:[^"\\]|\\.)*)"/);
+    if (msgMatch) {
+      const extracted = msgMatch[1]
+        .replace(/\\"/g, '"')
+        .replace(/\\n/g, "\n");
+      return { message: extracted, suggestions: existingSuggestions };
+    }
+  }
+
+  return { message: content, suggestions: existingSuggestions };
+}
+
 /** Infer meal type from the current time of day. */
 function inferMealType(): string {
   const hour = new Date().getHours();
@@ -41,7 +79,10 @@ function inferMealType(): string {
 export const promptAPI = {
   sendMessage: async (request: ChatRequest): Promise<ChatResponse> => {
     const response = await apiClient.post("/prompt/chat/", request);
-    return response.data;
+    const data = response.data as ChatResponse;
+    // Defensively parse in case the backend returned raw JSON as the message
+    const { message, suggestions } = tryExtractFromJson(data.message, data.suggestions);
+    return { message, suggestions };
   },
 
   getHistory: async (): Promise<ChatMessage[]> => {
@@ -52,13 +93,19 @@ export const promptAPI = {
       content: string;
       timestamp: string;
       suggestions: MealSuggestion[] | null;
-    }) => ({
-      id: String(msg.id),
-      role: msg.role,
-      content: msg.content,
-      timestamp: new Date(msg.timestamp),
-      suggestions: msg.suggestions ?? undefined,
-    }));
+    }) => {
+      const { message, suggestions } = tryExtractFromJson(
+        msg.content,
+        msg.suggestions ?? undefined
+      );
+      return {
+        id: String(msg.id),
+        role: msg.role,
+        content: message,
+        timestamp: new Date(msg.timestamp),
+        suggestions,
+      };
+    });
   },
 
   clearHistory: async (): Promise<void> => {

@@ -26,6 +26,10 @@ export default function ChatContainer({ className = "" }: ChatContainerProps) {
   const [showContent, setShowContent] = useState(false);
   const [showInput, setShowInput] = useState(false);
 
+  // Track whether the user just sent a message in this session
+  // (false on mount so history messages don't get the typing animation)
+  const [animateLatest, setAnimateLatest] = useState(false);
+
   // Orchestrate staggered animations
   useEffect(() => {
     const timers: ReturnType<typeof setTimeout>[] = [];
@@ -36,6 +40,7 @@ export default function ChatContainer({ className = "" }: ChatContainerProps) {
   }, []);
 
   const handleSendMessage = (content: string) => {
+    setAnimateLatest(true);
     sendMessage(content);
   };
 
@@ -144,7 +149,9 @@ export default function ChatContainer({ className = "" }: ChatContainerProps) {
                 message={message}
                 onApplySuggestion={handleApplySuggestion}
                 isLatest={
-                  index === messages.length - 1 && message.role === "assistant"
+                  animateLatest &&
+                  index === messages.length - 1 &&
+                  message.role === "assistant"
                 }
               />
             ))}
