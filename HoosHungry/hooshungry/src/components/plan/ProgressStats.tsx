@@ -12,10 +12,9 @@ function useCountUp(target: number, duration = 900, delay = 650): number {
 
   useEffect(() => {
     setValue(0);
-    let timerId: ReturnType<typeof setTimeout>;
     let rafId: number;
 
-    timerId = setTimeout(() => {
+    const timerId = setTimeout(() => {
       const start = performance.now();
       const tick = (now: number) => {
         const elapsed = now - start;
@@ -67,13 +66,15 @@ function MacroBar({
           {Math.round(current)}{unit}{goal ? ` / ${goal}${unit}` : ""}
         </span>
       </div>
-      <div className="w-full h-1 rounded-full" style={{ backgroundColor: "var(--rule)" }}>
+      <div className="w-full h-1 rounded-full" style={{ backgroundColor: "var(--rule)", overflow: "hidden" }}>
         <div
           className="h-1 rounded-full"
           style={{
-            width: mounted ? `${pct}%` : "0%",
+            width: "100%",
             backgroundColor: color,
-            transition: "width 900ms cubic-bezier(0.4, 0, 0.2, 1)",
+            transform: mounted ? `scaleX(${pct / 100})` : "scaleX(0)",
+            transformOrigin: "left",
+            transition: "transform 900ms cubic-bezier(0.4, 0, 0.2, 1)",
           }}
         />
       </div>
@@ -141,13 +142,15 @@ export default function ProgressStats({ dailyData, goals, onSetGoalsClick }: Pro
             / {goalCalories} kcal
           </span>
         </div>
-        <div className="w-full h-1 rounded-full mt-3" style={{ backgroundColor: "var(--rule)" }}>
+        <div className="w-full h-1 rounded-full mt-3" style={{ backgroundColor: "var(--rule)", overflow: "hidden" }}>
           <div
             className="h-1 rounded-full"
             style={{
-              width: mounted ? `${caloriePercentage}%` : "0%",
+              width: "100%",
               backgroundColor: "var(--orange)",
-              transition: "width 900ms cubic-bezier(0.4, 0, 0.2, 1)",
+              transform: mounted ? `scaleX(${caloriePercentage / 100})` : "scaleX(0)",
+              transformOrigin: "left",
+              transition: "transform 900ms cubic-bezier(0.4, 0, 0.2, 1)",
             }}
           />
         </div>
