@@ -1,4 +1,4 @@
-const ACCOUNTS_BASE = "http://localhost:8000/accounts";
+const ACCOUNTS_BASE = `${import.meta.env.VITE_API_BASE}/accounts`;
 
 export interface UserProfile {
   remaining_ai_usages: number;
