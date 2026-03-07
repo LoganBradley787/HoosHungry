@@ -1,8 +1,11 @@
 import type { MenuItem } from "../../api/endpoints";
+import type { RatingResult } from "../../api/ratingEndpoints";
 
 interface ItemDetailsPanelProps {
   item: MenuItem;
   onClose: () => void;
+  ratingData?: RatingResult;
+  onVote?: (isUpvote: boolean | null) => void;
 }
 
 const toNumber = (value?: string | null) => {
@@ -14,6 +17,8 @@ const toNumber = (value?: string | null) => {
 export default function ItemDetailsPanel({
   item,
   onClose,
+  ratingData,
+  onVote,
 }: ItemDetailsPanelProps) {
   const calories = toNumber(item.nutrition_info?.calories);
 
@@ -47,6 +52,22 @@ export default function ItemDetailsPanel({
   ].filter(Boolean) as string[];
 
   const allergens = item.allergens ?? [];
+
+  const upvotes = ratingData?.upvotes ?? 0;
+  const downvotes = ratingData?.downvotes ?? 0;
+  const userVote = ratingData?.user_vote ?? null;
+  const totalVotes = upvotes + downvotes;
+  const upPct = totalVotes > 0 ? Math.round((upvotes / totalVotes) * 100) : 0;
+  const downPct = totalVotes > 0 ? 100 - upPct : 0;
+
+  const handleThumb = (isUpvote: boolean) => {
+    if (!onVote) return;
+    if (userVote === (isUpvote ? "up" : "down")) {
+      onVote(null);
+    } else {
+      onVote(isUpvote);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 p-4">
@@ -142,6 +163,105 @@ export default function ItemDetailsPanel({
             </p>
           </div>
         )}
+
+        {/* Community Rating */}
+        <div className="mb-8">
+          <h3 className="section-header-label mb-3">Community Rating</h3>
+          {totalVotes === 0 ? (
+            <p className="text-xs sm:text-sm mb-3" style={{ color: "var(--ink-muted)" }}>
+              No ratings yet — be the first!
+            </p>
+          ) : (
+            <div className="space-y-3 mb-4">
+              {/* Upvotes bar */}
+              <div>
+                <div className="flex justify-between text-xs mb-1">
+                  <span style={{ color: "var(--ink-muted)" }}>👍 Liked it</span>
+                  <span className="font-medium" style={{ color: "var(--ink)" }}>
+                    {upvotes} ({upPct}%)
+                  </span>
+                </div>
+                <div className="w-full h-2 rounded-full" style={{ backgroundColor: "var(--rule)" }}>
+                  <div
+                    className="h-2 rounded-full"
+                    style={{
+                      backgroundColor: "var(--amber)",
+                      width: `${upPct}%`,
+                      transition: "width 400ms ease",
+                    }}
+                  />
+                </div>
+              </div>
+              {/* Downvotes bar */}
+              <div>
+                <div className="flex justify-between text-xs mb-1">
+                  <span style={{ color: "var(--ink-muted)" }}>👎 Didn't like it</span>
+                  <span className="font-medium" style={{ color: "var(--ink)" }}>
+                    {downvotes} ({downPct}%)
+                  </span>
+                </div>
+                <div className="w-full h-2 rounded-full" style={{ backgroundColor: "var(--rule)" }}>
+                  <div
+                    className="h-2 rounded-full"
+                    style={{
+                      backgroundColor: "var(--orange-deep)",
+                      width: `${downPct}%`,
+                      transition: "width 400ms ease",
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Vote buttons */}
+          <div className="flex items-center gap-3">
+            <span className="text-xs" style={{ color: "var(--ink-muted)" }}>Your vote:</span>
+            <button
+              onClick={() => handleThumb(true)}
+              disabled={!onVote}
+              className="focus-visible:ring-1 focus-visible:ring-current focus-visible:outline-none rounded-sm"
+              style={{
+                background: "none", border: "none", cursor: onVote ? "pointer" : "default",
+                fontSize: "1.1rem",
+                color: userVote === "up" ? "var(--amber)" : "var(--ink-muted)",
+                transition: "color 150ms ease",
+                padding: "4px 8px",
+              }}
+              aria-label="Thumbs up"
+            >
+              👍
+            </button>
+            <button
+              onClick={() => handleThumb(false)}
+              disabled={!onVote}
+              className="focus-visible:ring-1 focus-visible:ring-current focus-visible:outline-none rounded-sm"
+              style={{
+                background: "none", border: "none", cursor: onVote ? "pointer" : "default",
+                fontSize: "1.1rem",
+                color: userVote === "down" ? "var(--orange-deep)" : "var(--ink-muted)",
+                transition: "color 150ms ease",
+                padding: "4px 8px",
+              }}
+              aria-label="Thumbs down"
+            >
+              👎
+            </button>
+            {userVote && (
+              <button
+                onClick={() => onVote?.(null)}
+                className="text-xs focus-visible:ring-1 focus-visible:ring-current focus-visible:outline-none rounded-sm"
+                style={{
+                  background: "none", border: "none", cursor: "pointer",
+                  color: "var(--ink-muted)", padding: "4px 0",
+                  textDecoration: "underline",
+                }}
+              >
+                Remove vote
+              </button>
+            )}
+          </div>
+        </div>
 
         {/* Macros */}
         <div className="mb-8">
