@@ -1,0 +1,96 @@
+import { useState, useEffect } from "react";
+import Navigation from "../components/common/Navigation";
+import IdentityCard from "../components/profile/IdentityCard";
+import OverviewTab from "../components/profile/OverviewTab";
+import SettingsTab from "../components/profile/SettingsTab";
+import { accountAPI } from "../api/accountEndpoints";
+import type { UserProfile } from "../api/accountEndpoints";
+import { useAuth } from "../contexts/AuthContext";
+import FadeContent from "../components/reactbits/FadeContent";
+import "../styles/profile.css";
+
+type Tab = "overview" | "settings";
+
+export default function Profile() {
+  const { token } = useAuth();
+  const [activeTab, setActiveTab] = useState<Tab>("overview");
+  const [extProfile, setExtProfile] = useState<UserProfile | null>(null);
+  const [showTitle, setShowTitle] = useState(false);
+
+  useEffect(() => {
+    if (!token) return;
+    accountAPI.updateProfile({}).then(setExtProfile).catch(() => {});
+  }, [token]);
+
+  useEffect(() => {
+    const t = setTimeout(() => setShowTitle(true), 200);
+    return () => clearTimeout(t);
+  }, []);
+
+  return (
+    <div className="min-h-screen" style={{ backgroundColor: "var(--cream)" }}>
+      <Navigation />
+
+      {/* Orange title strip */}
+      <div style={{ backgroundColor: "var(--orange-deep)" }}>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          <h1
+            className="font-display italic"
+            style={{
+              fontSize: "clamp(3rem, 8vw, 6rem)",
+              fontWeight: 300,
+              color: "var(--cream-on-orange)",
+              opacity: showTitle ? 1 : 0,
+              transform: showTitle ? "translateY(0)" : "translateY(50px)",
+              filter: showTitle ? "blur(0px)" : "blur(12px)",
+              transition:
+                "opacity 700ms cubic-bezier(0.4, 0, 0.2, 1), transform 700ms cubic-bezier(0.4, 0, 0.2, 1), filter 700ms cubic-bezier(0.4, 0, 0.2, 1)",
+            }}
+          >
+            Profile
+          </h1>
+        </div>
+      </div>
+
+      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <FadeContent direction="up" delay={200} duration={600} distance={24}>
+          <div className="space-y-6">
+            <IdentityCard />
+
+            <div>
+              <div className="profile-tabs">
+                <button
+                  className={`profile-tab-btn ${activeTab === "overview" ? "active" : ""}`}
+                  onClick={() => setActiveTab("overview")}
+                >
+                  Overview
+                </button>
+                <button
+                  className={`profile-tab-btn ${activeTab === "settings" ? "active" : ""}`}
+                  onClick={() => setActiveTab("settings")}
+                >
+                  Settings
+                </button>
+              </div>
+
+              {activeTab === "overview" && (
+                <OverviewTab extProfile={extProfile} />
+              )}
+              {activeTab === "settings" && extProfile && (
+                <SettingsTab
+                  profile={extProfile}
+                  onSaved={setExtProfile}
+                />
+              )}
+              {activeTab === "settings" && !extProfile && (
+                <div style={{ padding: "2rem 0", color: "var(--ink-muted)", fontSize: "0.875rem" }}>
+                  Loading…
+                </div>
+              )}
+            </div>
+          </div>
+        </FadeContent>
+      </div>
+    </div>
+  );
+}
