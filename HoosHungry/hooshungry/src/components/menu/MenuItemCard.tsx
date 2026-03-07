@@ -1,4 +1,5 @@
 import type { MenuItem } from "../../api/endpoints";
+import type { RatingResult } from "../../api/ratingEndpoints";
 
 interface MenuItemCardProps {
   item: MenuItem;
@@ -6,9 +7,77 @@ interface MenuItemCardProps {
   onAddToPlan?: (item: MenuItem) => void;
   onFavorite?: (item: MenuItem) => void;
   isFavorited?: boolean;
+  ratingData?: RatingResult;
+  onVote?: (isUpvote: boolean | null) => void;
 }
 
-function SmallMenuItemCard({ item, onFavorite, isFavorited }: MenuItemCardProps) {
+interface RatingBadgeProps {
+  ratingData?: RatingResult;
+  onVote?: (isUpvote: boolean | null) => void;
+}
+
+function RatingBadge({ ratingData, onVote }: RatingBadgeProps) {
+  const upvotes = ratingData?.upvotes ?? 0;
+  const downvotes = ratingData?.downvotes ?? 0;
+  const userVote = ratingData?.user_vote ?? null;
+  const total = upvotes + downvotes;
+  const pct = total > 0 ? Math.round((upvotes / total) * 100) : null;
+
+  const handleThumb = (isUpvote: boolean) => {
+    if (!onVote) return;
+    // Clicking active vote removes it (toggle off)
+    if (userVote === (isUpvote ? "up" : "down")) {
+      onVote(null);
+    } else {
+      onVote(isUpvote);
+    }
+  };
+
+  return (
+    <div className="flex items-center gap-2">
+      {pct !== null && (
+        <span
+          className="font-mono-data"
+          style={{ fontSize: "0.65rem", color: "var(--ink-muted)" }}
+        >
+          {pct}%
+        </span>
+      )}
+      <button
+        onClick={(e) => { e.stopPropagation(); handleThumb(true); }}
+        aria-label="Thumbs up"
+        style={{
+          background: "none",
+          border: "none",
+          cursor: onVote ? "pointer" : "default",
+          padding: 0,
+          fontSize: "0.85rem",
+          color: userVote === "up" ? "var(--amber)" : "var(--ink-muted)",
+          transition: "color 150ms ease",
+        }}
+      >
+        👍
+      </button>
+      <button
+        onClick={(e) => { e.stopPropagation(); handleThumb(false); }}
+        aria-label="Thumbs down"
+        style={{
+          background: "none",
+          border: "none",
+          cursor: onVote ? "pointer" : "default",
+          padding: 0,
+          fontSize: "0.85rem",
+          color: userVote === "down" ? "var(--orange-deep)" : "var(--ink-muted)",
+          transition: "color 150ms ease",
+        }}
+      >
+        👎
+      </button>
+    </div>
+  );
+}
+
+function SmallMenuItemCard({ item, onFavorite, isFavorited, ratingData, onVote }: MenuItemCardProps) {
   return (
     <div className="px-4 py-3" style={{ backgroundColor: "var(--warm-white)" }}>
       <div className="flex justify-between items-center gap-4">
@@ -23,6 +92,7 @@ function SmallMenuItemCard({ item, onFavorite, isFavorited }: MenuItemCardProps)
                 .join(", ")}
             </span>
           )}
+          <RatingBadge ratingData={ratingData} onVote={onVote} />
           {onFavorite && (
             <button
               onClick={(e) => { e.stopPropagation(); onFavorite(item); }}
@@ -43,10 +113,10 @@ function SmallMenuItemCard({ item, onFavorite, isFavorited }: MenuItemCardProps)
   );
 }
 
-export default function MenuItemCard({ item, onDetails, onAddToPlan, onFavorite, isFavorited }: MenuItemCardProps) {
+export default function MenuItemCard({ item, onDetails, onAddToPlan, onFavorite, isFavorited, ratingData, onVote }: MenuItemCardProps) {
   const calories = item.nutrition_info?.calories ? Math.round(parseFloat(item.nutrition_info.calories)) : 0;
 
-  if (calories === 0) return <SmallMenuItemCard item={item} onFavorite={onFavorite} isFavorited={isFavorited} />;
+  if (calories === 0) return <SmallMenuItemCard item={item} onFavorite={onFavorite} isFavorited={isFavorited} ratingData={ratingData} onVote={onVote} />;
 
   const protein = item.nutrition_info?.protein ? Math.round(parseFloat(item.nutrition_info.protein)) : null;
   const carbs = item.nutrition_info?.total_carbohydrates ? Math.round(parseFloat(item.nutrition_info.total_carbohydrates)) : null;
@@ -152,25 +222,28 @@ export default function MenuItemCard({ item, onDetails, onAddToPlan, onFavorite,
       )}
 
       {/* Actions */}
-      <div className="flex items-center gap-5">
-        <button
-          className="text-xs transition-colors"
-          style={{ color: "var(--ink-muted)", fontFamily: "'DM Sans', sans-serif", background: "none", border: "none", cursor: "pointer", padding: 0 }}
-          onClick={() => onDetails?.(item)}
-          onMouseEnter={e => (e.currentTarget.style.color = "var(--ink)")}
-          onMouseLeave={e => (e.currentTarget.style.color = "var(--ink-muted)")}
-        >
-          Details
-        </button>
-        <button
-          className="text-xs flex items-center gap-1"
-          style={{ color: "var(--orange)", fontFamily: "'DM Sans', sans-serif", background: "none", border: "none", cursor: "pointer", padding: 0 }}
-          onClick={() => onAddToPlan?.(item)}
-          onMouseEnter={e => (e.currentTarget.style.opacity = "0.7")}
-          onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
-        >
-          Add to Plan →
-        </button>
+      <div className="flex items-center justify-between gap-5">
+        <div className="flex items-center gap-5">
+          <button
+            className="text-xs transition-colors"
+            style={{ color: "var(--ink-muted)", fontFamily: "'DM Sans', sans-serif", background: "none", border: "none", cursor: "pointer", padding: 0 }}
+            onClick={() => onDetails?.(item)}
+            onMouseEnter={e => (e.currentTarget.style.color = "var(--ink)")}
+            onMouseLeave={e => (e.currentTarget.style.color = "var(--ink-muted)")}
+          >
+            Details
+          </button>
+          <button
+            className="text-xs flex items-center gap-1"
+            style={{ color: "var(--orange)", fontFamily: "'DM Sans', sans-serif", background: "none", border: "none", cursor: "pointer", padding: 0 }}
+            onClick={() => onAddToPlan?.(item)}
+            onMouseEnter={e => (e.currentTarget.style.opacity = "0.7")}
+            onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
+          >
+            Add to Plan →
+          </button>
+        </div>
+        <RatingBadge ratingData={ratingData} onVote={onVote} />
       </div>
     </div>
   );
