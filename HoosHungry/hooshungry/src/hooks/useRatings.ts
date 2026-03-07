@@ -35,19 +35,21 @@ export function useRatings(dining_hall: "ohill" | "newcomb" | "runk") {
    */
   const submitVote = useCallback(
     async (item_name: string, is_upvote: boolean) => {
-      const snapshot = ratings[item_name] ?? EMPTY_RATING;
-      const wasUp = snapshot.user_vote === "up";
-      const wasDown = snapshot.user_vote === "down";
+      let snapshot: RatingResult = EMPTY_RATING;
 
-      // Optimistic: adjust counts immediately
-      setRatings((prev) => ({
-        ...prev,
-        [item_name]: {
-          upvotes: snapshot.upvotes + (is_upvote ? 1 : 0) - (wasUp ? 1 : 0),
-          downvotes: snapshot.downvotes + (!is_upvote ? 1 : 0) - (wasDown ? 1 : 0),
-          user_vote: is_upvote ? "up" : "down",
-        },
-      }));
+      setRatings((prev) => {
+        snapshot = prev[item_name] ?? EMPTY_RATING;
+        const wasUp = snapshot.user_vote === "up";
+        const wasDown = snapshot.user_vote === "down";
+        return {
+          ...prev,
+          [item_name]: {
+            upvotes: snapshot.upvotes + (is_upvote ? 1 : 0) - (wasUp ? 1 : 0),
+            downvotes: snapshot.downvotes + (!is_upvote ? 1 : 0) - (wasDown ? 1 : 0),
+            user_vote: is_upvote ? "up" : "down",
+          },
+        };
+      });
 
       try {
         const updated = await ratingsAPI.submitVote(item_name, dining_hall, is_upvote);
@@ -56,7 +58,7 @@ export function useRatings(dining_hall: "ohill" | "newcomb" | "runk") {
         setRatings((prev) => ({ ...prev, [item_name]: snapshot }));
       }
     },
-    [ratings, dining_hall]
+    [dining_hall]   // `ratings` removed — snapshot captured via functional updater
   );
 
   /**
@@ -64,16 +66,19 @@ export function useRatings(dining_hall: "ohill" | "newcomb" | "runk") {
    */
   const removeVote = useCallback(
     async (item_name: string) => {
-      const snapshot = ratings[item_name] ?? EMPTY_RATING;
+      let snapshot: RatingResult = EMPTY_RATING;
 
-      setRatings((prev) => ({
-        ...prev,
-        [item_name]: {
-          upvotes: snapshot.upvotes - (snapshot.user_vote === "up" ? 1 : 0),
-          downvotes: snapshot.downvotes - (snapshot.user_vote === "down" ? 1 : 0),
-          user_vote: null,
-        },
-      }));
+      setRatings((prev) => {
+        snapshot = prev[item_name] ?? EMPTY_RATING;
+        return {
+          ...prev,
+          [item_name]: {
+            upvotes: snapshot.upvotes - (snapshot.user_vote === "up" ? 1 : 0),
+            downvotes: snapshot.downvotes - (snapshot.user_vote === "down" ? 1 : 0),
+            user_vote: null,
+          },
+        };
+      });
 
       try {
         const updated = await ratingsAPI.removeVote(item_name, dining_hall);
@@ -82,7 +87,7 @@ export function useRatings(dining_hall: "ohill" | "newcomb" | "runk") {
         setRatings((prev) => ({ ...prev, [item_name]: snapshot }));
       }
     },
-    [ratings, dining_hall]
+    [dining_hall]   // `ratings` removed — snapshot captured via functional updater
   );
 
   return { getRating, submitVote, removeVote };
