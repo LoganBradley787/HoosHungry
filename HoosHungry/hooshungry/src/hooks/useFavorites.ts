@@ -18,7 +18,7 @@ export function useFavorites() {
     // Optimistic update
     setFavorites(prev => {
       const next = new Set(prev);
-      isFav ? next.delete(item_name) : next.add(item_name);
+      if (isFav) { next.delete(item_name); } else { next.add(item_name); }
       return next;
     });
     try {
@@ -30,7 +30,7 @@ export function useFavorites() {
       // Revert on error
       setFavorites(prev => {
         const next = new Set(prev);
-        isFav ? next.add(item_name) : next.delete(item_name);
+        if (isFav) { next.add(item_name); } else { next.delete(item_name); }
         return next;
       });
     }
