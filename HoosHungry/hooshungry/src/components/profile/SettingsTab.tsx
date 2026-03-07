@@ -92,12 +92,12 @@ export default function SettingsTab({ profile, onSaved }: Props) {
     <div className="space-y-8">
       {/* Preferences */}
       <div>
-        <h3 className="profile-section-heading">Preferences</h3>
+        <div className="section-header"><span className="section-header-label">Preferences</span><span className="section-header-rule" /></div>
         <div
           style={{
             background: "var(--warm-white)",
-            border: "1px solid rgba(26,18,8,0.08)",
-            borderRadius: 10,
+            border: "1px solid var(--rule)",
+            borderRadius: 8,
             padding: "0 1.25rem",
           }}
         >
@@ -155,12 +155,14 @@ export default function SettingsTab({ profile, onSaved }: Props) {
 
       {/* Nutritional Goals */}
       <div>
-        <div className="flex items-center justify-between" style={{ marginBottom: "1rem" }}>
-          <h3 className="profile-section-heading" style={{ marginBottom: 0 }}>Nutritional Goals</h3>
+        <div className="section-header" style={{ marginBottom: "1rem" }}>
+          <span className="section-header-label">Nutritional Goals</span>
+          <span className="section-header-rule" />
           <button
             className="profile-suggest-btn"
             onClick={handleSuggest}
             disabled={suggesting}
+            style={{ flexShrink: 0 }}
           >
             {suggesting ? "Loading..." : "✦ Suggest Goals"}
           </button>

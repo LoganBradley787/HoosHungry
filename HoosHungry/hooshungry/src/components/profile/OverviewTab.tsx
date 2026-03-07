@@ -27,7 +27,7 @@ export default function OverviewTab({ extProfile }: Props) {
     <div className="space-y-6">
       {/* AI Usage */}
       <div>
-        <h3 className="profile-section-heading">CavBot Usage</h3>
+        <div className="section-header"><span className="section-header-label">CavBot Usage</span><span className="section-header-rule" /></div>
         <div className="profile-stat-card">
           <div className="profile-stat-label">Messages Remaining</div>
           {profile.premium_member ? (
@@ -52,7 +52,7 @@ export default function OverviewTab({ extProfile }: Props) {
 
       {/* Favorites */}
       <div>
-        <h3 className="profile-section-heading">Favorites</h3>
+        <div className="section-header"><span className="section-header-label">Favorites</span><span className="section-header-rule" /></div>
         <Link to="/menu" style={{ textDecoration: "none" }}>
           <div
             className="profile-stat-card"
@@ -73,7 +73,7 @@ export default function OverviewTab({ extProfile }: Props) {
 
       {/* Dietary Preferences */}
       <div>
-        <h3 className="profile-section-heading">Dietary Preferences</h3>
+        <div className="section-header"><span className="section-header-label">Dietary Preferences</span><span className="section-header-rule" /></div>
         <div
           className="profile-stat-card"
           style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", alignItems: "center" }}

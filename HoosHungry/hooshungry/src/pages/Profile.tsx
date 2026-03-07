@@ -59,15 +59,18 @@ export default function Profile() {
             <IdentityCard />
 
             <div>
-              <div className="profile-tabs">
+              <div
+                className="flex items-end gap-5 pb-4 mb-6"
+                style={{ borderBottom: "1px solid var(--rule)" }}
+              >
                 <button
-                  className={`profile-tab-btn ${activeTab === "overview" ? "active" : ""}`}
+                  className={`tab-link ${activeTab === "overview" ? "active" : ""}`}
                   onClick={() => setActiveTab("overview")}
                 >
                   Overview
                 </button>
                 <button
-                  className={`profile-tab-btn ${activeTab === "settings" ? "active" : ""}`}
+                  className={`tab-link ${activeTab === "settings" ? "active" : ""}`}
                   onClick={() => setActiveTab("settings")}
                 >
                   Settings
