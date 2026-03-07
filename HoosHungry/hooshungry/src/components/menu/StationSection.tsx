@@ -6,9 +6,11 @@ interface StationSectionProps {
   station: Station;
   onDetails: (item: MenuItem) => void;
   onAddToPlan: (item: MenuItem) => void;
+  onFavorite?: (item: MenuItem) => void;
+  isFavorite?: (name: string) => boolean;
 }
 
-export default function StationSection({ station, onDetails, onAddToPlan }: StationSectionProps) {
+export default function StationSection({ station, onDetails, onAddToPlan, onFavorite, isFavorite }: StationSectionProps) {
   const [isExpanded, setIsExpanded] = useState(true);
 
   const mainItems = station.menu_items.filter((item) => {
@@ -52,6 +54,8 @@ export default function StationSection({ station, onDetails, onAddToPlan }: Stat
                 item={item}
                 onDetails={() => onDetails(item)}
                 onAddToPlan={() => onAddToPlan(item)}
+                onFavorite={onFavorite}
+                isFavorited={isFavorite?.(item.item_name)}
               />
             ))}
           </div>
@@ -65,7 +69,12 @@ export default function StationSection({ station, onDetails, onAddToPlan }: Stat
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px" style={{ backgroundColor: "var(--rule)" }}>
               {sides.map((item) => (
-                <MenuItemCard key={item.id} item={item} />
+                <MenuItemCard
+                  key={item.id}
+                  item={item}
+                  onFavorite={onFavorite}
+                  isFavorited={isFavorite?.(item.item_name)}
+                />
               ))}
             </div>
           </div>

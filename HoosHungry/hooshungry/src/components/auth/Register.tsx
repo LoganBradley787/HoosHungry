@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../../contexts/AuthContext";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -7,8 +7,14 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [visible, setVisible] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const t = setTimeout(() => setVisible(true), 60);
+    return () => clearTimeout(t);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -43,6 +49,15 @@ export default function Register() {
     fontFamily: "'DM Sans', sans-serif",
   };
 
+  const ease = "cubic-bezier(0.4, 0, 0.2, 1)";
+
+  const fadeUp = (delay: number): React.CSSProperties => ({
+    opacity: visible ? 1 : 0,
+    transform: visible ? "translateY(0)" : "translateY(24px)",
+    filter: visible ? "blur(0px)" : "blur(8px)",
+    transition: `opacity 800ms ${ease} ${delay}ms, transform 800ms ${ease} ${delay}ms, filter 800ms ${ease} ${delay}ms`,
+  });
+
   return (
     <div className="min-h-screen flex">
       {/* Left: form */}
@@ -53,11 +68,11 @@ export default function Register() {
         <div className="max-w-sm w-full mx-auto">
           <h1
             className="font-display italic mb-2"
-            style={{ fontSize: "clamp(2.5rem, 5vw, 3.5rem)", color: "var(--ink)", fontWeight: 300 }}
+            style={{ fontSize: "clamp(2.5rem, 5vw, 3.5rem)", color: "var(--ink)", fontWeight: 300, ...fadeUp(0) }}
           >
             Create account.
           </h1>
-          <p className="text-sm mb-10" style={{ color: "var(--ink-muted)" }}>
+          <p className="text-sm mb-10" style={{ color: "var(--ink-muted)", ...fadeUp(120) }}>
             Start planning your meals today.
           </p>
 
@@ -68,28 +83,30 @@ export default function Register() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-8">
-            <div>
+            <div style={fadeUp(220)}>
               <label style={labelStyle}>Username</label>
               <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} style={inputStyle} required />
             </div>
-            <div>
+            <div style={fadeUp(320)}>
               <label style={labelStyle}>Email (optional)</label>
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} style={inputStyle} />
             </div>
-            <div>
+            <div style={fadeUp(420)}>
               <label style={labelStyle}>Password</label>
               <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} style={inputStyle} required />
             </div>
-            <button
-              type="submit"
-              className="w-full py-3 text-sm text-white transition-opacity hover:opacity-90"
-              style={{ backgroundColor: "var(--orange)", borderRadius: "4px" }}
-            >
-              Register
-            </button>
+            <div style={fadeUp(520)}>
+              <button
+                type="submit"
+                className="w-full py-3 text-sm text-white transition-opacity hover:opacity-90"
+                style={{ backgroundColor: "var(--orange)", borderRadius: "4px" }}
+              >
+                Register
+              </button>
+            </div>
           </form>
 
-          <p className="mt-8 text-sm" style={{ color: "var(--ink-muted)" }}>
+          <p className="mt-8 text-sm" style={{ color: "var(--ink-muted)", ...fadeUp(620) }}>
             Already have an account?{" "}
             <Link to="/login" style={{ color: "var(--orange)" }}>
               Log in →
@@ -101,15 +118,19 @@ export default function Register() {
       {/* Right: brand panel */}
       <div
         className="hidden lg:flex flex-col justify-center items-center w-1/2"
-        style={{ background: "linear-gradient(135deg, var(--orange), var(--amber))" }}
+        style={{
+          background: "linear-gradient(135deg, var(--orange), var(--amber))",
+          opacity: visible ? 1 : 0,
+          transition: `opacity 1100ms ${ease} 100ms`,
+        }}
       >
         <h2
           className="font-display italic text-white"
-          style={{ fontSize: "clamp(3rem, 5vw, 5rem)", fontWeight: 300, opacity: 0.95 }}
+          style={{ fontSize: "clamp(3rem, 5vw, 5rem)", fontWeight: 300, opacity: 0.95, ...fadeUp(300) }}
         >
           HoosHungry
         </h2>
-        <p className="text-sm mt-3" style={{ color: "rgba(255,255,255,0.7)", fontFamily: "'DM Sans', sans-serif" }}>
+        <p className="text-sm mt-3" style={{ color: "rgba(255,255,255,0.7)", fontFamily: "'DM Sans', sans-serif", ...fadeUp(450) }}>
           UVA Dining · Plan Smarter
         </p>
       </div>

@@ -4,31 +4,49 @@ interface MenuItemCardProps {
   item: MenuItem;
   onDetails?: (item: MenuItem) => void;
   onAddToPlan?: (item: MenuItem) => void;
+  onFavorite?: (item: MenuItem) => void;
+  isFavorited?: boolean;
 }
 
-function SmallMenuItemCard({ item }: MenuItemCardProps) {
+function SmallMenuItemCard({ item, onFavorite, isFavorited }: MenuItemCardProps) {
   return (
     <div className="px-4 py-3" style={{ backgroundColor: "var(--warm-white)" }}>
       <div className="flex justify-between items-center gap-4">
         <span className="text-sm" style={{ color: "var(--ink)", fontFamily: "'DM Sans', sans-serif" }}>
           {item.item_name}
         </span>
-        {item.allergens && item.allergens.length > 0 && (
-          <span className="text-xs italic" style={{ color: "var(--ink-muted)" }}>
-            {item.allergens
-              .map((a) => (a.name === "Information Not Available" ? "Incomplete Allergen Info" : a.name))
-              .join(", ")}
-          </span>
-        )}
+        <div className="flex items-center gap-2">
+          {item.allergens && item.allergens.length > 0 && (
+            <span className="text-xs italic" style={{ color: "var(--ink-muted)" }}>
+              {item.allergens
+                .map((a) => (a.name === "Information Not Available" ? "Incomplete Allergen Info" : a.name))
+                .join(", ")}
+            </span>
+          )}
+          {onFavorite && (
+            <button
+              onClick={(e) => { e.stopPropagation(); onFavorite(item); }}
+              style={{
+                background: "none", border: "none", cursor: "pointer", padding: "0 0 0 4px",
+                color: isFavorited ? "var(--amber)" : "var(--ink-muted)",
+                fontSize: "0.9rem", flexShrink: 0,
+                transition: "color 150ms ease",
+              }}
+              aria-label={isFavorited ? "Remove from favorites" : "Save to favorites"}
+            >
+              {isFavorited ? "★" : "☆"}
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
 }
 
-export default function MenuItemCard({ item, onDetails, onAddToPlan }: MenuItemCardProps) {
+export default function MenuItemCard({ item, onDetails, onAddToPlan, onFavorite, isFavorited }: MenuItemCardProps) {
   const calories = item.nutrition_info?.calories ? Math.round(parseFloat(item.nutrition_info.calories)) : 0;
 
-  if (calories === 0) return <SmallMenuItemCard item={item} />;
+  if (calories === 0) return <SmallMenuItemCard item={item} onFavorite={onFavorite} isFavorited={isFavorited} />;
 
   const protein = item.nutrition_info?.protein ? Math.round(parseFloat(item.nutrition_info.protein)) : null;
   const carbs = item.nutrition_info?.total_carbohydrates ? Math.round(parseFloat(item.nutrition_info.total_carbohydrates)) : null;
@@ -44,12 +62,28 @@ export default function MenuItemCard({ item, onDetails, onAddToPlan }: MenuItemC
         >
           {item.item_name}
         </h3>
-        <span
-          className="font-mono-data text-base whitespace-nowrap flex-shrink-0"
-          style={{ color: "var(--ink)" }}
-        >
-          {calories} cal
-        </span>
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <span
+            className="font-mono-data text-base whitespace-nowrap"
+            style={{ color: "var(--ink)" }}
+          >
+            {calories} cal
+          </span>
+          {onFavorite && (
+            <button
+              onClick={(e) => { e.stopPropagation(); onFavorite(item); }}
+              style={{
+                background: "none", border: "none", cursor: "pointer", padding: "0 0 0 4px",
+                color: isFavorited ? "var(--amber)" : "var(--ink-muted)",
+                fontSize: "1rem", flexShrink: 0,
+                transition: "color 150ms ease",
+              }}
+              aria-label={isFavorited ? "Remove from favorites" : "Save to favorites"}
+            >
+              {isFavorited ? "★" : "☆"}
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Rule */}

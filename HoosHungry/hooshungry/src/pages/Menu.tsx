@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useMenuData } from "../hooks/useMenuData";
 import Navigation from "../components/common/Navigation";
 import PillButton from "../components/menu/PillButton";
@@ -8,6 +9,8 @@ import { useAvailablePeriods } from "../hooks/useAvailablePeriods";
 import type { MenuItem } from "../api/endpoints";
 import ItemDetailsPanel from "../components/menu/ItemDetailsPanel";
 import AddToPlanPopup from "../components/menu/AddToPlanPopup";
+import { useFavorites } from "../hooks/useFavorites";
+import { useAuth } from "../contexts/AuthContext";
 
 export default function Menu() {
   const [hall, setHall] = useState<"ohill" | "newcomb" | "runk">("ohill");
@@ -25,6 +28,10 @@ export default function Menu() {
   const [showContent, setShowContent] = useState(false);
   const [showTitle, setShowTitle] = useState(false);
   const [selectedStation, setSelectedStation] = useState<string | null>(null);
+  const [showFavLoginPrompt, setShowFavLoginPrompt] = useState(false);
+  const { token } = useAuth();
+  const navigate = useNavigate();
+  const { favorites, toggleFavorite, isFavorite } = useFavorites();
 
   const {
     periods: availablePeriods,
@@ -133,6 +140,20 @@ export default function Menu() {
       ...filteredStations.slice(idx + 1),
     ];
   }, [filteredStations, selectedStation]);
+
+  const favoritesStation = useMemo(() => {
+    if (!data || favorites.size === 0) return null;
+    const favItems = data.period.stations
+      .flatMap(s => s.menu_items)
+      .filter(item => favorites.has(item.item_name));
+    if (favItems.length === 0) return null;
+    return { id: -1, name: "Favorites", number: "0", menu_items: favItems };
+  }, [data, favorites]);
+
+  const displayStations = useMemo(() => {
+    if (!selectedStation && favoritesStation) return [favoritesStation, ...sortedStations];
+    return sortedStations;
+  }, [sortedStations, selectedStation, favoritesStation]);
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "var(--cream)" }}>
@@ -291,8 +312,8 @@ export default function Menu() {
             )}
 
             {/* Stations - each appears with increasing delay */}
-            {sortedStations.length > 0 ? (
-              sortedStations.map((station, index) => (
+            {displayStations.length > 0 ? (
+              displayStations.map((station, index) => (
                 <div
                   key={station.id}
                   className="animate-slideInStagger"
@@ -305,6 +326,11 @@ export default function Menu() {
                       setIsDetailsOpen(true);
                     }}
                     onAddToPlan={(item) => setAddToPlanItem(item)}
+                    onFavorite={(item) => {
+                      if (!token) { setShowFavLoginPrompt(true); return; }
+                      toggleFavorite(item.item_name);
+                    }}
+                    isFavorite={isFavorite}
                   />
                 </div>
               ))
@@ -347,6 +373,47 @@ export default function Menu() {
           stationMealType={period}
           onClose={() => setAddToPlanItem(null)}
         />
+      )}
+      {showFavLoginPrompt && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20">
+          <div className="absolute inset-0" onClick={() => setShowFavLoginPrompt(false)} />
+          <div
+            className="relative w-full max-w-md p-8 animate-fadeIn"
+            style={{
+              backgroundColor: "var(--warm-white)",
+              border: "1px solid var(--rule)",
+              borderRadius: "8px",
+              boxShadow: "0 8px 40px rgba(26,18,8,0.12)",
+            }}
+          >
+            <button
+              className="absolute top-4 right-5 text-gray-400 hover:text-gray-600 text-2xl"
+              onClick={() => setShowFavLoginPrompt(false)}
+            >
+              ×
+            </button>
+            <h2 className="font-display italic text-2xl mb-2" style={{ color: "var(--ink)" }}>Log In Required</h2>
+            <p className="text-sm mb-6" style={{ color: "var(--ink-muted)" }}>
+              You must be logged in to save favorites.
+            </p>
+            <div className="flex justify-end gap-3 mt-8">
+              <button
+                className="px-4 py-2 text-sm transition-colors"
+                style={{ color: "var(--ink-muted)", background: "none", border: "none", cursor: "pointer" }}
+                onClick={() => setShowFavLoginPrompt(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="px-5 py-2 text-sm text-white transition-opacity hover:opacity-90"
+                style={{ backgroundColor: "var(--orange)", borderRadius: "4px" }}
+                onClick={() => navigate("/login")}
+              >
+                Log In
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
