@@ -57,9 +57,15 @@ export default function Navigation() {
         <div className="hidden md:flex items-center gap-6">
           {user ? (
             <>
-              <span className="hidden lg:inline text-sm" style={{ color: "rgba(255,255,255,0.65)" }}>
+              <Link
+                to="/profile"
+                className="hidden lg:inline text-sm transition-colors"
+                style={{ color: "rgba(255,255,255,0.65)" }}
+                onMouseEnter={e => (e.currentTarget.style.color = "var(--cream-on-orange)")}
+                onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.65)")}
+              >
                 {user.username}
-              </span>
+              </Link>
               <button
                 onClick={handleLogout}
                 className="text-sm flex items-center gap-1 transition-colors"
