@@ -46,6 +46,8 @@ function RatingBadge({ ratingData, onVote }: RatingBadgeProps) {
       <button
         onClick={(e) => { e.stopPropagation(); handleThumb(true); }}
         aria-label="Thumbs up"
+        disabled={!onVote}
+        className="focus-visible:ring-1 focus-visible:ring-current focus-visible:outline-none rounded-sm"
         style={{
           background: "none",
           border: "none",
@@ -61,6 +63,8 @@ function RatingBadge({ ratingData, onVote }: RatingBadgeProps) {
       <button
         onClick={(e) => { e.stopPropagation(); handleThumb(false); }}
         aria-label="Thumbs down"
+        disabled={!onVote}
+        className="focus-visible:ring-1 focus-visible:ring-current focus-visible:outline-none rounded-sm"
         style={{
           background: "none",
           border: "none",
@@ -86,13 +90,15 @@ function SmallMenuItemCard({ item, onFavorite, isFavorited, ratingData, onVote }
         </span>
         <div className="flex items-center gap-2">
           {item.allergens && item.allergens.length > 0 && (
-            <span className="text-xs italic" style={{ color: "var(--ink-muted)" }}>
+            <span className="text-xs italic" style={{ color: "var(--ink-muted)", flexShrink: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
               {item.allergens
                 .map((a) => (a.name === "Information Not Available" ? "Incomplete Allergen Info" : a.name))
                 .join(", ")}
             </span>
           )}
-          <RatingBadge ratingData={ratingData} onVote={onVote} />
+          <div style={{ flexShrink: 0 }}>
+            <RatingBadge ratingData={ratingData} onVote={onVote} />
+          </div>
           {onFavorite && (
             <button
               onClick={(e) => { e.stopPropagation(); onFavorite(item); }}
