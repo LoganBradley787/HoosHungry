@@ -81,12 +81,19 @@ export default function NavigationDark() {
         <div className="hidden md:flex items-center gap-6">
           {user ? (
             <>
-              <span
-                className="hidden lg:inline text-sm"
+              <Link
+                to="/profile"
+                className="hidden md:inline text-sm transition-colors"
                 style={{ color: "rgba(255, 255, 255, 0.65)" }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.color = "var(--cream-on-orange)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.color = "rgba(255, 255, 255, 0.65)")
+                }
               >
                 {user.username}
-              </span>
+              </Link>
               <button
                 onClick={handleLogout}
                 className="text-sm flex items-center gap-1 transition-colors"
@@ -164,6 +171,19 @@ export default function NavigationDark() {
               {link.label}
             </Link>
           ))}
+          {user && (
+            <Link
+              to="/profile"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block tab-link"
+              style={{
+                color: location.pathname === "/profile" ? "var(--cream-on-orange)" : "rgba(255, 255, 255, 0.6)",
+                borderBottomColor: location.pathname === "/profile" ? "var(--amber)" : "transparent",
+              }}
+            >
+              Profile
+            </Link>
+          )}
           <div style={{ borderTop: "1px solid rgba(255, 255, 255, 0.08)", paddingTop: "1rem" }}>
             {user ? (
               <button
