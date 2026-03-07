@@ -22,7 +22,7 @@ export type RatingsMap = Record<string, RatingResult>;
 
 export const ratingsAPI = {
   /** Fetch all ratings for a dining hall in one request. Items with no votes are absent from the map. */
-  getRatings: async (dining_hall: string): Promise<RatingsMap> => {
+  getRatings: async (dining_hall: "ohill" | "newcomb" | "runk"): Promise<RatingsMap> => {
     const res = await fetch(
       `${ACCOUNTS_BASE}/ratings/?dining_hall=${encodeURIComponent(dining_hall)}`,
       { headers: authHeaders() }
@@ -34,7 +34,7 @@ export const ratingsAPI = {
   /** Upsert a vote. Handles vote changes (up → down) automatically via update_or_create. */
   submitVote: async (
     item_name: string,
-    dining_hall: string,
+    dining_hall: "ohill" | "newcomb" | "runk",
     is_upvote: boolean
   ): Promise<RatingResult> => {
     const res = await fetch(`${ACCOUNTS_BASE}/ratings/`, {
@@ -43,13 +43,13 @@ export const ratingsAPI = {
       body: JSON.stringify({ item_name, dining_hall, is_upvote }),
     });
     if (!res.ok) throw new Error("Failed to submit vote");
-    return res.json();
+    return await res.json();
   },
 
   /** Remove the current user's vote for an item at a hall. */
   removeVote: async (
     item_name: string,
-    dining_hall: string
+    dining_hall: "ohill" | "newcomb" | "runk"
   ): Promise<RatingResult> => {
     const res = await fetch(`${ACCOUNTS_BASE}/ratings/`, {
       method: "DELETE",
@@ -57,6 +57,6 @@ export const ratingsAPI = {
       body: JSON.stringify({ item_name, dining_hall }),
     });
     if (!res.ok) throw new Error("Failed to remove vote");
-    return res.json();
+    return await res.json();
   },
 };
