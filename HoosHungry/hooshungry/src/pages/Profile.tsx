@@ -15,11 +15,12 @@ export default function Profile() {
   const { token } = useAuth();
   const [activeTab, setActiveTab] = useState<Tab>("overview");
   const [extProfile, setExtProfile] = useState<UserProfile | null>(null);
+  const [profileError, setProfileError] = useState(false);
   const [showTitle, setShowTitle] = useState(false);
 
   useEffect(() => {
     if (!token) return;
-    accountAPI.getProfile().then(setExtProfile).catch(() => {});
+    accountAPI.getProfile().then(setExtProfile).catch(() => setProfileError(true));
   }, [token]);
 
   useEffect(() => {
@@ -83,8 +84,8 @@ export default function Profile() {
                 />
               )}
               {activeTab === "settings" && !extProfile && (
-                <div style={{ padding: "2rem 0", color: "var(--ink-muted)", fontSize: "0.875rem" }}>
-                  Loading…
+                <div style={{ padding: "2rem 0", color: profileError ? "#c0392b" : "var(--ink-muted)", fontSize: "0.875rem" }}>
+                  {profileError ? "Could not load profile settings. Please refresh." : "Loading…"}
                 </div>
               )}
             </div>

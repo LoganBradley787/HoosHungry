@@ -25,8 +25,6 @@ const ACTIVITY_LABELS: Record<string, string> = {
 export default function SettingsTab({ profile, onSaved }: Props) {
   const { refreshUser } = useAuth();
 
-  // Note: UserProfile does not have default_fiber_goal or default_sodium_goal,
-  // so those are initialized to null rather than read from profile.
   const [form, setForm] = useState<UpdateProfileRequest>({
     is_vegan: profile.is_vegan,
     is_vegetarian: profile.is_vegetarian,
@@ -37,8 +35,8 @@ export default function SettingsTab({ profile, onSaved }: Props) {
     default_protein_goal: profile.default_protein_goal,
     default_carbs_goal: profile.default_carbs_goal,
     default_fat_goal: profile.default_fat_goal,
-    default_fiber_goal: null,
-    default_sodium_goal: null,
+    default_fiber_goal: profile.default_fiber_goal,
+    default_sodium_goal: profile.default_sodium_goal,
   });
 
   const [saving, setSaving] = useState(false);

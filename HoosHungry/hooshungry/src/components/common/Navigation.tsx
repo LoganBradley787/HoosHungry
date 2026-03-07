@@ -59,7 +59,7 @@ export default function Navigation() {
             <>
               <Link
                 to="/profile"
-                className="hidden lg:inline text-sm transition-colors"
+                className="hidden md:inline text-sm transition-colors"
                 style={{ color: "rgba(255,255,255,0.65)" }}
                 onMouseEnter={e => (e.currentTarget.style.color = "var(--cream-on-orange)")}
                 onMouseLeave={e => (e.currentTarget.style.color = "rgba(255,255,255,0.65)")}
@@ -124,6 +124,15 @@ export default function Navigation() {
               {link.label}
             </Link>
           ))}
+          {user && (
+            <Link
+              to="/profile"
+              onClick={() => setMobileMenuOpen(false)}
+              className={`block tab-link ${location.pathname === "/profile" ? "active" : ""}`}
+            >
+              Profile
+            </Link>
+          )}
           <div style={{ borderTop: "1px solid var(--rule-on-orange)", paddingTop: "1rem" }}>
             {user ? (
               <button
