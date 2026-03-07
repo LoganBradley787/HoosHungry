@@ -19,7 +19,7 @@ export default function Profile() {
 
   useEffect(() => {
     if (!token) return;
-    accountAPI.updateProfile({}).then(setExtProfile).catch(() => {});
+    accountAPI.getProfile().then(setExtProfile).catch(() => {});
   }, [token]);
 
   useEffect(() => {

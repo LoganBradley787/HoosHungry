@@ -38,6 +38,15 @@ export interface UpdateProfileRequest {
 }
 
 export const accountAPI = {
+  getProfile: async (): Promise<UserProfile> => {
+    const token = localStorage.getItem("authToken");
+    const response = await fetch(`${ACCOUNTS_BASE}/profile/`, {
+      headers: { Authorization: `Token ${token}` },
+    });
+    if (!response.ok) throw new Error("Failed to fetch profile");
+    return response.json();
+  },
+
   suggestGoals: async (): Promise<SuggestedGoals> => {
     const token = localStorage.getItem("authToken");
     const response = await fetch(`${ACCOUNTS_BASE}/profile/goals/suggest/`, {
