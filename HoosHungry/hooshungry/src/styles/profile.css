@@ -274,10 +274,26 @@
   cursor: not-allowed;
 }
 
+/* Tab content entrance */
+@keyframes profile-tab-enter {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.profile-tab-content {
+  animation: profile-tab-enter 220ms ease-out;
+}
+
 /* Inline feedback */
 .profile-feedback {
   font-size: 0.8rem;
   font-weight: 500;
+  animation: profile-feedback-in 200ms ease-out;
+}
+
+@keyframes profile-feedback-in {
+  from { opacity: 0; transform: translateX(-6px); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 
 .profile-feedback.success {

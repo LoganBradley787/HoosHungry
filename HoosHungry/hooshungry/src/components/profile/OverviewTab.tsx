@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { useFavorites } from "../../hooks/useFavorites";
@@ -11,12 +12,20 @@ export default function OverviewTab({ extProfile }: Props) {
   const { user } = useAuth();
   const { favorites } = useFavorites();
 
+  const aiTotal = user?.profile.premium_member ? null : 10;
+  const aiRemaining = user?.profile.remaining_ai_usages ?? 0;
+  const aiPct = aiTotal ? Math.round((aiRemaining / aiTotal) * 100) : 0;
+
+  const [animatedPct, setAnimatedPct] = useState(0);
+  useEffect(() => {
+    if (!user) return;
+    const t = setTimeout(() => setAnimatedPct(aiPct), 80);
+    return () => clearTimeout(t);
+  }, [aiPct, user]);
+
   if (!user) return null;
 
   const { profile } = user;
-  const aiTotal = profile.premium_member ? null : 10;
-  const aiRemaining = profile.remaining_ai_usages;
-  const aiPct = aiTotal ? Math.round((aiRemaining / aiTotal) * 100) : 100;
 
   const dietTags: string[] = [];
   if (extProfile?.is_vegan) dietTags.push("Vegan");
@@ -38,7 +47,7 @@ export default function OverviewTab({ extProfile }: Props) {
             <>
               <div className="profile-stat-value">{aiRemaining} / {aiTotal}</div>
               <div className="profile-progress-track">
-                <div className="profile-progress-fill" style={{ width: `${aiPct}%` }} />
+                <div className="profile-progress-fill" style={{ width: `${animatedPct}%` }} />
               </div>
               <p style={{ fontSize: "0.75rem", color: "var(--ink-muted)", marginTop: "0.5rem" }}>
                 {aiRemaining === 0

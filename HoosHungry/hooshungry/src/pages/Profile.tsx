@@ -78,16 +78,20 @@ export default function Profile() {
               </div>
 
               {activeTab === "overview" && (
-                <OverviewTab extProfile={extProfile} />
+                <div key="overview" className="profile-tab-content">
+                  <OverviewTab extProfile={extProfile} />
+                </div>
               )}
               {activeTab === "settings" && extProfile && (
-                <SettingsTab
-                  profile={extProfile}
-                  onSaved={setExtProfile}
-                />
+                <div key="settings" className="profile-tab-content">
+                  <SettingsTab
+                    profile={extProfile}
+                    onSaved={setExtProfile}
+                  />
+                </div>
               )}
               {activeTab === "settings" && !extProfile && (
-                <div style={{ padding: "2rem 0", color: profileError ? "#c0392b" : "var(--ink-muted)", fontSize: "0.875rem" }}>
+                <div key="settings-loading" className="profile-tab-content" style={{ padding: "2rem 0", color: profileError ? "#c0392b" : "var(--ink-muted)", fontSize: "0.875rem" }}>
                   {profileError ? "Could not load profile settings. Please refresh." : "Loading…"}
                 </div>
               )}
