@@ -91,7 +91,10 @@ export default function Prompt() {
                 "opacity 600ms cubic-bezier(0.4, 0, 0.2, 1), transform 600ms cubic-bezier(0.4, 0, 0.2, 1), filter 600ms cubic-bezier(0.4, 0, 0.2, 1)",
             }}
           >
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
+            <h1
+              className="font-display italic"
+              style={{ fontSize: "clamp(3rem, 8vw, 6rem)", fontWeight: 300, lineHeight: 1 }}
+            >
               <GradientText
                 colors={["#f97316", "#fb923c", "#fdba74", "#fb923c", "#f97316"]}
                 animate={true}
