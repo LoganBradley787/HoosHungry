@@ -9,7 +9,7 @@ interface StationSectionProps {
   onAddToPlan: (item: MenuItem) => void;
   onFavorite?: (item: MenuItem) => void;
   isFavorite?: (name: string) => boolean;
-  getRating?: (item_name: string) => RatingResult;
+  getRating?: (item_name: string) => RatingResult | undefined;
   onVote?: (item_name: string, isUpvote: boolean | null) => void;
 }
 
