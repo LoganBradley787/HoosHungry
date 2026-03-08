@@ -1,3 +1,4 @@
+import { ThumbsUp, ThumbsDown } from "lucide-react";
 import type { MenuItem } from "../../api/endpoints";
 import type { RatingResult } from "../../api/ratingEndpoints";
 
@@ -53,12 +54,13 @@ function RatingBadge({ ratingData, onVote }: RatingBadgeProps) {
           border: "none",
           cursor: onVote ? "pointer" : "default",
           padding: 0,
-          fontSize: "0.85rem",
-          color: userVote === "up" ? "var(--amber)" : "var(--ink-muted)",
+          color: userVote === "up" ? "var(--orange-mid)" : "var(--ink-muted)",
           transition: "color 150ms ease",
+          display: "flex",
+          alignItems: "center",
         }}
       >
-        👍
+        <ThumbsUp size={13} />
       </button>
       <button
         onClick={(e) => { e.stopPropagation(); handleThumb(false); }}
@@ -70,12 +72,13 @@ function RatingBadge({ ratingData, onVote }: RatingBadgeProps) {
           border: "none",
           cursor: onVote ? "pointer" : "default",
           padding: 0,
-          fontSize: "0.85rem",
-          color: userVote === "down" ? "var(--orange-deep)" : "var(--ink-muted)",
+          color: userVote === "down" ? "var(--orange-mid)" : "var(--ink-muted)",
           transition: "color 150ms ease",
+          display: "flex",
+          alignItems: "center",
         }}
       >
-        👎
+        <ThumbsDown size={13} />
       </button>
     </div>
   );
@@ -104,7 +107,7 @@ function SmallMenuItemCard({ item, onFavorite, isFavorited, ratingData, onVote }
               onClick={(e) => { e.stopPropagation(); onFavorite(item); }}
               style={{
                 background: "none", border: "none", cursor: "pointer", padding: "0 0 0 4px",
-                color: isFavorited ? "var(--amber)" : "var(--ink-muted)",
+                color: isFavorited ? "var(--orange-mid)" : "var(--ink-muted)",
                 fontSize: "0.9rem", flexShrink: 0,
                 transition: "color 150ms ease",
               }}
@@ -150,7 +153,7 @@ export default function MenuItemCard({ item, onDetails, onAddToPlan, onFavorite,
               onClick={(e) => { e.stopPropagation(); onFavorite(item); }}
               style={{
                 background: "none", border: "none", cursor: "pointer", padding: "0 0 0 4px",
-                color: isFavorited ? "var(--amber)" : "var(--ink-muted)",
+                color: isFavorited ? "var(--orange-mid)" : "var(--ink-muted)",
                 fontSize: "1rem", flexShrink: 0,
                 transition: "color 150ms ease",
               }}

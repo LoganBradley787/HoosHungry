@@ -1,3 +1,4 @@
+import { ThumbsUp, ThumbsDown } from "lucide-react";
 import type { MenuItem } from "../../api/endpoints";
 import type { RatingResult } from "../../api/ratingEndpoints";
 
@@ -228,7 +229,7 @@ export default function ItemDetailsPanel({
               {/* Upvotes bar */}
               <div>
                 <div className="flex justify-between text-xs mb-1">
-                  <span style={{ color: "var(--ink-muted)" }}>👍 Liked it</span>
+                  <span className="flex items-center gap-1" style={{ color: "var(--ink-muted)" }}><ThumbsUp size={11} /> Liked it</span>
                   <span className="font-medium" style={{ color: "var(--ink)" }}>
                     {upvotes} ({upPct}%)
                   </span>
@@ -247,7 +248,7 @@ export default function ItemDetailsPanel({
               {/* Downvotes bar */}
               <div>
                 <div className="flex justify-between text-xs mb-1">
-                  <span style={{ color: "var(--ink-muted)" }}>👎 Didn't like it</span>
+                  <span className="flex items-center gap-1" style={{ color: "var(--ink-muted)" }}><ThumbsDown size={11} /> Didn't like it</span>
                   <span className="font-medium" style={{ color: "var(--ink)" }}>
                     {downvotes} ({downPct}%)
                   </span>
@@ -276,28 +277,28 @@ export default function ItemDetailsPanel({
                   className="focus-visible:ring-1 focus-visible:ring-current focus-visible:outline-none rounded-sm"
                   style={{
                     background: "none", border: "none", cursor: "pointer",
-                    fontSize: "1.1rem",
-                    color: userVote === "up" ? "var(--amber)" : "var(--ink-muted)",
+                    color: userVote === "up" ? "var(--orange-mid)" : "var(--ink-muted)",
                     transition: "color 150ms ease",
                     padding: "4px 8px",
+                    display: "flex", alignItems: "center",
                   }}
                   aria-label="Thumbs up"
                 >
-                  👍
+                  <ThumbsUp size={16} />
                 </button>
                 <button
                   onClick={() => handleThumb(false)}
                   className="focus-visible:ring-1 focus-visible:ring-current focus-visible:outline-none rounded-sm"
                   style={{
                     background: "none", border: "none", cursor: "pointer",
-                    fontSize: "1.1rem",
-                    color: userVote === "down" ? "var(--orange-deep)" : "var(--ink-muted)",
+                    color: userVote === "down" ? "var(--orange-mid)" : "var(--ink-muted)",
                     transition: "color 150ms ease",
                     padding: "4px 8px",
+                    display: "flex", alignItems: "center",
                   }}
                   aria-label="Thumbs down"
                 >
-                  👎
+                  <ThumbsDown size={16} />
                 </button>
                 {userVote && (
                   <button
