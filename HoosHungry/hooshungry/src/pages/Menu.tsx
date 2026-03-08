@@ -409,7 +409,7 @@ export default function Menu() {
             </button>
             <h2 className="font-display italic text-2xl mb-2" style={{ color: "var(--ink)" }}>Log In Required</h2>
             <p className="text-sm mb-6" style={{ color: "var(--ink-muted)" }}>
-              You must be logged in to save favorites.
+              You must be logged in to save favorites or rate items.
             </p>
             <div className="flex justify-end gap-3 mt-8">
               <button
