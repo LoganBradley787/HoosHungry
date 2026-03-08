@@ -164,6 +164,58 @@ export default function ItemDetailsPanel({
           </div>
         )}
 
+        {/* Macros */}
+        <div className="mb-8">
+          <h3 className="section-header-label mb-3">
+            Macronutrients
+          </h3>
+          <div className="space-y-3">
+            {macros.map(([label, value, unit]) => (
+              <div key={label}>
+                <div className="flex justify-between text-xs sm:text-sm mb-1">
+                  <span>{label}</span>
+                  <span className="font-medium">
+                    {value !== null ? `${value}${unit}` : "??"}
+                  </span>
+                </div>
+                <div className="w-full h-1 rounded-full" style={{ backgroundColor: "var(--rule)" }}>
+                  {value !== null && (
+                    <div
+                      className="h-1 rounded-full"
+                      style={{
+                        backgroundColor: label === "Protein" ? "var(--amber)" : "var(--terracotta)",
+                        width:
+                          label === "Protein"
+                            ? `${Math.min((value / 50) * 100, 100)}%`
+                            : label === "Carbs"
+                            ? `${Math.min((value / 100) * 100, 100)}%`
+                            : `${Math.min((value / 30) * 100, 100)}%`,
+                      }}
+                    />
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Micros */}
+        <div className="mb-8">
+          <h3 className="section-header-label mb-3">
+            Micronutrients
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-12 text-xs sm:text-sm">
+            {micros.map(([label, value, unit]) => (
+              <div key={label} className="flex justify-between">
+                <span style={{ color: "var(--ink-muted)" }}>{label}</span>
+                <span className="font-medium">
+                  {value !== null ? `${value}${unit}` : "??"}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Community Rating */}
         <div className="mb-8">
           <h3 className="section-header-label mb-3">Community Rating</h3>
@@ -216,102 +268,57 @@ export default function ItemDetailsPanel({
 
           {/* Vote buttons */}
           <div className="flex items-center gap-3">
-            <span className="text-xs" style={{ color: "var(--ink-muted)" }}>Your vote:</span>
-            <button
-              onClick={() => handleThumb(true)}
-              disabled={!onVote}
-              className="focus-visible:ring-1 focus-visible:ring-current focus-visible:outline-none rounded-sm"
-              style={{
-                background: "none", border: "none", cursor: onVote ? "pointer" : "default",
-                fontSize: "1.1rem",
-                color: userVote === "up" ? "var(--amber)" : "var(--ink-muted)",
-                transition: "color 150ms ease",
-                padding: "4px 8px",
-              }}
-              aria-label="Thumbs up"
-            >
-              👍
-            </button>
-            <button
-              onClick={() => handleThumb(false)}
-              disabled={!onVote}
-              className="focus-visible:ring-1 focus-visible:ring-current focus-visible:outline-none rounded-sm"
-              style={{
-                background: "none", border: "none", cursor: onVote ? "pointer" : "default",
-                fontSize: "1.1rem",
-                color: userVote === "down" ? "var(--orange-deep)" : "var(--ink-muted)",
-                transition: "color 150ms ease",
-                padding: "4px 8px",
-              }}
-              aria-label="Thumbs down"
-            >
-              👎
-            </button>
-            {userVote && (
-              <button
-                onClick={() => onVote?.(null)}
-                className="text-xs focus-visible:ring-1 focus-visible:ring-current focus-visible:outline-none rounded-sm"
-                style={{
-                  background: "none", border: "none", cursor: "pointer",
-                  color: "var(--ink-muted)", padding: "4px 0",
-                  textDecoration: "underline",
-                }}
-              >
-                Remove vote
-              </button>
+            {onVote ? (
+              <>
+                <span className="text-xs" style={{ color: "var(--ink-muted)" }}>Your vote:</span>
+                <button
+                  onClick={() => handleThumb(true)}
+                  className="focus-visible:ring-1 focus-visible:ring-current focus-visible:outline-none rounded-sm"
+                  style={{
+                    background: "none", border: "none", cursor: "pointer",
+                    fontSize: "1.1rem",
+                    color: userVote === "up" ? "var(--amber)" : "var(--ink-muted)",
+                    transition: "color 150ms ease",
+                    padding: "4px 8px",
+                  }}
+                  aria-label="Thumbs up"
+                >
+                  👍
+                </button>
+                <button
+                  onClick={() => handleThumb(false)}
+                  className="focus-visible:ring-1 focus-visible:ring-current focus-visible:outline-none rounded-sm"
+                  style={{
+                    background: "none", border: "none", cursor: "pointer",
+                    fontSize: "1.1rem",
+                    color: userVote === "down" ? "var(--orange-deep)" : "var(--ink-muted)",
+                    transition: "color 150ms ease",
+                    padding: "4px 8px",
+                  }}
+                  aria-label="Thumbs down"
+                >
+                  👎
+                </button>
+                {userVote && (
+                  <button
+                    onClick={() => onVote(null)}
+                    aria-label="Remove your vote"
+                    className="text-xs focus-visible:ring-1 focus-visible:ring-current focus-visible:outline-none rounded-sm"
+                    style={{
+                      background: "none", border: "none", cursor: "pointer",
+                      color: "var(--ink-muted)", padding: "4px 0",
+                      textDecoration: "underline",
+                    }}
+                  >
+                    Remove vote
+                  </button>
+                )}
+              </>
+            ) : (
+              <p className="text-xs" style={{ color: "var(--ink-muted)" }}>
+                Log in to rate this item.
+              </p>
             )}
-          </div>
-        </div>
-
-        {/* Macros */}
-        <div className="mb-8">
-          <h3 className="section-header-label mb-3">
-            Macronutrients
-          </h3>
-          <div className="space-y-3">
-            {macros.map(([label, value, unit]) => (
-              <div key={label}>
-                <div className="flex justify-between text-xs sm:text-sm mb-1">
-                  <span>{label}</span>
-                  <span className="font-medium">
-                    {value !== null ? `${value}${unit}` : "??"}
-                  </span>
-                </div>
-                <div className="w-full h-1 rounded-full" style={{ backgroundColor: "var(--rule)" }}>
-                  {value !== null && (
-                    <div
-                      className="h-1 rounded-full"
-                      style={{
-                        backgroundColor: label === "Protein" ? "var(--amber)" : "var(--terracotta)",
-                        width:
-                          label === "Protein"
-                            ? `${Math.min((value / 50) * 100, 100)}%`
-                            : label === "Carbs"
-                            ? `${Math.min((value / 100) * 100, 100)}%`
-                            : `${Math.min((value / 30) * 100, 100)}%`,
-                      }}
-                    />
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Micros */}
-        <div className="mb-8">
-          <h3 className="section-header-label mb-3">
-            Micronutrients
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-12 text-xs sm:text-sm">
-            {micros.map(([label, value, unit]) => (
-              <div key={label} className="flex justify-between">
-                <span style={{ color: "var(--ink-muted)" }}>{label}</span>
-                <span className="font-medium">
-                  {value !== null ? `${value}${unit}` : "??"}
-                </span>
-              </div>
-            ))}
           </div>
         </div>
       </div>
