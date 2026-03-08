@@ -10,6 +10,7 @@ import type { MenuItem } from "../api/endpoints";
 import ItemDetailsPanel from "../components/menu/ItemDetailsPanel";
 import AddToPlanPopup from "../components/menu/AddToPlanPopup";
 import { useFavorites } from "../hooks/useFavorites";
+import { useRatings } from "../hooks/useRatings";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function Menu() {
@@ -32,6 +33,16 @@ export default function Menu() {
   const { token } = useAuth();
   const navigate = useNavigate();
   const { favorites, toggleFavorite, isFavorite } = useFavorites();
+  const { getRating, submitVote, removeVote } = useRatings(hall);
+
+  const handleVote = (item_name: string, isUpvote: boolean | null) => {
+    if (!token) { setShowFavLoginPrompt(true); return; }
+    if (isUpvote === null) {
+      removeVote(item_name);
+    } else {
+      submitVote(item_name, isUpvote);
+    }
+  };
 
   const {
     periods: availablePeriods,
@@ -331,6 +342,8 @@ export default function Menu() {
                       toggleFavorite(item.item_name);
                     }}
                     isFavorite={isFavorite}
+                    getRating={getRating}
+                    onVote={handleVote}
                   />
                 </div>
               ))
@@ -365,6 +378,8 @@ export default function Menu() {
         <ItemDetailsPanel
           item={selectedItem}
           onClose={() => setIsDetailsOpen(false)}
+          ratingData={getRating(selectedItem.item_name)}
+          onVote={(isUpvote) => handleVote(selectedItem.item_name, isUpvote)}
         />
       )}
       {addToPlanItem && (
