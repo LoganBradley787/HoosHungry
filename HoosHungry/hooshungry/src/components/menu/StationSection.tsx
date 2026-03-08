@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { MenuItem, Station } from "../../api/endpoints";
 import MenuItemCard from "./MenuItemCard";
+import type { RatingResult } from "../../api/ratingEndpoints";
 
 interface StationSectionProps {
   station: Station;
@@ -8,9 +9,11 @@ interface StationSectionProps {
   onAddToPlan: (item: MenuItem) => void;
   onFavorite?: (item: MenuItem) => void;
   isFavorite?: (name: string) => boolean;
+  getRating?: (item_name: string) => RatingResult;
+  onVote?: (item_name: string, isUpvote: boolean | null) => void;
 }
 
-export default function StationSection({ station, onDetails, onAddToPlan, onFavorite, isFavorite }: StationSectionProps) {
+export default function StationSection({ station, onDetails, onAddToPlan, onFavorite, isFavorite, getRating, onVote }: StationSectionProps) {
   const [isExpanded, setIsExpanded] = useState(true);
 
   const mainItems = station.menu_items.filter((item) => {
@@ -56,6 +59,8 @@ export default function StationSection({ station, onDetails, onAddToPlan, onFavo
                 onAddToPlan={() => onAddToPlan(item)}
                 onFavorite={onFavorite}
                 isFavorited={isFavorite?.(item.item_name)}
+                ratingData={getRating?.(item.item_name)}
+                onVote={onVote ? (isUpvote) => onVote(item.item_name, isUpvote) : undefined}
               />
             ))}
           </div>
@@ -74,6 +79,8 @@ export default function StationSection({ station, onDetails, onAddToPlan, onFavo
                   item={item}
                   onFavorite={onFavorite}
                   isFavorited={isFavorite?.(item.item_name)}
+                  ratingData={getRating?.(item.item_name)}
+                  onVote={onVote ? (isUpvote) => onVote(item.item_name, isUpvote) : undefined}
                 />
               ))}
             </div>
