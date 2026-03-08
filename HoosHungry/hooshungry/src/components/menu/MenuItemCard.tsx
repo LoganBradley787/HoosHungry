@@ -18,6 +18,7 @@ interface RatingBadgeProps {
 }
 
 function RatingBadge({ ratingData, onVote }: RatingBadgeProps) {
+  if (!ratingData && !onVote) return null;
   const upvotes = ratingData?.upvotes ?? 0;
   const downvotes = ratingData?.downvotes ?? 0;
   const userVote = ratingData?.user_vote ?? null;

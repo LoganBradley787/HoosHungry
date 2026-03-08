@@ -12,6 +12,8 @@ import AddToPlanPopup from "../components/menu/AddToPlanPopup";
 import { useFavorites } from "../hooks/useFavorites";
 import { useRatings } from "../hooks/useRatings";
 import { useAuth } from "../contexts/AuthContext";
+import { accountAPI } from "../api/accountEndpoints";
+import type { UserProfile } from "../api/accountEndpoints";
 
 export default function Menu() {
   const [hall, setHall] = useState<"ohill" | "newcomb" | "runk">("ohill");
@@ -31,6 +33,7 @@ export default function Menu() {
   const [selectedStation, setSelectedStation] = useState<string | null>(null);
   const [showFavLoginPrompt, setShowFavLoginPrompt] = useState(false);
   const { token } = useAuth();
+  const [extProfile, setExtProfile] = useState<UserProfile | null>(null);
   const navigate = useNavigate();
   const { favorites, toggleFavorite, isFavorite } = useFavorites();
   const { getRating, submitVote, removeVote } = useRatings(hall);
@@ -86,6 +89,14 @@ export default function Menu() {
   }, []);
 
   useEffect(() => {
+    if (token) {
+      accountAPI.getProfile().then(setExtProfile).catch(() => {});
+    } else {
+      setExtProfile(null);
+    }
+  }, [token]);
+
+  useEffect(() => {
     setSelectedStation(null);
   }, [hall, period, searchTerm, filters]);
 
@@ -130,6 +141,11 @@ export default function Menu() {
             }
           }
 
+          // Dietary preference auto-filter from user profile
+          if (extProfile?.is_vegan && !item.is_vegan) return false;
+          if (extProfile?.is_vegetarian && !extProfile.is_vegan && !item.is_vegetarian) return false;
+          if (extProfile?.is_gluten_free && item.is_gluten) return false;
+
           return true;
         });
 
@@ -139,7 +155,7 @@ export default function Menu() {
         };
       })
       .filter((station) => station.menu_items.length > 0); // Remove empty stations
-  }, [data, searchTerm, filters]);
+  }, [data, searchTerm, filters, extProfile]);
 
   const sortedStations = useMemo(() => {
     if (!selectedStation) return filteredStations;

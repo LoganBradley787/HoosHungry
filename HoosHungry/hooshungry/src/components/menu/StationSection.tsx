@@ -77,10 +77,6 @@ export default function StationSection({ station, onDetails, onAddToPlan, onFavo
                 <MenuItemCard
                   key={item.id}
                   item={item}
-                  onFavorite={onFavorite}
-                  isFavorited={isFavorite?.(item.item_name)}
-                  ratingData={getRating?.(item.item_name)}
-                  onVote={onVote ? (isUpvote) => onVote(item.item_name, isUpvote) : undefined}
                 />
               ))}
             </div>
